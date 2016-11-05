@@ -1,0 +1,39 @@
+{
+  "status": "success",
+  "data": {
+    "plugins": [
+      {
+        "file": "ChestShop.jar",
+        "details": {
+          "name": "ChestShop",
+          "main": "com.Acrobot.ChestShop.ChestShop",
+          "version": "3.8.12"
+        }
+      },
+      {
+        "file": "Multiverse-Portals.jar",
+        "details": {
+          "name": "Multiverse-Portals",
+          "main": "com.onarandombox.MultiversePortals.MultiversePortals",
+          "authors": [
+            "Rigby",
+            "fernferret"
+          ],
+          "version": "2.0-b254"
+        }
+      },
+      {
+        "file": "Modifyworld.jar",
+        "details": {
+          "name": "Modifyworld",
+          "main": "ru.tehkode.modifyworld.bukkit.Modifyworld",
+          "soft-depend": [
+            "PermissionsEx",
+            "Vault"
+          ],
+          "version": "1.19.7"
+        }
+      }
+    ]
+  }
+}

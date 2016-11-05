@@ -1,0 +1,10 @@
+{
+  "status":"success",
+  "data":{
+    "user":{
+      "username":"Tyrola",
+      "avatar":"blob",
+      "created_at":"2015-09-07T16:49:18.000+02:00"
+    }
+  }
+}

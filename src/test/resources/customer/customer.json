@@ -1,0 +1,21 @@
+{
+  "status":"success",
+  "data":{
+    "user":{
+      "user_id":1337,
+      "username":"Marty",
+      "timezone": "America/Los_Angeles",
+      "email":"marty.mcfly@biffco.com",
+      "credit":1955,
+      "registred":"1985-10-25T01:15:00",
+      "language":"eng",
+      "avatar":"https://server.nitrado.net/users.nitrado/1337.jpg",
+      "profile":{
+        "name":"Marty McFly",
+        "street":"DeLorean Street 12",
+        "postcode":"2209",
+        "city":"Hill Valley"
+      }
+    }
+  }
+}

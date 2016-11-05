@@ -1,0 +1,20 @@
+{
+  "status":"success",
+  "data":{
+    "tasks":[
+      {
+        "id":1,
+        "service_id":1,
+        "minute":"0",
+        "hour":"*",
+        "day":"*",
+        "month":"*",
+        "weekday":"*",
+        "next_run":"2015-07-16T10:00:00",
+        "last_run":null,
+        "action_method":"restart",
+        "action_data":null
+      }
+    ]
+  }
+}

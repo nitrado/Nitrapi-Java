@@ -1,0 +1,23 @@
+{
+  "status":"success",
+  "data":{
+    "service":{
+      "id":3,
+      "status": "active",
+      "websocket_token":"b05ac3d5d71a8858fca3011a8c179f1d9ec5ab41",
+      "user_id":1,
+      "username":"ni1_1",
+      "type":"gameserver",
+      "details":{
+        "address":"10.10.0.6:27015",
+        "name":"Nitrado.net Battlefield 4 Server",
+        "game":"Battlefield 4",
+        "portlist_short":"bf4",
+        "folder_short":"bf4"
+      },
+      "start_date":"2015-10-12T13:32:45",
+      "suspend_date":"2015-11-11T12:47:45",
+      "delete_date":"2015-11-25T12:47:45"
+    }
+  }
+}

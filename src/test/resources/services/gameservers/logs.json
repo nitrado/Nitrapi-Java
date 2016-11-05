@@ -1,0 +1,41 @@
+{
+  "status":"success",
+  "data":{
+    "current_page":1,
+    "logs_per_page":40,
+    "page_count":1,
+    "log_count":5,
+    "logs":[
+      {
+        "user":"Tyrola",
+        "category":"server",
+        "message":"Restart",
+        "created_at":"2015-10-07T00:31:23"
+      },
+      {
+        "user":"Tyrola",
+        "category":"filebrowser",
+        "message":"Has edited the file server.properties",
+        "created_at":"2015-10-07T00:31:19"
+      },
+      {
+        "user":"Tyrola",
+        "category":"server",
+        "message":"Restart",
+        "created_at":"2015-09-28T14:17:07"
+      },
+      {
+        "user":"Tyrola",
+        "category":"server",
+        "message":"Restart",
+        "created_at":"2015-09-23T01:18:42"
+      },
+      {
+        "user":"Tyrola",
+        "category":"server",
+        "message":"Restart",
+        "created_at":"2015-09-22T23:29:15"
+      }
+    ]
+  }
+}
