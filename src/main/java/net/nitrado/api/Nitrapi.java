@@ -2,6 +2,7 @@ package net.nitrado.api;
 
 import com.google.gson.*;
 
+import net.nitrado.api.common.exceptions.NitrapiErrorException;
 import net.nitrado.api.common.http.HttpClient;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.common.http.ProductionHttpClient;
@@ -128,11 +129,15 @@ public class Nitrapi {
     public Service[] getServices() {
         JsonObject data = this.dataGet("services", null);
         JsonArray serviceArray = data.get("services").getAsJsonArray();
-        Service[] services = new Service[serviceArray.size()];
-        for (int i = 0; i < services.length; i++) {
-            services[i] = ServiceFactory.factory(this, serviceArray.get(i));
+        ArrayList<Service> services = new ArrayList<Service>();
+        for (int i = 0; i < serviceArray.size(); i++) {
+            try {
+                services.add(ServiceFactory.factory(this, serviceArray.get(i)));
+            } catch (NitrapiErrorException exception) {
+                exception.printStackTrace();
+            }
         }
-        return services;
+        return services.toArray(new Service[services.size()]);
     }
 
     /**

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/java-lib.iml" filepath="$PROJECT_DIR$/.idea/java-lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../java-lib/nitrapi.iml" filepath="$PROJECT_DIR$/../java-lib/nitrapi.iml" />
     </modules>
   </component>
 </project>

@@ -1,0 +1,12 @@
+{
+  "status":"success",
+  "data":{
+    "services":[
+      {
+        "id":3,
+        "status":"active",
+        "type":"cool_server"
+      }
+    ]
+  }
+}

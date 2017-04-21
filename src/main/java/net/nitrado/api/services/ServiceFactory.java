@@ -22,7 +22,7 @@ public class ServiceFactory {
 
         // build the class name for the service
         String type = data.getAsJsonObject().get("type").getAsString();
-        String className = "net.nitrado.api.services." + type.toLowerCase() + "s." + type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase();
+        String className = "net.nitrado.api.services." + type.toLowerCase().replace("_", "") + "s." + toCamelCase(type);
 
         try {
 
@@ -37,5 +37,19 @@ public class ServiceFactory {
         } catch (ClassCastException e) {
             throw new NitrapiErrorException(className + " has to be a subclass of Service.", -1);
         }
+    }
+
+    private static String toCamelCase(String s) {
+        String[] parts = s.split("_");
+        String camelCaseString = "";
+        for (String part : parts){
+            camelCaseString = camelCaseString + toProperCase(part);
+        }
+        return camelCaseString;
+    }
+
+    private static String toProperCase(String s) {
+        return s.substring(0, 1).toUpperCase() +
+                s.substring(1).toLowerCase();
     }
 }

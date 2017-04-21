@@ -1,0 +1,8 @@
+{
+  "status":"success",
+  "data":{
+    "cloud_server": {
+      "status": "started"
+    }
+  }
+}
