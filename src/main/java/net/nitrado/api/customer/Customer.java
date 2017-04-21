@@ -21,7 +21,7 @@ public class Customer {
     private String email;
     private int credit;
     private String currency; // TODO enum?
-    private GregorianCalendar registred;
+    private GregorianCalendar registered;
     private String language;
     private String avatar;
     private HashMap<String, String> profile;
@@ -94,12 +94,12 @@ public class Customer {
     }
 
     /**
-     * Returns the date the user registred.
+     * Returns the date the user registered.
      *
      * @return the registry date
      */
-    public GregorianCalendar getRegistredDate() {
-        return registred;
+    public GregorianCalendar getRegisteredDate() {
+        return registered;
     }
 
     /**
