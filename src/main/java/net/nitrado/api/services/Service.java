@@ -3,6 +3,7 @@ package net.nitrado.api.services;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.exceptions.NitrapiErrorException;
 import net.nitrado.api.common.http.Parameter;
 
 import java.util.GregorianCalendar;
@@ -242,7 +243,7 @@ public abstract class Service {
         if (status == Status.ACTIVE) {
             try {
                 refresh(); // initially load the data
-            } catch (Exception e) {
+            } catch (NitrapiErrorException e) {
                 // Service is active, but refreshing the data does not yet lead to correct results.
                 e.printStackTrace();
             }

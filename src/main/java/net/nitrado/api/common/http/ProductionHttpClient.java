@@ -81,7 +81,7 @@ public class ProductionHttpClient implements HttpClient {
                 rateLimitReset = Long.parseLong(connection.getHeaderField("X-RateLimit-Reset"));
             }
 
-            if (!result.get("status").getAsString().equals("success")) {
+            if (result.has("status") && !result.get("status").getAsString().equals("success")) {
                 throw new NitrapiErrorException(result.get("message").getAsString(), connection.getResponseCode());
             }
 
@@ -160,7 +160,7 @@ public class ProductionHttpClient implements HttpClient {
                 rateLimitReset = Long.parseLong(connection.getHeaderField("X-RateLimit-Reset"));
             }
 
-            if (!result.get("status").getAsString().equals("success")) {
+            if (result.has("status") && !result.get("status").getAsString().equals("success")) {
                 throw new NitrapiErrorException(result.get("message").getAsString(), connection.getResponseCode());
             }
 
@@ -238,7 +238,7 @@ public class ProductionHttpClient implements HttpClient {
                 rateLimitReset = Long.parseLong(connection.getHeaderField("X-RateLimit-Reset"));
             }
 
-            if (!result.get("status").getAsString().equals("success")) {
+            if (result.has("status") && !result.get("status").getAsString().equals("success")) {
                 throw new NitrapiErrorException(result.get("message").getAsString(), connection.getResponseCode());
             }
 
@@ -296,7 +296,7 @@ public class ProductionHttpClient implements HttpClient {
             JsonParser parser = new JsonParser();
             JsonObject result = (JsonObject) parser.parse(response.toString());
 
-            if (!result.get("status").getAsString().equals("success")) {
+            if (result.has("status") && !result.get("status").getAsString().equals("success")) {
                 throw new NitrapiErrorException(result.get("message").getAsString(), connection.getResponseCode());
             }
 
