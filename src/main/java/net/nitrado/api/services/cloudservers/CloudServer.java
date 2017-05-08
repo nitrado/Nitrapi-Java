@@ -80,7 +80,7 @@ public class CloudServer extends Service {
     private class CloudServerData {
         @SerializedName("status")
         private CloudserverStatus cloudserverStatus;
-        private GregorianCalendar hostname;
+        private String hostname;
         private boolean dynamic;
         private Hardware hardware;
         private Ip[] ips;
@@ -273,7 +273,7 @@ public class CloudServer extends Service {
      *
      * @return hostname
      */
-    public GregorianCalendar getHostname() {
+    public String getHostname() {
         return data.hostname;
     }
 
@@ -402,17 +402,6 @@ public class CloudServer extends Service {
         api.dataPost("services/" + getId() + "/cloud_servers/ptr/" + ipAddress+ "", new Parameter[] {
                 new Parameter("hostname", hostname)
         });
-    }
-
-    /**
-     * Returns the full list of available images.
-     * @return
-     */
-    public Image[] getImages() {
-        JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/images", null);
-
-        Image[] images = api.fromJson(data.get("images"), Image[].class);
-        return images;
     }
 
     /**

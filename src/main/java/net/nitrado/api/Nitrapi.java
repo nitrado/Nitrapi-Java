@@ -11,6 +11,7 @@ import net.nitrado.api.payment.Country;
 import net.nitrado.api.payment.PaymentMethod;
 import net.nitrado.api.services.Service;
 import net.nitrado.api.services.ServiceFactory;
+import net.nitrado.api.services.cloudservers.CloudServer;
 import net.nitrado.api.services.gameservers.GlobalGameList;
 
 import java.io.InputStream;
@@ -155,6 +156,17 @@ public class Nitrapi {
         return GlobalGameList.newInstance(this);
     }
 
+
+    /**
+     * Returns the full list of available images.
+     * @return
+     */
+    public CloudServer.Image[] getImages() {
+        JsonObject data = dataGet("services/cloud_servers/images", null);
+
+        CloudServer.Image[] images = fromJson(data.get("images"), CloudServer.Image[].class);
+        return images;
+    }
 
     // PAYMENT
 
