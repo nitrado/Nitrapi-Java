@@ -1,53 +1,75 @@
 package net.nitrado.api.services.cloudservers;
 
 import com.google.gson.annotations.SerializedName;
-import com.sun.deploy.security.ValidationState;
 
-import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 
+/**
+ * This class represents a Backup.
+ */
 public class Backup {
-
-    // TODO
-    public enum Type {
-        @SerializedName("manual")
-        MANUAL
-    }
-
-    // TODO
-    public enum Status {
-        @SerializedName("available")
-        AVAILABLE
-    }
 
     private String id;
     private String name;
-    private Date createdAt;
-    private Type type;
+    @SerializedName("created_at")
+    private GregorianCalendar createdAt;
+    private String type;
+    @SerializedName("set_id")
     private String setId;
-    private Status status;
+    private String status;
 
+    /**
+     * Returns id.
+     *
+     * @return id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Returns name.
+     *
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
-    public Date getCreatedAt() {
+    /**
+     * Returns createdAt.
+     *
+     * @return createdAt
+     */
+    public GregorianCalendar getCreatedAt() {
         return createdAt;
     }
 
-    public Type getType() {
+    /**
+     * TODO enum
+     *
+     * @return type
+     */
+    public String getType() {
         return type;
     }
 
-    // TODO
+    /**
+     * Returns setId.
+     *
+     * @return setId
+     */
     public String getSetId() {
         return setId;
     }
 
-    public Status getStatus() {
+    /**
+     * TODO enum
+     *
+     * @return status
+     */
+    public String getStatus() {
         return status;
     }
 }

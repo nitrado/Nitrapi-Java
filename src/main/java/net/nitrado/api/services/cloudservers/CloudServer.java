@@ -4,119 +4,85 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 /**
- * This class represents a cloud server.
+ * This class represents a CloudServer.
  */
 public class CloudServer extends Service {
 
-    public enum Status {
+    /**
+     * The Status of the CloudServer.
+     */
+    public enum CloudserverStatus {
         /**
          * The Server is running.
          */
         @SerializedName("running")
         RUNNING,
+
         /**
          * The Server is stopped.
          */
         @SerializedName("stopped")
         STOPPED,
+
         /**
          * The Server is currently installing. This can take some minutes.
          */
         @SerializedName("installing")
         INSTALLING,
+
         /**
          * The Server is currently re-installing. This can take some minutes.
          */
         @SerializedName("reinstalling")
         REINSTALLING,
+
         /**
-         * The Server is currently processing an up- or downgrade.
+         * The Server is currently processing a up- or downgrade.
          */
         @SerializedName("flavour_change")
         FLAVOUR_CHANGE,
+
         /**
-         * The Server is currently restoring a Backup. This can take some minutes.
+         * The server is currently restoring a Backup. This can take some minutes.
          */
         @SerializedName("restoring")
         RESTORING,
+
         /**
-         * An error occurred while up- or downgrading. The support has been informed.
+         * A error while the up- or downgrade is occurred. The support has been informed.
          */
         @SerializedName("error_fc")
-        ERROR_FLAVOUR_CHANGE,
+        ERROR_FC,
+
         /**
-         * An error occurred while deleting the Server. The support has been informed.
+         * A error while deleting the Server is occurred. The support has been informed.
          */
         @SerializedName("error_delete")
         ERROR_DELETE,
+
         /**
-         * An error occurred while installing the Server. The support has been informed.
+         * A error while installing the Server is occurred. The support has been informed.
          */
         @SerializedName("error_install")
         ERROR_INSTALL,
+
         /**
-         * An error occurred while reinstalling the Server. The support has been informed.
+         * A error while re-installing the Server is occurred. The support has been informed.
          */
         @SerializedName("error_reinstall")
         ERROR_REINSTALL
     }
 
-    private CloudServerInfo info;
-
-
-    private class HardwareInfo {
-        private int cpu;
-        private int ram;
-        private boolean windows;
-        private int ssd;
-        @SerializedName("ipv4")
-        private int ipv4Count;
-        private int traffic;
-        @SerializedName("backup")
-        private int backupCount;
-    }
-
-    private class Ip {
-        private String address;
-        private int version;
-        @SerializedName("main_ip")
-        private boolean mainIp;
-        private String mac;
-        private String ptr;
-
-        public String getAddress() {
-            return address;
-        }
-
-        /**
-         * Returns the ip version (4 or 6).
-         * @return
-         */
-        public int getVersion() {
-            return version;
-        }
-
-        public boolean isMainIp() {
-            return mainIp;
-        }
-
-        public String getMac() {
-            return mac;
-        }
-
-        public String getPtr() {
-            return ptr;
-        }
-    }
-
-
-    private class CloudServerInfo {
-        private Status status;
-        private String hostname;
+    private class CloudServerData {
+        @SerializedName("status")
+        private CloudserverStatus cloudserverStatus;
+        private GregorianCalendar hostname;
         private boolean dynamic;
-        private HardwareInfo hardware;
+        private Hardware hardware;
         private Ip[] ips;
         private Image image;
         @SerializedName("daemon_available")
@@ -125,137 +91,317 @@ public class CloudServer extends Service {
         private boolean passwordAvailable;
         @SerializedName("bandwidth_limited")
         private boolean bandwidthLimited;
-
     }
 
+    private CloudServerData data;
 
+    public class Hardware {
+        private int cpu;
+        private int ram;
+        private boolean windows;
+        private int ssd;
+        private int ipv4;
+        private int traffic;
+        private int backup;
 
-
-    @Override
-    public void refresh() {
-        JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers", null);
-        CloudServerInfo infos = api.fromJson(data.get("cloud_server"), CloudServerInfo.class);
-        this.info = infos;
-    }
-
-    public Status getCloudServerStatus() {
-        return info.status;
-    }
-
-    public String getHostname() {
-        return info.hostname;
-    }
-
-    public boolean isDynamic() {
-        return info.dynamic;
-    }
-
-    public int getCPU() {
-        return info.hardware.cpu;
-    }
-
-    public int getRAM() {
-        return info.hardware.ram;
-    }
-
-    public boolean isWindows() {
-        return info.hardware.windows;
-    }
-
-    public int getIpv4AddressCount() {
-        return info.hardware.ipv4Count;
-    }
-
-    /**
-     * Returns the amount of high speed traffic in TB.
-     * @return
-     */
-    public int getTraffic() {
-        return info.hardware.traffic;
-    }
-
-    public int getBackupCount() {
-        return info.hardware.backupCount;
-    }
-
-    public Ip[] getIps() {
-        return info.ips;
-    }
-
-    /**
-     * Returns the main ipv4 address of the server.
-     * @return
-     */
-    public String getMainIp() {
-        for (Ip ip : info.ips) {
-            if (ip.mainIp && ip.version == 4) {
-                return ip.address;
-            }
+        /**
+         * Returns cpu.
+         *
+         * @return cpu
+         */
+        public int getCpu() {
+            return cpu;
         }
-        return null;
+
+        /**
+         * Returns ram.
+         *
+         * @return ram
+         */
+        public int getRam() {
+            return ram;
+        }
+
+        /**
+         * Returns windows.
+         *
+         * @return windows
+         */
+        public boolean isWindows() {
+            return windows;
+        }
+
+        /**
+         * Returns ssd.
+         *
+         * @return ssd
+         */
+        public int getSsd() {
+            return ssd;
+        }
+
+        /**
+         * Returns ipv4.
+         *
+         * @return ipv4
+         */
+        public int getIpv4() {
+            return ipv4;
+        }
+
+        /**
+         * The amount of high speed traffic in TB.
+         *
+         * @return traffic
+         */
+        public int getTraffic() {
+            return traffic;
+        }
+
+        /**
+         * Returns backup.
+         *
+         * @return backup
+         */
+        public int getBackup() {
+            return backup;
+        }
+
+    }
+
+    public class Ip {
+        private String address;
+        private int version;
+        @SerializedName("main_ip")
+        private boolean mainIp;
+        private String mac;
+        private String ptr;
+
+        /**
+         * Returns address.
+         *
+         * @return address
+         */
+        public String getAddress() {
+            return address;
+        }
+
+        /**
+         * The ip version (4 or 6).
+         *
+         * @return version
+         */
+        public int getVersion() {
+            return version;
+        }
+
+        /**
+         * Returns mainIp.
+         *
+         * @return mainIp
+         */
+        public boolean isMainIp() {
+            return mainIp;
+        }
+
+        /**
+         * Returns mac.
+         *
+         * @return mac
+         */
+        public String getMac() {
+            return mac;
+        }
+
+        /**
+         * Returns ptr.
+         *
+         * @return ptr
+         */
+        public String getPtr() {
+            return ptr;
+        }
+
+    }
+
+    public class Image {
+        private int id;
+        private String name;
+        private boolean daemon;
+
+        /**
+         * Returns id.
+         *
+         * @return id
+         */
+        public int getId() {
+            return id;
+        }
+
+        /**
+         * Returns name.
+         *
+         * @return name
+         */
+        public String getName() {
+            return name;
+        }
+
+        /**
+         * Returns daemon.
+         *
+         * @return daemon
+         */
+        public boolean isDaemon() {
+            return daemon;
+        }
+
+    }
+
+
+    /**
+     * The Status of the CloudServer.
+     *
+     * @return cloudserverStatus
+     */
+    public CloudserverStatus getCloudserverStatus() {
+        return data.cloudserverStatus;
     }
 
     /**
-     * Returns the currently installed image.
-     * @return
+     * Returns hostname.
+     *
+     * @return hostname
+     */
+    public GregorianCalendar getHostname() {
+        return data.hostname;
+    }
+
+    /**
+     * Returns dynamic.
+     *
+     * @return dynamic
+     */
+    public boolean isDynamic() {
+        return data.dynamic;
+    }
+
+    /**
+     * Returns hardware.
+     *
+     * @return hardware
+     */
+    public Hardware getHardware() {
+        return data.hardware;
+    }
+
+    /**
+     * Returns ips.
+     *
+     * @return ips
+     */
+    public Ip[] getIps() {
+        return data.ips;
+    }
+
+    /**
+     * The currently installed image.
+     *
+     * @return image
      */
     public Image getImage() {
-        return info.image;
+        return data.image;
     }
 
     /**
-     * Returns true if the Cloud Server has a Nitrapi Daemon instance running.
-     * @return
+     * True if the Cloud Server has a Nitrapi Daemon instance running.
+     *
+     * @return daemonAvailable
      */
-    public boolean hasDaemonSupport() {
-        return info.daemonAvailable;
+    public boolean isDaemonAvailable() {
+        return data.daemonAvailable;
     }
 
+    /**
+     * Returns passwordAvailable.
+     *
+     * @return passwordAvailable
+     */
     public boolean isPasswordAvailable() {
-        return info.passwordAvailable;
+        return data.passwordAvailable;
     }
 
+    /**
+     * Returns bandwidthLimited.
+     *
+     * @return bandwidthLimited
+     */
     public boolean isBandwidthLimited() {
-        return info.bandwidthLimited;
+        return data.bandwidthLimited;
     }
 
 
+    /**
+     * Returns a list of all backups.
+     * @return a list of all backups.
+     */
     public Backup[] getBackups() {
         JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/backups", null);
-        return api.fromJson(data.get("backups"), Backup[].class);
+
+        Backup[] backups = api.fromJson(data.get("backups"), Backup[].class);
+        return backups;
     }
 
+    /**
+     * Creates a new backup.
+     */
     public void createBackup() {
         api.dataPost("services/" + getId() + "/cloud_servers/backups", null);
     }
 
     /**
-     * Restore the backup with the given id.
+     * Restores the backup with the given id.
+     *
      * @param backupId
      */
     public void restoreBackup(int backupId) {
-        api.dataPost("services/" + getId() + "/cloud_servers/backups/" + backupId + "/restore", new Parameter[0]);
+        api.dataPost("services/" + getId() + "/cloud_servers/backups/" + backupId+ "/restore", null);
     }
 
     /**
-     * Delete the backup with the given id.
+     * Deletes the backup with the given id.
+     *
      * @param backupId
      */
     public void deleteBackup(int backupId) {
-        api.dataDelete("services/" + getId() + "/cloud_servers/backups/" + backupId + "/restore", new Parameter[0]);
+        api.dataDelete("services/" + getId() + "/cloud_servers/backups/" + backupId+ "", null);
     }
 
-
+    /**
+     */
     public void doBoot() {
         api.dataPost("services/" + getId() + "/cloud_servers/boot", null);
     }
 
-    public void changeHostname(String newHostname) {
-        api.dataPost("services/" + getId() + "/cloud_servers/hostname", new Parameter[]{new Parameter("hostname", newHostname)});
+    /**
+     *
+     * @param hostname
+     */
+    public void changeHostame(String hostname) {
+        api.dataPost("services/" + getId() + "/cloud_servers/hostname", new Parameter[] {
+                new Parameter("hostname", hostname)
+        });
     }
 
-    public void changePTREntry(String ipAddress, String newHostname) {
-        api.dataPost("services/" + getId() + "/cloud_servers/ptr/" + ipAddress, new Parameter[]{new Parameter("hostname", newHostname)});
+    /**
+     *
+     * @param ipAddress
+     * @param hostname
+     */
+    public void changePTREntry(String ipAddress, String hostname) {
+        api.dataPost("services/" + getId() + "/cloud_servers/ptr/" + ipAddress+ "", new Parameter[] {
+                new Parameter("hostname", hostname)
+        });
     }
 
     /**
@@ -264,65 +410,94 @@ public class CloudServer extends Service {
      */
     public Image[] getImages() {
         JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/images", null);
-        return api.fromJson(data.get("images"), Image[].class);
+
+        Image[] images = api.fromJson(data.get("images"), Image[].class);
+        return images;
     }
 
+    /**
+     *
+     * @param imageId
+     */
     public void doReinstall(int imageId) {
-        api.dataPost("services/" + getId() + "/cloud_servers/reinstall", new Parameter[]{new Parameter("image_id", imageId)});
+        api.dataPost("services/" + getId() + "/cloud_servers/reinstall", new Parameter[] {
+                new Parameter("image_id", imageId)
+        });
     }
 
+    /**
+     */
     public void doReboot() {
         api.dataPost("services/" + getId() + "/cloud_servers/reboot", null);
     }
 
     /**
-     * A hard reset will turn of your Cloud Server instantly. This can cause data loss or file system corruption.
-     * Only trigger if the instance does not respond to normal reboots.
+     * A hard reset will turn of your Cloud Server instantly. This can cause data loss or file system corruption. Only trigger if the instance does not respond to normal reboots.
      */
     public void doReset() {
         api.dataPost("services/" + getId() + "/cloud_servers/reset", null);
     }
 
-
     /**
-     * Returns resource stats
-     * @param time valid time parametters: 1h, 4h, 1d, 7d
+     * Returns resource stats.
+     *
+     * @param time  valid time parameters: 1h, 4h, 1d, 7d
      * @return
      */
-    public Resource[] getResourceUsage(String time) {
-        JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/resources", new Parameter[]{new Parameter("time", time)});
-        return api.fromJson(data.get("resources"), Resource[].class);
-    }
-    public Resource[] getResourceUsage() {
-        return getResourceUsage("4h");
-    }
+    public Resource[] getResourceUsage(int time) {
+        JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/resources", new Parameter[] {
+                new Parameter("time", time)
+        });
 
-    public String getConsoleLogs(int lines) {
-        JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/console_logs", new Parameter[]{new Parameter("lines", lines)});
-        return data.get("console_logs").getAsString();
-    }
-    public String getConsoleLogs() {
-        return getConsoleLogs(50);
-    }
-
-    public String getNoVNCUrl() {
-        JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/console", null);
-        return data.get("console").getAsJsonObject().get("url").getAsString();
+        Resource[] resources = api.fromJson(data.get("resources"), Resource[].class);
+        return resources;
     }
 
     /**
-     * If you haven't any SSH keys added before the Server installation, you can use this API call to receive your initial password.
-     * After requesting this password it will be deleted from our database. Please save the password after requesting.
+     *
+     * @param lines
+     * @return
+     */
+    public String getConsoleLogs(int lines) {
+        JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/console_logs", new Parameter[] {
+                new Parameter("lines", lines)
+        });
+
+        String console_logs = api.fromJson(data.get("console_logs"), String.class);
+        return console_logs;
+    }
+
+    /**
+     * @return
+     */
+    public String getNoVNCUrl() {
+        JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/console", null);
+
+        String consoleurl = api.fromJson(data.get("console").getAsJsonObject().get("url"), String.class);
+        return consoleurl;
+    }
+
+    /**
      * @return
      */
     public String getInitialPassword() {
         JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/password", null);
-        return data.get("password").getAsString();
+
+        String password = api.fromJson(data.get("password"), String.class);
+        return password;
     }
 
+    /**
+     */
     public void doShutdown() {
         api.dataPost("services/" + getId() + "/cloud_servers/shutdown", null);
     }
 
-    // TODO traffic statistics
+
+    @Override
+    public void refresh() {
+        JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers", null);
+        CloudServerData datas = api.fromJson(data.get("cloud_server"), CloudServerData.class);
+        this.data = datas;
+    }
 }
