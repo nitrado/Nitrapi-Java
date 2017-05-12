@@ -162,7 +162,7 @@ public class Nitrapi {
      * @return
      */
     public CloudServer.Image[] getImages() {
-        JsonObject data = dataGet("services/cloud_servers/images", null);
+        JsonObject data = dataGet("information/cloud_servers/images", null);
 
         CloudServer.Image[] images = fromJson(data.get("images"), CloudServer.Image[].class);
         return images;

@@ -60,12 +60,23 @@ public class Logs {
             return createdAt;
         }
 
-        public String getIp() {
-            return ip;
+
+        /**
+         * Returns admin.
+         *
+         * @return admin
+         */
+        public boolean isAdmin() {
+            return admin;
         }
 
-        public boolean isAdmin() {
-            return isAdmin;
+        /**
+         * Returns ip.
+         *
+         * @return ip
+         */
+        public String getIp() {
+            return ip;
         }
     }
 

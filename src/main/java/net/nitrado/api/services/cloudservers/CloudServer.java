@@ -227,6 +227,8 @@ public class CloudServer extends Service {
     public class Image {
         private int id;
         private String name;
+        @SerializedName("is_windows")
+        private boolean windows;
         private boolean daemon;
 
         /**
@@ -245,6 +247,15 @@ public class CloudServer extends Service {
          */
         public String getName() {
             return name;
+        }
+
+        /**
+         * Returns windows.
+         *
+         * @return windows
+         */
+        public boolean isWindows() {
+            return windows;
         }
 
         /**
@@ -480,6 +491,17 @@ public class CloudServer extends Service {
      */
     public void doShutdown() {
         api.dataPost("services/" + getId() + "/cloud_servers/shutdown", null);
+    }
+
+    /**
+     * @return
+     */
+    public net.nitrado.api.services.cloudservers.firewall.Firewall getFirewall() {
+        JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/firewall", null);
+
+        net.nitrado.api.services.cloudservers.firewall.Firewall firewall = api.fromJson(data.get("firewall"), net.nitrado.api.services.cloudservers.firewall.Firewall.class);
+        firewall.init(this, api);
+        return firewall;
     }
 
 
