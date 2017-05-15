@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
+import net.nitrado.api.services.fileserver.FileServer;
+
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
@@ -514,6 +516,15 @@ public class CloudServer extends Service {
         return firewall;
     }
 
+
+    /**
+     * Returns a FileServer object.
+     *
+     * @return a FileServer object
+     */
+    public FileServer getFileServer() {
+        return new FileServer(this, api);
+    }
 
     @Override
     public void refresh() {

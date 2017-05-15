@@ -6,7 +6,7 @@ import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 import net.nitrado.api.services.gameservers.customersettings.CustomerSettings;
 import net.nitrado.api.services.gameservers.ddoshistory.DDoSAttack;
-import net.nitrado.api.services.gameservers.fileserver.FileServer;
+import net.nitrado.api.services.fileserver.FileServer;
 import net.nitrado.api.services.gameservers.minecraft.Minecraft;
 import net.nitrado.api.services.gameservers.pluginsystem.PluginSystem;
 import net.nitrado.api.services.gameservers.taskmanager.TaskManager;

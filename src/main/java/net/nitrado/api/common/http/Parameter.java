@@ -31,6 +31,10 @@ public class Parameter {
         this.key = key;
         this.value = value.toString();
     }
+    public Parameter(String key, boolean value) {
+        this.key = key;
+        this.value = value ? "true": "false";
+    }
 
     /**
      * Returns the key.
