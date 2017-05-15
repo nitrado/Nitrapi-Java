@@ -3,9 +3,7 @@ package net.nitrado.api.order;
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.exceptions.NitrapiErrorException;
 import net.nitrado.api.common.http.Parameter;
-import net.nitrado.api.services.Service;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

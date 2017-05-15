@@ -2,8 +2,10 @@ package net.nitrado.api.common.http;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.nitrado.api.common.exceptions.NitrapiConcurrencyException;
 import net.nitrado.api.common.exceptions.NitrapiErrorException;
 import net.nitrado.api.common.exceptions.NitrapiHttpException;
+import net.nitrado.api.common.exceptions.NitrapiMaintenanceException;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -67,30 +69,7 @@ public class ProductionHttpClient implements HttpClient {
 
             reader.close();
 
-            if (response.length() == 0) {
-                throw new NitrapiHttpException(new NitrapiErrorException("We got an empty result.", connection.getResponseCode()));
-            }
-
-            // get the results
-
-            JsonObject result = (JsonObject) new JsonParser().parse(response.toString());
-
-            if (connection.getHeaderField("X-Rate-Limit") != null) {
-                rateLimit = Integer.parseInt(connection.getHeaderField("X-RateLimit-Limit"));
-                rateLimitRemaining = Integer.parseInt(connection.getHeaderField("X-RateLimit-Remaining"));
-                rateLimitReset = Long.parseLong(connection.getHeaderField("X-RateLimit-Reset"));
-            }
-
-            if (result.has("status") && !result.get("status").getAsString().equals("success")) {
-                throw new NitrapiErrorException(result.get("message").getAsString(), connection.getResponseCode());
-            }
-
-            // return the interesting subobject
-            if (result.get("data") != null) {
-                return result.get("data").getAsJsonObject();
-            }
-
-            return result;
+            return parseResult(response, connection);
 
         } catch (IOException e) {
             throw new NitrapiHttpException(e);
@@ -117,7 +96,7 @@ public class ProductionHttpClient implements HttpClient {
             }
         }
 
-        url += "?locale="+locale;
+        url += "?locale=" + locale;
 
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -147,30 +126,7 @@ public class ProductionHttpClient implements HttpClient {
 
             reader.close();
 
-            if (response.length() == 0) {
-                throw new NitrapiHttpException(new NitrapiErrorException("We got an empty result.  ("+connection.getResponseCode()+")", connection.getResponseCode()));
-            }
-
-            JsonParser parser = new JsonParser();
-            JsonObject result = (JsonObject) parser.parse(response.toString());
-
-            if (connection.getHeaderField("X-Rate-Limit") != null) {
-                rateLimit = Integer.parseInt(connection.getHeaderField("X-RateLimit-Limit"));
-                rateLimitRemaining = Integer.parseInt(connection.getHeaderField("X-RateLimit-Remaining"));
-                rateLimitReset = Long.parseLong(connection.getHeaderField("X-RateLimit-Reset"));
-            }
-
-            if (result.has("status") && !result.get("status").getAsString().equals("success")) {
-                throw new NitrapiErrorException(result.get("message").getAsString(), connection.getResponseCode());
-            }
-
-
-            // return the interesting subobject
-            if (result.get("data") != null) {
-                return result.get("data").getAsJsonObject();
-            }
-
-            return result;
+            return parseResult(response, connection);
         } catch (IOException e) {
             throw new NitrapiHttpException(e);
         }
@@ -195,7 +151,7 @@ public class ProductionHttpClient implements HttpClient {
             }
         }
 
-        url += "?locale="+locale;
+        url += "?locale=" + locale;
 
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -218,37 +174,12 @@ public class ProductionHttpClient implements HttpClient {
             }
             StringBuffer response = new StringBuffer();
             String line;
-
             while ((line = reader.readLine()) != null) {
                 response.append(line);
             }
-
             reader.close();
 
-            if (response.length() == 0) {
-                throw new NitrapiHttpException(new NitrapiErrorException("We got an empty result.", connection.getResponseCode()));
-            }
-
-            JsonParser parser = new JsonParser();
-            JsonObject result = (JsonObject) parser.parse(response.toString());
-
-            if (connection.getHeaderField("X-Rate-Limit") != null) {
-                rateLimit = Integer.parseInt(connection.getHeaderField("X-RateLimit-Limit"));
-                rateLimitRemaining = Integer.parseInt(connection.getHeaderField("X-RateLimit-Remaining"));
-                rateLimitReset = Long.parseLong(connection.getHeaderField("X-RateLimit-Reset"));
-            }
-
-            if (result.has("status") && !result.get("status").getAsString().equals("success")) {
-                throw new NitrapiErrorException(result.get("message").getAsString(), connection.getResponseCode());
-            }
-
-
-            // return the interesting subobject
-            if (result.get("data") != null) {
-                return result.get("data").getAsJsonObject();
-            }
-
-            return result;
+            return parseResult(response, connection);
         } catch (IOException e) {
             throw new NitrapiHttpException(e);
         }
@@ -289,21 +220,60 @@ public class ProductionHttpClient implements HttpClient {
 
             reader.close();
 
-            if (response.length() == 0) {
-                throw new NitrapiHttpException(new NitrapiErrorException("We got an empty result.", connection.getResponseCode()));
-            }
-
-            JsonParser parser = new JsonParser();
-            JsonObject result = (JsonObject) parser.parse(response.toString());
-
-            if (result.has("status") && !result.get("status").getAsString().equals("success")) {
-                throw new NitrapiErrorException(result.get("message").getAsString(), connection.getResponseCode());
-            }
+            parseResult(response, connection);
 
         } catch (IOException e) {
             throw new NitrapiHttpException(e);
         }
     }
+
+
+    private JsonObject parseResult(StringBuffer response, HttpURLConnection connection) throws IOException {
+
+        if (connection.getHeaderField("X-Rate-Limit") != null) {
+            rateLimit = Integer.parseInt(connection.getHeaderField("X-RateLimit-Limit"));
+            rateLimitRemaining = Integer.parseInt(connection.getHeaderField("X-RateLimit-Remaining"));
+            rateLimitReset = Long.parseLong(connection.getHeaderField("X-RateLimit-Reset"));
+        }
+
+        String errorId = null;
+        if (connection.getHeaderField("X-Raven-Event-ID") != null) {
+            errorId = connection.getHeaderField("X-Raven-Event-ID");
+        }
+
+        if (response.length() == 0) {
+            throw new NitrapiHttpException(new NitrapiErrorException("Empty result. (HTTP " + connection.getResponseCode() + ")", errorId));
+        }
+
+        JsonParser parser = new JsonParser();
+        JsonObject result = (JsonObject) parser.parse(response.toString());
+
+
+        if (connection.getResponseCode() < 300) { // OK
+            // return the interesting subobject
+            if (result.get("data") != null) {
+                return result.get("data").getAsJsonObject();
+            }
+        }
+
+        // Throw appropriate exception
+
+        String message = null;
+        if (result.has("message")) {
+            message = result.get("message").getAsString();
+        }
+
+
+        switch (connection.getResponseCode()) {
+            case 428:
+                throw new NitrapiConcurrencyException(message);
+            case 503:
+                throw new NitrapiMaintenanceException(message);
+            default:
+                throw new NitrapiErrorException(message, errorId);
+        }
+    }
+
 
     public int getRateLimit() {
         return rateLimit;

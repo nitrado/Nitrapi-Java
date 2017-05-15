@@ -1,7 +1,5 @@
 package net.nitrado.api.services.bouncers;
 
-import com.google.gson.annotations.SerializedName;
-
 public class BouncerInstance {
     private String ident;
     private String password;

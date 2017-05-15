@@ -6,22 +6,23 @@ package net.nitrado.api.common.exceptions;
  * e.g. not enough permissions
  */
 public class NitrapiErrorException extends NitrapiException {
-    private int httpStatusCode;
+
+    private String errorId;
 
     public NitrapiErrorException(String message) {
-        this(message, -1);
+        this(message, null);
     }
-    public NitrapiErrorException(String message, int httpStatusCode) {
+    public NitrapiErrorException(String message, String errorId) {
         super(message);
-        this.httpStatusCode = httpStatusCode;
+        this.errorId = errorId;
     }
 
     /**
-     * Returns the http response code.
-     *
-     * @return the status code or -1 if there was no http request involved.
+     * Returns an error id if the error might be on the side of the api. Include this in your support requests.
+     * @return error id for support request
      */
-    public int getHttpStatusCode() {
-        return httpStatusCode;
+    public String getErrorId() {
+        return errorId;
     }
+
 }

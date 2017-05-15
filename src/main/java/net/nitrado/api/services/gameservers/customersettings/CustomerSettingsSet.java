@@ -1,7 +1,5 @@
 package net.nitrado.api.services.gameservers.customersettings;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.GregorianCalendar;
 
 /**

@@ -2,7 +2,6 @@ package net.nitrado.api.order.products;
 
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.order.DimensionPricing;
-import net.nitrado.api.order.PartPricing;
 
 public class Gameserver extends DimensionPricing {
     public Gameserver(Nitrapi nitrapi, int locationId) {

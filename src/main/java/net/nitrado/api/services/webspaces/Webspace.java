@@ -2,8 +2,6 @@ package net.nitrado.api.services.webspaces;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-
-import net.nitrado.api.Nitrapi;
 import net.nitrado.api.services.Service;
 
 /**

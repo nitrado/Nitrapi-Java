@@ -2,7 +2,6 @@ package net.nitrado.api.services.gameservers;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 import net.nitrado.api.services.gameservers.customersettings.CustomerSettings;

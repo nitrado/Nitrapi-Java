@@ -1,20 +1,16 @@
 package net.nitrado.api;
 
 import com.google.gson.*;
-
 import net.nitrado.api.common.exceptions.NitrapiErrorException;
 import net.nitrado.api.common.http.HttpClient;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.common.http.ProductionHttpClient;
+import net.nitrado.api.customer.Customer;
 import net.nitrado.api.order.Dimension;
-import net.nitrado.api.order.Price;
-import net.nitrado.api.order.PriceList;
 import net.nitrado.api.payment.Country;
 import net.nitrado.api.payment.PaymentMethod;
-import net.nitrado.api.customer.Customer;
 import net.nitrado.api.services.Service;
 import net.nitrado.api.services.ServiceFactory;
-import net.nitrado.api.services.gameservers.GameList;
 import net.nitrado.api.services.gameservers.GlobalGameList;
 
 import java.io.InputStream;
@@ -26,8 +22,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Map;
-
-import static net.nitrado.api.order.PriceList.*;
 
 
 /**

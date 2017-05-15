@@ -1,6 +1,5 @@
 package net.nitrado.api.services.clanpages;
 
-import net.nitrado.api.Nitrapi;
 import net.nitrado.api.services.Service;
 
 /**

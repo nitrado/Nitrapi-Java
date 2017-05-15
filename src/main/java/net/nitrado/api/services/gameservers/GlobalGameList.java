@@ -2,7 +2,6 @@ package net.nitrado.api.services.gameservers;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-
 import net.nitrado.api.Nitrapi;
 
 /**

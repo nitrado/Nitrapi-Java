@@ -7,7 +7,7 @@ import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.gameservers.Gameserver;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 
 /**
  * Access the files on your gameserver.
@@ -84,7 +84,7 @@ public class FileServer {
     public void uploadFile(String file, String path, String name) throws IOException {
         File localFile = new File(file);
         if (!localFile.exists()) {
-            throw new NitrapiErrorException("Can't find local file \"" + file + "\".", -1);
+            throw new NitrapiErrorException("Can't find local file \"" + file + "\".");
         }
 
         Token token = getUploadToken(path, name);
@@ -108,7 +108,7 @@ public class FileServer {
     public void writeFile(String path, String name, String content) throws IOException {
         Token token = getUploadToken(path, name);
 
-        api.rawPost(token.getUrl(), token.getToken(), content.getBytes(StandardCharsets.UTF_8));
+        api.rawPost(token.getUrl(), token.getToken(), content.getBytes(Charset.forName("UTF-8")));
     }
 
 
@@ -172,11 +172,11 @@ public class FileServer {
     public void downloadFile(String file, String path, String name) throws IOException {
         File outputFolder = new File(path);
         if (!outputFolder.canWrite()) {
-            throw new NitrapiErrorException("The folder \"" + outputFolder.getPath() + "\" is not writable.", -1);
+            throw new NitrapiErrorException("The folder \"" + outputFolder.getPath() + "\" is not writable.");
         }
         File outputFile = new File(outputFolder, name);
         if (outputFile.exists()) {
-            throw new NitrapiErrorException("The file \"" + outputFile.getPath() + "\" already exists.", -1);
+            throw new NitrapiErrorException("The file \"" + outputFile.getPath() + "\" already exists.");
         }
 
         Token token = getDownloadToken(file);

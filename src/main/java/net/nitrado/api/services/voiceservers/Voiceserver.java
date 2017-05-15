@@ -2,11 +2,7 @@ package net.nitrado.api.services.voiceservers;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-
-import net.nitrado.api.Nitrapi;
-import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
-import net.nitrado.api.services.bouncers.BouncerInstance;
 
 /**
  * This class represents a voice server.

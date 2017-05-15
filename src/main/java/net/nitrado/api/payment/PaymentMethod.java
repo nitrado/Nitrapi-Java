@@ -3,7 +3,6 @@ package net.nitrado.api.payment;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class PaymentMethod {
     private String id;
