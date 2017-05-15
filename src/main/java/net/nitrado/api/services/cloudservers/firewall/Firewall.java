@@ -28,7 +28,17 @@ public class Firewall {
         TCP,
 
         @SerializedName("udp")
-        UDP
+        UDP;
+
+        @Override
+        public String toString() {
+            try {
+                return Protocol.class.getDeclaredField(super.toString()).getAnnotation(SerializedName.class).value();
+            } catch (NoSuchFieldException e) {
+                // should not happen
+                return super.toString();
+            }
+        }
     }
 
     private boolean enabled;
@@ -127,7 +137,7 @@ public class Firewall {
      * @param number
      */
     public void deleteRule(int number) {
-        api.dataPost("services/" + service.getId() + "/cloud_servers/firewall/remove", new Parameter[] {
+        api.dataDelete("services/" + service.getId() + "/cloud_servers/firewall/remove", new Parameter[] {
                 new Parameter("number", number)
         });
     }
@@ -155,12 +165,12 @@ public class Firewall {
      * @param protocol
      * @param comment
      */
-    public void addRule(String sourceIp, String targetIp, int targetPort, Protocol protocol, String comment) {
+    public void addRule(String sourceIp, String targetIp, Integer targetPort, Protocol protocol, String comment) {
         api.dataPost("services/" + service.getId() + "/cloud_servers/firewall/add", new Parameter[] {
                 new Parameter("source_ip", sourceIp),
                 new Parameter("target_ip", targetIp),
                 new Parameter("target_port", targetPort),
-                new Parameter("protocol", protocol.toString()),
+                new Parameter("protocol", protocol),
                 new Parameter("comment", comment)
         });
     }

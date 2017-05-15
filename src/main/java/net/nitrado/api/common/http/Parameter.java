@@ -21,6 +21,16 @@ public class Parameter {
         this.key = key;
         this.value = value+"";
     }
+    public Parameter(String key, Integer value) {
+        this.key = key;
+        if (value != null) {
+            this.value = value.toString();
+        }
+    }
+    public Parameter(String key, Enum value) {
+        this.key = key;
+        this.value = value.toString();
+    }
 
     /**
      * Returns the key.

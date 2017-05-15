@@ -30,16 +30,18 @@ public class ProductionHttpClient implements HttpClient {
         fullUrl.append(url);
         if (parameters != null) {
             for (Parameter parameter : parameters) {
-                fullUrl.append(first ? "?" : "&");
-                fullUrl.append(parameter.getKey());
-                fullUrl.append("=");
-                try {
-                    fullUrl.append(URLEncoder.encode(parameter.getValue(), "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    // everyone should support utf-8 so this should not happen
-                    e.printStackTrace();
+                if (parameter.getValue() != null) {
+                    fullUrl.append(first ? "?" : "&");
+                    fullUrl.append(parameter.getKey());
+                    fullUrl.append("=");
+                    try {
+                        fullUrl.append(URLEncoder.encode(parameter.getValue(), "UTF-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        // everyone should support utf-8 so this should not happen
+                        e.printStackTrace();
+                    }
+                    first = false;
                 }
-                first = false;
             }
         }
         fullUrl.append(first ? "?" : "&");

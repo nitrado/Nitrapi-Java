@@ -41,40 +41,50 @@ public class CloudServer extends Service {
         REINSTALLING,
 
         /**
-         * The Server is currently processing a up- or downgrade.
+         * The Server is currently processing an up- or downgrade.
          */
         @SerializedName("flavour_change")
         FLAVOUR_CHANGE,
 
         /**
-         * The server is currently restoring a Backup. This can take some minutes.
+         * The Server is currently restoring a backup. This can take some minutes.
          */
         @SerializedName("restoring")
         RESTORING,
 
         /**
-         * A error while the up- or downgrade is occurred. The support has been informed.
+         * An error occurred while up- or downgrading. The support has been informed.
          */
         @SerializedName("error_fc")
         ERROR_FC,
 
         /**
-         * A error while deleting the Server is occurred. The support has been informed.
+         * An error occurred while deleting the Server. The support has been informed.
          */
         @SerializedName("error_delete")
         ERROR_DELETE,
 
         /**
-         * A error while installing the Server is occurred. The support has been informed.
+         * An error occurred while installing the Server. The support has been informed.
          */
         @SerializedName("error_install")
         ERROR_INSTALL,
 
         /**
-         * A error while re-installing the Server is occurred. The support has been informed.
+         * An error occurred while reinstalling the Server. The support has been informed.
          */
         @SerializedName("error_reinstall")
-        ERROR_REINSTALL
+        ERROR_REINSTALL;
+
+        @Override
+        public String toString() {
+            try {
+                return CloudserverStatus.class.getDeclaredField(super.toString()).getAnnotation(SerializedName.class).value();
+            } catch (NoSuchFieldException e) {
+                // should not happen
+                return super.toString();
+            }
+        }
     }
 
     private class CloudServerData {
@@ -375,7 +385,7 @@ public class CloudServer extends Service {
      *
      * @param backupId
      */
-    public void restoreBackup(int backupId) {
+    public void restoreBackup(String backupId) {
         api.dataPost("services/" + getId() + "/cloud_servers/backups/" + backupId+ "/restore", null);
     }
 
@@ -384,7 +394,7 @@ public class CloudServer extends Service {
      *
      * @param backupId
      */
-    public void deleteBackup(int backupId) {
+    public void deleteBackup(String backupId) {
         api.dataDelete("services/" + getId() + "/cloud_servers/backups/" + backupId+ "", null);
     }
 
@@ -435,7 +445,7 @@ public class CloudServer extends Service {
      * A hard reset will turn of your Cloud Server instantly. This can cause data loss or file system corruption. Only trigger if the instance does not respond to normal reboots.
      */
     public void doReset() {
-        api.dataPost("services/" + getId() + "/cloud_servers/reset", null);
+        api.dataPost("services/" + getId() + "/cloud_servers/hard_reset", null);
     }
 
     /**
