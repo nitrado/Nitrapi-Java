@@ -217,7 +217,7 @@ public abstract class Service {
      * @return a Logs object
      */
     public Logs getLogs() {
-        JsonObject data = api.dataPost("services/" + getId() + "/logs", null);
+        JsonObject data = api.dataGet("services/" + getId() + "/logs", null);
         return api.fromJson(data, Logs.class);
     }
 
@@ -229,7 +229,7 @@ public abstract class Service {
      * @return a Logs object
      */
     public Logs getLogs(int page) {
-        JsonObject data = api.dataPost("services/" + getId() + "/logs", new Parameter[]{new Parameter("page", page + "")});
+        JsonObject data = api.dataGet("services/" + getId() + "/logs", new Parameter[]{new Parameter("page", page + "")});
         return api.fromJson(data, Logs.class);
     }
 
