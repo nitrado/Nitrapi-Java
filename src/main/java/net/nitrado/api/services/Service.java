@@ -58,6 +58,7 @@ public abstract class Service {
     @SerializedName("user_id")
     private int userId;
     private String username;
+    private String comment;
     @SerializedName("auto_extension")
     private boolean autoExtension;
     @SerializedName("type_human")
@@ -168,6 +169,14 @@ public abstract class Service {
      */
     public boolean hasAutoExtension() {
         return autoExtension;
+    }
+
+    /**
+     *
+     * @return the comment for this service
+     */
+    public String getComment() {
+        return comment;
     }
 
     /**
