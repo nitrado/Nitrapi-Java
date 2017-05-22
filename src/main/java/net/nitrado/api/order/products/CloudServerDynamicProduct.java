@@ -9,7 +9,7 @@ public class CloudServerDynamicProduct extends PartPricing {
         product = "cloud_server_dynamic";
         additionals.put("image", "0");
     }
- 
+
     public void setImage(int image) {
         additionals.put("image", "" + image);
     }

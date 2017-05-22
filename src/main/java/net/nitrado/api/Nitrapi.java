@@ -6,6 +6,7 @@ import net.nitrado.api.common.http.HttpClient;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.common.http.ProductionHttpClient;
 import net.nitrado.api.customer.Customer;
+import net.nitrado.api.customer.SSHKeys;
 import net.nitrado.api.order.Dimension;
 import net.nitrado.api.payment.Country;
 import net.nitrado.api.payment.PaymentMethod;
@@ -187,6 +188,14 @@ public class Nitrapi {
         }
 
         return methods.toArray(new PaymentMethod[0]);
+    }
+
+    public SSHKeys getSSHKeys() {
+        JsonObject data = dataGet("user/ssh_keys", null);
+
+        SSHKeys keys = fromJson(data, SSHKeys.class);
+        keys.init(this);
+        return keys;
     }
 
     /**
