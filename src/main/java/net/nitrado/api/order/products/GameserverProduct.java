@@ -3,8 +3,8 @@ package net.nitrado.api.order.products;
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.order.DimensionPricing;
 
-public class Gameserver extends DimensionPricing {
-    public Gameserver(Nitrapi nitrapi, int locationId) {
+public class GameserverProduct extends DimensionPricing {
+    public GameserverProduct(Nitrapi nitrapi, int locationId) {
         super(nitrapi, locationId);
         product = "gameserver";
         additionals.put("game", "sevendtd");
