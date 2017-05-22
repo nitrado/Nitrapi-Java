@@ -254,6 +254,8 @@ public class ProductionHttpClient implements HttpClient {
             if (result.get("data") != null) {
                 return result.get("data").getAsJsonObject();
             }
+            
+            return result;
         }
 
         // Throw appropriate exception
