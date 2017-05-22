@@ -7,7 +7,39 @@
     <groupId>net.nitrado</groupId>
     <artifactId>nitrapi</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <name>Nitrapi-Java</name>
+    <description>Java based SDK for the Nitrapi</description>
+    <url>https://github.com/nitrado/Nitrapi-Java</url>
 
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Stefan Hanßen</name>
+            <email>stefan.hanssen@marbis.net</email>
+        </developer>
+        <developer>
+            <name>Alexander Birkner</name>
+            <email>alexander.birkner@marbis.net</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/nitrado/nitrapi-java</url>
+        <connection>scm:git:git://github.com/nitrado/nitrapi-java.git</connection>
+        <developerConnection>scm:git:git@github.com:nitrado/nitrapi-java.git</developerConnection>
+    </scm>
+
+    <issueManagement>
+        <url>https://github.com/nitrado/nitrapi-java/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
 
     <dependencies>
         <dependency>
