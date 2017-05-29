@@ -3,27 +3,47 @@ Nitrapi-Java
 
 Java based SDK for the Nitrapi RESTful API.
 
-Using
+Usage
 -----
 
-- Install Maven 3 (mvn) on your build system
-- Run the build.sh script in the main directory
-- Include the generated .jar file from the target directoy into your Java application
+** Maven **
+Add the following to the `<dependencies>` section of your `pom.xml`:
+```xml
+<dependency>
+    <groupId>net.nitrado</groupId>
+    <artifactId>nitrapi</artifactId>
+    <version>1.0.0</version>
+</dependency>
+´´´
+
+** Gradle **
+Add this to your app `build.gradle`:
+```gradle
+dependencies {
+    compile 'net.nitrado.nitrapi:1.0.0'
+}
+´´´
+
 
 Example
 -------
 
 ``` java
-    Nitrapi api = new Nitrapi("<access token>");
-    try {
-        Service[] services = api.getServices();
-        // ...
-    } catch (NitrapiErrorException e) {
-        // There was an error in our request to the api.
-        // ...
-    } catch (NitrapiHttpException e) {
-        // There was an error connecting to the api.
-        // ...
-    }
-
+Nitrapi api = new Nitrapi("<access token>");
+try {
+    Service[] services = api.getServices();
+    // ...
+} catch (NitrapiErrorException e) {
+    // There was an error in our request to the api.
+    // ...
+} catch (NitrapiHttpException e) {
+    // There was an error connecting to the api.
+    // ...
+} catch (NitrapiConcurrencyException e) {
+    // The same action is already running.
+    // ...
+} catch (NitrapiMaintenanceException e) {
+    // The Nitrapi is currently down for maintenance.
+    // ...
+}
 ```

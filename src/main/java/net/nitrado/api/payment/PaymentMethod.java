@@ -24,7 +24,7 @@ public class PaymentMethod {
 
     /**
      * Sets the id of this payment method.
-     * @param id
+     * @param id id of this method
      */
     public void setId(String id) {
         this.id = id;
@@ -56,7 +56,7 @@ public class PaymentMethod {
     }
 
     /**
-     * @return an array of available amounts. Overwrites min&max amount.
+     * @return an array of available amounts. Overwrites min and max amount.
      */
     public int[] getTariffs() {
         return tariffs;

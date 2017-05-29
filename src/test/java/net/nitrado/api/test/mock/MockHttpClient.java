@@ -90,7 +90,7 @@ public class MockHttpClient implements HttpClient {
 
         JsonObject res = this.nextResponses.poll();
         if (!res.get("status").getAsString().equals("success")) {
-            throw new NitrapiErrorException(res.get("message").getAsString(), 200);
+            throw new NitrapiErrorException(res.get("message").getAsString(), null);
         }
 
         if (res.has("data")) {
@@ -109,7 +109,7 @@ public class MockHttpClient implements HttpClient {
 
         JsonObject res = this.nextResponses.poll();
         if (!res.get("status").getAsString().equals("success")) {
-            throw new NitrapiErrorException(res.get("message").getAsString(), 200);
+            throw new NitrapiErrorException(res.get("message").getAsString(), null);
         }
 
         if (res.has("data")) {
@@ -128,7 +128,7 @@ public class MockHttpClient implements HttpClient {
 
         JsonObject res = this.nextResponses.poll();
         if (!res.get("status").getAsString().equals("success")) {
-            throw new NitrapiErrorException(res.get("message").getAsString(), 200);
+            throw new NitrapiErrorException(res.get("message").getAsString(), null);
         }
 
         if (res.has("data")) {

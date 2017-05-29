@@ -313,7 +313,7 @@ public class Nitrapi {
 
     /**
      * Changes the name of the application displayed in logs.
-     * @param name
+     * @param name name of this application
      */
     public void setApplicationName(String name) {
         this.applicationName = name;
@@ -321,7 +321,7 @@ public class Nitrapi {
 
     /**
      * Returns the name of the application displayed in logs.
-     * @return
+     * @return the name of this application
      */
     public String getApplicationName() {
         return applicationName;

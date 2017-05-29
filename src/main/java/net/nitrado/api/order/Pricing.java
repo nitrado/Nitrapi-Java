@@ -64,7 +64,7 @@ public abstract class Pricing {
     /**
      * Get full price list for a specified product
      * @param service service id or -1
-     * @return
+     * @return the price list for this product
      */
     public PriceList getPrices(int service) {
         String cacheName = "" + locationId;
@@ -95,8 +95,8 @@ public abstract class Pricing {
 
     /**
      * Returns the price for extending a specific service.
-     * @param service
-     * @return
+     * @param service id of the service
+     * @return the prices for extending this service
      */
     public ExtensionPrice[] getExtendPricesForService(int service) {
         JsonObject data = nitrapi.dataGet("order/pricing/" + product, new Parameter[]{
@@ -114,8 +114,8 @@ public abstract class Pricing {
 
     /**
      * Extends the specific service about the specific rental time
-     * @param service
-     * @param rentalTime
+     * @param service id of the service
+     * @param rentalTime time to rent
      * @param price price calculated from getExtendPricesForService
      */
     public void doExtendService(int service, int rentalTime, int price) {
