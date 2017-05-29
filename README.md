@@ -6,23 +6,25 @@ Java based SDK for the Nitrapi RESTful API.
 Usage
 -----
 
-** Maven **
+**Maven**
+
 Add the following to the `<dependencies>` section of your `pom.xml`:
-```xml
+``` xml
 <dependency>
     <groupId>net.nitrado</groupId>
     <artifactId>nitrapi</artifactId>
     <version>1.0.0</version>
 </dependency>
-´´´
+```
 
-** Gradle **
+**Gradle**
+
 Add this to your app `build.gradle`:
 ```gradle
 dependencies {
     compile 'net.nitrado.nitrapi:1.0.0'
 }
-´´´
+```
 
 
 Example
