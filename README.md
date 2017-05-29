@@ -22,7 +22,7 @@ Add the following to the `<dependencies>` section of your `pom.xml`:
 Add this to your app `build.gradle`:
 ```gradle
 dependencies {
-    compile 'net.nitrado.nitrapi:1.0.0'
+    compile 'net.nitrado:nitrapi:1.0.0'
 }
 ```
 
