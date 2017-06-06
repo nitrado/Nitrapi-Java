@@ -129,7 +129,7 @@ public abstract class Pricing {
                 new Parameter("method", "extend")
         });
     }
-    
+
     public int calcAdvicePrice(int price, int advice, Service service) {
         // Always return 100% of advice for dynamic cloud servers.
         if (service instanceof CloudServer && ((CloudServer)service).isDynamic()) {

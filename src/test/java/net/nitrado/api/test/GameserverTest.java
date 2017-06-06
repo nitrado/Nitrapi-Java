@@ -157,7 +157,6 @@ public class GameserverTest extends ApiTestCase {
         client.addNextResponseFromFile("services/gameservers/stats.json");
         Stats stats = server.getStats();
         assertEquals(5, stats.getCurrentPlayers().length);
-        assertEquals(3, stats.getMaxPlayers().length);
         assertEquals(3, stats.getCpuUsage().length);
         assertEquals(3, stats.getMemoryUsage().length);
     }

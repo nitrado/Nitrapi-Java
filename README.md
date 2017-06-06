@@ -31,7 +31,6 @@ Example
 -------
 
 ``` java
-<<<<<<< HEAD
 Nitrapi api = new Nitrapi("<access token>");
 try {
     Service[] services = api.getServices();

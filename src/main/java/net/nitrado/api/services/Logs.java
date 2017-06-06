@@ -22,6 +22,7 @@ public class Logs {
         @SerializedName("created_at")
         private GregorianCalendar createdAt;
         private String ip;
+        @SerializedName("admin")
         private boolean isAdmin;
 
         /**
@@ -67,7 +68,7 @@ public class Logs {
          * @return admin
          */
         public boolean isAdmin() {
-            return admin;
+            return isAdmin;
         }
 
         /**

@@ -5,8 +5,8 @@ package net.nitrado.api.services.gameservers;
  */
 public class Stats {
     private long[][] currentPlayers;
-    private long[][] maxPlayers;
     private long[][] cpuUsage;
+    private long[][] cpuUsageNitradorized;
     private long[][] memoryUsage;
 
     /**
@@ -19,21 +19,16 @@ public class Stats {
     }
 
     /**
-     * Returns statistics of the maximum amount of players.
-     *
-     * @return statistics of the maximum amount of players
-     */
-    public long[][] getMaxPlayers() {
-        return maxPlayers;
-    }
-
-    /**
      * Returns statistics of the cpu usage.
      *
      * @return statistics of the cpu usage
      */
     public long[][] getCpuUsage() {
         return cpuUsage;
+    }
+
+    public long[][] getCpuUsageNitradorized() {
+        return cpuUsageNitradorized;
     }
 
     /**
