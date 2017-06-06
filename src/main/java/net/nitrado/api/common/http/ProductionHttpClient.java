@@ -78,23 +78,7 @@ public class ProductionHttpClient implements HttpClient {
 
 
     public JsonObject dataPost(String url, String accessToken, Parameter[] parameters) {
-
-        // create POST parameter string
-        boolean first = false;
-        StringBuilder params = new StringBuilder();
-        if (parameters != null) {
-            for (Parameter parameter : parameters) {
-                params.append(first ? "?" : "&");
-                params.append(parameter.getKey());
-                params.append("=");
-                try {
-                    params.append(URLEncoder.encode(parameter.getValue(), "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    // everyone should support utf-8 so this should not happen
-                    e.printStackTrace();
-                }
-            }
-        }
+        String params = prepareParameterString(parameters);
 
         url += "?locale=" + locale;
 
@@ -106,7 +90,7 @@ public class ProductionHttpClient implements HttpClient {
 
             // write post parameters
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
-            writer.write(params.toString());
+            writer.write(params);
             writer.flush();
             writer.close();
 
@@ -132,24 +116,9 @@ public class ProductionHttpClient implements HttpClient {
         }
     }
 
-    public JsonObject dataDelete(String url, String accessToken, Parameter[] parameters) {
 
-        // create DELETE parameter string
-        boolean first = false;
-        StringBuilder params = new StringBuilder();
-        if (parameters != null) {
-            for (Parameter parameter : parameters) {
-                params.append(first ? "?" : "&");
-                params.append(parameter.getKey());
-                params.append("=");
-                try {
-                    params.append(URLEncoder.encode(parameter.getValue(), "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    // everyone should support utf-8 so this should not happen
-                    e.printStackTrace();
-                }
-            }
-        }
+    public JsonObject dataDelete(String url, String accessToken, Parameter[] parameters) {
+        String params = prepareParameterString(parameters);
 
         url += "?locale=" + locale;
 
@@ -161,7 +130,7 @@ public class ProductionHttpClient implements HttpClient {
 
             // write post parameters
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
-            writer.write(params.toString());
+            writer.write(params);
             writer.flush();
             writer.close();
 
@@ -186,7 +155,6 @@ public class ProductionHttpClient implements HttpClient {
     }
 
     public InputStream rawGet(String url) {
-
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             connection.setRequestMethod("GET");
@@ -194,7 +162,6 @@ public class ProductionHttpClient implements HttpClient {
         } catch (IOException e) {
             throw new NitrapiHttpException(e);
         }
-
     }
 
     public void rawPost(String url, String token, byte[] body) {
@@ -228,6 +195,27 @@ public class ProductionHttpClient implements HttpClient {
     }
 
 
+
+    private String prepareParameterString(Parameter[] parameters) {
+        // create POST parameter string
+        boolean first = false;
+        StringBuilder params = new StringBuilder();
+        if (parameters != null) {
+            for (Parameter parameter : parameters) {
+                params.append(first ? "?" : "&");
+                params.append(parameter.getKey());
+                params.append("=");
+                try {
+                    params.append(URLEncoder.encode(parameter.getValue(), "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    // everyone should support utf-8 so this should not happen
+                    e.printStackTrace();
+                }
+            }
+        }
+        return params.toString();
+    }
+
     private JsonObject parseResult(StringBuffer response, HttpURLConnection connection) throws IOException {
 
         if (connection.getHeaderField("X-Rate-Limit") != null) {
@@ -242,6 +230,9 @@ public class ProductionHttpClient implements HttpClient {
         }
 
         if (response.length() == 0) {
+            if (connection.getResponseCode() < 300) { // OK
+                return null;
+            }
             throw new NitrapiHttpException(new NitrapiErrorException("Empty result. (HTTP " + connection.getResponseCode() + ")", errorId));
         }
 
