@@ -3,6 +3,7 @@ package net.nitrado.api.order;
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.exceptions.NitrapiErrorException;
 import net.nitrado.api.common.http.Parameter;
+import net.nitrado.api.services.Service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +14,7 @@ public class DimensionPricing extends Pricing {
         super(nitrapi, locationId);
     }
 
-    HashMap<String, String> dimensions = new HashMap<String, String>();
+    private HashMap<String, String> dimensions = new HashMap<String, String>();
 
     public void addDimension(String dimension, String value) {
         dimensions.put(dimension, value);
@@ -28,17 +29,12 @@ public class DimensionPricing extends Pricing {
     }
 
     @Override
-    public int getPrice(int service, int rentalTime) {
+    public int getPrice(Service service, int rentalTime) {
         PriceList information = getPrices(service);
         Dimension.DimensionValues prices = information.getDimensionPrices();
 
         String[] dims = new String[dimensions.size() + 1];
-    /*    int i = 0;
 
-        for (String key:dimensions.keySet()) { // TODO: make sure they are ordered as in the original response
-            dims[i] = dimensions.get(key);
-            i++;
-        }*/
         Dimension[] realDims = information.getDimensions(); // order them as in the original response
         int j = 0;
         for (int i = 0; i< realDims.length; i++) {
@@ -60,12 +56,7 @@ public class DimensionPricing extends Pricing {
             throw new NitrapiErrorException("Misformated json for dimension " + Dimension.path(dims));
         }
         int cost = ((Dimension.PriceDimensionValue)price).getValue();
-        int advice = information.getAdvice();
-        if (advice > cost){
-            advice -= (int)((advice - cost) * (50.f/100.f));
-        }
-        cost -= advice;
-        return cost;
+        return calcAdvicePrice(cost, information.getAdvice(), service);
     }
 
     @Override
@@ -89,14 +80,14 @@ public class DimensionPricing extends Pricing {
     }
 
     @Override
-    public void switchService(int service, int rentalTime) {
+    public void switchService(Service service, int rentalTime) {
         int ADD_PARAMS = 5;
         Parameter[] parameters = new Parameter[dimensions.size() + additionals.size()+ ADD_PARAMS];
         parameters[0] = new Parameter("price", getSwitchPrice(service, rentalTime));
         parameters[1] = new Parameter("rental_time", rentalTime);
         parameters[2] = new Parameter("location", locationId);
         parameters[3] = new Parameter("method", "switch");
-        parameters[4] = new Parameter("service_id", service);
+        parameters[4] = new Parameter("service_id", service.getId());
         int j = ADD_PARAMS;
         for (Map.Entry<String, String> entry: dimensions.entrySet()) {
             parameters[j] = new Parameter("dimensions["+entry.getKey()+"]", entry.getValue());

@@ -11,6 +11,6 @@ public class CloudServerDynamicProduct extends PartPricing {
     }
 
     public void setImage(int image) {
-        additionals.put("image", "" + image);
+        additionals.put("image_id", "" + image);
     }
 }

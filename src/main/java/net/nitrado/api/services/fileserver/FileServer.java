@@ -420,7 +420,7 @@ public class FileServer {
         if (!hasPermissions) {
             throw new NitrapiErrorException("This service does not support chown.");
         }
-        api.dataPost("services/" + service.getId() + "/cloud_servers/file_server/chown", new Parameter[] {
+        api.dataPost("services/" + service.getId() + "/" + url + "/file_server/chown", new Parameter[] {
                 new Parameter("path", path),
                 new Parameter("username", username),
                 new Parameter("group", group),
@@ -444,7 +444,7 @@ public class FileServer {
         if (!hasPermissions) {
             throw new NitrapiErrorException("This service does not support chmod.");
         }
-        api.dataPost("services/" + service.getId() + "/cloud_servers/file_server/chmod", new Parameter[] {
+        api.dataPost("services/" + service.getId() + "/\" + url + \"/file_server/chmod", new Parameter[] {
                 new Parameter("path", path),
                 new Parameter("chmod", chmod),
                 new Parameter("recursive", recursive)
@@ -465,7 +465,7 @@ public class FileServer {
         if (!hasBookmarks) {
             throw new NitrapiErrorException("This service does not support bookmarks.");
         }
-        JsonObject data = api.dataGet("services/" + service.getId() + "/cloud_servers/file_server/bookmarks", null);
+        JsonObject data = api.dataGet("services/" + service.getId() + "/\" + url + \"/file_server/bookmarks", null);
 
         String[] bookmarks = api.fromJson(data.get("bookmarks"), String[].class);
         return bookmarks;

@@ -4,6 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.http.Parameter;
+import net.nitrado.api.services.Service;
+import net.nitrado.api.services.cloudservers.CloudServer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,7 +60,7 @@ public abstract class Pricing {
     }
 
     public PriceList getPrices() {
-        return getPrices(-1);
+        return getPrices(null);
     }
 
     /**
@@ -66,9 +68,9 @@ public abstract class Pricing {
      * @param service service id or -1
      * @return the price list for this product
      */
-    public PriceList getPrices(int service) {
+    public PriceList getPrices(Service service) {
         String cacheName = "" + locationId;
-        if (service != -1) {
+        if (service != null) {
             cacheName += "/" + service;
         }
         if (prices.containsKey(cacheName)) {  // if we requested this before, return it
@@ -76,10 +78,10 @@ public abstract class Pricing {
         }
 
         Parameter[] parameters;
-        if (service != -1) {
+        if (service != null) {
             parameters = new Parameter[] {
                     new Parameter("location", locationId),
-                    new Parameter("sale_service", service)
+                    new Parameter("sale_service", service.getId())
             };
         } else {
             parameters = new Parameter[] {
@@ -98,10 +100,10 @@ public abstract class Pricing {
      * @param service id of the service
      * @return the prices for extending this service
      */
-    public ExtensionPrice[] getExtendPricesForService(int service) {
+    public ExtensionPrice[] getExtendPricesForService(Service service) {
         JsonObject data = nitrapi.dataGet("order/pricing/" + product, new Parameter[]{
                 new Parameter("method", "extend"),
-                new Parameter("service_id", service)
+                new Parameter("service_id", service.getId())
         }).get("extend").getAsJsonObject().get("prices").getAsJsonObject();
         ExtensionPrice[] list = new ExtensionPrice[data.entrySet().size()];
         int i = 0;
@@ -118,25 +120,37 @@ public abstract class Pricing {
      * @param rentalTime time to rent
      * @param price price calculated from getExtendPricesForService
      */
-    public void doExtendService(int service, int rentalTime, int price) {
+    public void doExtendService(Service service, int rentalTime, int price) {
         // int price = getExtendPriceForService(service, rentalTime);
         nitrapi.dataPost("order/order/" + product, new Parameter[] {
                 new Parameter("price", price),
                 new Parameter("rental_time", rentalTime),
-                new Parameter("service_id", service),
+                new Parameter("service_id", service.getId()),
                 new Parameter("method", "extend")
         });
     }
+    
+    public int calcAdvicePrice(int price, int advice, Service service) {
+        // Always return 100% of advice for dynamic cloud servers.
+        if (service instanceof CloudServer && ((CloudServer)service).isDynamic()) {
+            return price - advice;
+        }
+
+        if (advice > price) {
+            advice -= ((advice - price) * 0.5f);
+        }
+        return price - advice;
+    }
 
     public int getPrice(int rentalTime) {
-        return getPrice(-1, rentalTime);
+        return getPrice(null, rentalTime);
     }
-    public abstract int getPrice(int service, int rentalTime);
+    public abstract int getPrice(Service service, int rentalTime);
     public abstract void orderService(int rentalTime);
-    public int getSwitchPrice(int service, int rentalTime) {
+    public int getSwitchPrice(Service service, int rentalTime) {
         return getPrice(service, rentalTime);
     }
-    public abstract void switchService(int service, int rentalTime);
+    public abstract void switchService(Service service, int rentalTime);
 
 
 }

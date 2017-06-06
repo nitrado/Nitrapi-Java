@@ -2,6 +2,8 @@ package net.nitrado.api.services.cloudservers;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.exceptions.NitrapiErrorException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 import net.nitrado.api.services.fileserver.FileServer;
@@ -531,5 +533,18 @@ public class CloudServer extends Service {
         JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers", null);
         CloudServerData datas = api.fromJson(data.get("cloud_server"), CloudServerData.class);
         this.data = datas;
+    }
+
+    @Override
+    protected void init(Nitrapi api) {
+        this.api = api;
+        if (getStatus() == Status.ACTIVE || getStatus() == Status.SUSPENDED) {
+            try {
+                refresh(); // initially load the data
+            } catch (NitrapiErrorException e) {
+                // Service is active, but refreshing the data does not yet lead to correct results.
+                e.printStackTrace();
+            }
+        }
     }
 }

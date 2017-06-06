@@ -3,6 +3,7 @@ package net.nitrado.api.order;
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.exceptions.NitrapiErrorException;
 import net.nitrado.api.common.http.Parameter;
+import net.nitrado.api.services.Service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +24,7 @@ public class PartPricing extends Pricing {
     }
 
     @Override
-    public int getPrice(int service, int rentalTime) {
+    public int getPrice(Service service, int rentalTime) {
         PriceList prices = getPrices(service);
 
         int totalPrice = 0;
@@ -53,9 +54,7 @@ public class PartPricing extends Pricing {
             totalPrice += localPrice;
         }
 
-        totalPrice -=prices.getAdvice();
-
-        return totalPrice;
+        return calcAdvicePrice(Math.round(totalPrice), prices.getAdvice(), service);
     }
 
     @Override
@@ -81,7 +80,7 @@ public class PartPricing extends Pricing {
     }
 
     @Override
-    public void switchService(int service, int rentalTime) {
+    public void switchService(Service service, int rentalTime) {
         int ADD_PARAMS = 5;
         Part[] priceParts = getParts();
         Parameter[] parameters = new Parameter[priceParts.length + additionals.size()+ ADD_PARAMS];
@@ -89,7 +88,7 @@ public class PartPricing extends Pricing {
         parameters[1] = new Parameter("rental_time", rentalTime);
         parameters[2] = new Parameter("location", locationId);
         parameters[3] = new Parameter("method", "switch");
-        parameters[4] = new Parameter("service_id", service);
+        parameters[4] = new Parameter("service_id", service.getId());
         int j = ADD_PARAMS;
         for (int i = 0; i < priceParts.length; i++) {
             Part part = getParts()[i];
