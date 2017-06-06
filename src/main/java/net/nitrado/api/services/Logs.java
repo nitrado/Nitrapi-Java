@@ -15,12 +15,14 @@ public class Logs {
     /**
      * This class represents an entry in the server log.
      */
-    class LogEntry {
+    public class LogEntry {
         private String user;
         private String category;
         private String message;
         @SerializedName("created_at")
         private GregorianCalendar createdAt;
+        private String ip;
+        private boolean isAdmin;
 
         /**
          * Returns the user.
@@ -56,6 +58,14 @@ public class Logs {
          */
         public GregorianCalendar getCreatedAt() {
             return createdAt;
+        }
+
+        public String getIp() {
+            return ip;
+        }
+
+        public boolean isAdmin() {
+            return isAdmin;
         }
     }
 
