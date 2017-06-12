@@ -2,10 +2,7 @@ package net.nitrado.api.common.http;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.nitrado.api.common.exceptions.NitrapiConcurrencyException;
-import net.nitrado.api.common.exceptions.NitrapiErrorException;
-import net.nitrado.api.common.exceptions.NitrapiHttpException;
-import net.nitrado.api.common.exceptions.NitrapiMaintenanceException;
+import net.nitrado.api.common.exceptions.*;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -204,14 +201,16 @@ public class ProductionHttpClient implements HttpClient {
         StringBuilder params = new StringBuilder();
         if (parameters != null) {
             for (Parameter parameter : parameters) {
-                params.append(first ? "?" : "&");
-                params.append(parameter.getKey());
-                params.append("=");
-                try {
-                    params.append(URLEncoder.encode(parameter.getValue(), "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    // everyone should support utf-8 so this should not happen
-                    e.printStackTrace();
+                if (parameter.getValue() != null) {
+                    params.append(first ? "?" : "&");
+                    params.append(parameter.getKey());
+                    params.append("=");
+                    try {
+                        params.append(URLEncoder.encode(parameter.getValue(), "UTF-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        // everyone should support utf-8 so this should not happen
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -260,6 +259,8 @@ public class ProductionHttpClient implements HttpClient {
 
 
         switch (connection.getResponseCode()) {
+            case 401:
+                throw new NitrapiAccessTokenInvalidException(message);
             case 428:
                 throw new NitrapiConcurrencyException(message);
             case 503:

@@ -38,6 +38,9 @@ try {
 } catch (NitrapiErrorException e) {
     // There was an error in our request to the api.
     // ...
+} catch (NitrapiAccessTokenInvalidException e) {
+    // The access token is no longer valid.
+    // ...
 } catch (NitrapiHttpException e) {
     // There was an error connecting to the api.
     // ...
