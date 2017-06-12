@@ -137,7 +137,7 @@ public abstract class Pricing {
         }
 
         if (advice > price) {
-            advice -= ((advice - price) * 0.5f);
+            advice -= Math.round((advice - price) * 0.5f);
         }
         return price - advice;
     }
