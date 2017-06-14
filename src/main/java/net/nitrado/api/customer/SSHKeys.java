@@ -12,7 +12,7 @@ import java.util.HashMap;
  */
 public class SSHKeys {
 
-    private Nitrapi api;
+    private transient Nitrapi api;
 
     /**
      * Used internally.
@@ -22,7 +22,7 @@ public class SSHKeys {
     }
 
 
-     private SSHKey[] keys;
+    private SSHKey[] keys;
 
     public class SSHKey {
         private int id;
