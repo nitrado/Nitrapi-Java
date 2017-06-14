@@ -2,6 +2,7 @@ package net.nitrado.api.order;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
@@ -101,17 +102,68 @@ public abstract class Pricing {
      * @return the prices for extending this service
      */
     public ExtensionPrice[] getExtendPricesForService(Service service) {
-        JsonObject data = nitrapi.dataGet("order/pricing/" + product, new Parameter[]{
+        ExtensionPriceList prices = nitrapi.fromJson(nitrapi.dataGet("order/pricing/" + product, new Parameter[]{
                 new Parameter("method", "extend"),
                 new Parameter("service_id", service.getId())
-        }).get("extend").getAsJsonObject().get("prices").getAsJsonObject();
-        ExtensionPrice[] list = new ExtensionPrice[data.entrySet().size()];
-        int i = 0;
-        for (Map.Entry<String, JsonElement> entry: data.entrySet()) {
-            list[i] = new ExtensionPrice(Integer.parseInt(entry.getKey()), entry.getValue().getAsInt());
-            i++;
+        }).get("extend"), ExtensionPriceList.class);
+
+        int[] rentalTimes = prices.getRentalTimes();
+        boolean dynamicRentalTimes = false;
+        if (rentalTimes == null) {
+            dynamicRentalTimes = true;
+            ArrayList<Integer> times = new ArrayList<Integer>();
+            for (int i = prices.getMinRentalTime(); i <= prices.getMaxRentalTime(); i+= 24) {
+                times.add(i);
+            }
+
+            rentalTimes = new int[times.size()];
+            for (int i = 0; i < times.size(); i++) {
+                rentalTimes[i] = times.get(i);
+            }
+        }
+
+        ExtensionPrice[] list = new ExtensionPrice[rentalTimes.length];
+        for (int i = 0; i < rentalTimes.length; i++) {
+            int rentalTime = rentalTimes[i];
+
+            int price = 0;
+            if (dynamicRentalTimes) {
+                price = prices.getPrices().get(prices.getMinRentalTime()) * (rentalTime / prices.getMinRentalTime());
+            } else {
+                price = prices.getPrices().get(rentalTime);
+            }
+
+            list[i] = new ExtensionPrice(rentalTime, price);
         }
         return list;
+    }
+
+
+    private class ExtensionPriceList {
+        @SerializedName("rental_times")
+        private int[] rentalTimes;
+        @SerializedName("min_rental_time")
+        private int minRentalTime;
+        @SerializedName("max_rental_time")
+        private int maxRentalTime;
+
+        private HashMap<Integer, Integer> prices;
+
+        public int[] getRentalTimes() {
+            return rentalTimes;
+        }
+
+        public int getMinRentalTime() {
+            return minRentalTime;
+        }
+
+        public int getMaxRentalTime() {
+            return maxRentalTime;
+        }
+
+        public HashMap<Integer, Integer> getPrices() {
+            return prices;
+        }
     }
 
     /**

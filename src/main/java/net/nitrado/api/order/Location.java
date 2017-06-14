@@ -11,6 +11,8 @@ public class Location {
         private boolean bouncer;
         @SerializedName("cloud_server")
         private boolean cloudServer;
+        @SerializedName("cloud_server_dynamic")
+        private boolean cloudServerDynamic;
         private boolean gameserver;
         private boolean mumble;
         private boolean musicbot;
@@ -40,6 +42,10 @@ public class Location {
 
     public boolean hasCloudServer() {
         return products.cloudServer;
+    }
+
+    public boolean hasCloudServerDynamic() {
+        return products.cloudServerDynamic;
     }
 
     public boolean hasGameserver() {
@@ -72,6 +78,8 @@ public class Location {
             return products.bouncer;
         } else if (type.equals("cloud_server")) {
             return products.cloudServer;
+        } else if (type.equals("cloud_server_dynamic")) {
+            return products.cloudServerDynamic;
         } else if (type.equals("gameserver")) {
             return products.gameserver;
         } else if (type.equals("mumble")) {

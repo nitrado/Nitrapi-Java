@@ -5,14 +5,14 @@ package net.nitrado.api.order;
  */
 public class Price {
     private int count;
-    private int price;
+    private double price;
 
 
     public int getCount() {
         return count;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 }

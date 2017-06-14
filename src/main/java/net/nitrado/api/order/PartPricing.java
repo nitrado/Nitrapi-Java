@@ -27,7 +27,16 @@ public class PartPricing extends Pricing {
     public int getPrice(Service service, int rentalTime) {
         PriceList prices = getPrices(service);
 
-        int totalPrice = 0;
+        double totalPrice = 0;
+        int multiply = 1;
+
+        if (prices.hasDynamicRentalTimes()) {
+            if (rentalTime % prices.getMinRentalTime() != 0) {
+                throw new NitrapiErrorException("Rental time " + rentalTime + " is invalid (Modulo " + prices.getMinRentalTime() + ")");
+            }
+            multiply = rentalTime / prices.getMinRentalTime();
+            rentalTime = prices.getMinRentalTime();
+        }
 
         for (Part part : prices.getParts()) {
             if (!parts.containsKey(part.getType())) { throw new NitrapiErrorException("No amount selected for " + part.getType()); }
@@ -35,7 +44,7 @@ public class PartPricing extends Pricing {
             if (amount < part.getMinCount()) { throw new NitrapiErrorException("The amount " + amount + " of type " + part.getType() + " is too small."); }
             if (amount > part.getMaxCount()) { throw new NitrapiErrorException("The amount " + amount + " of type " + part.getType() + " is too big."); }
 
-            int localPrice = -1;
+            double localPrice = -1;
             for ( PartRentalOption rentalOption :part.getRentalTimes()) {
                 if (rentalOption.getHours() == rentalTime) {
                     for (Price price:rentalOption.getPrices()) {
@@ -54,7 +63,9 @@ public class PartPricing extends Pricing {
             totalPrice += localPrice;
         }
 
-        return calcAdvicePrice(Math.round(totalPrice), prices.getAdvice(), service);
+        totalPrice *= multiply;
+
+        return calcAdvicePrice((int) Math.round(totalPrice), prices.getAdvice(), service);
     }
 
     @Override
