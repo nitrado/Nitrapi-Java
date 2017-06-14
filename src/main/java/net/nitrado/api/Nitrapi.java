@@ -1,6 +1,9 @@
 package net.nitrado.api;
 
 import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 import net.nitrado.api.common.exceptions.NitrapiErrorException;
 import net.nitrado.api.common.http.HttpClient;
 import net.nitrado.api.common.http.Parameter;
@@ -15,6 +18,7 @@ import net.nitrado.api.services.ServiceFactory;
 import net.nitrado.api.services.cloudservers.CloudServer;
 import net.nitrado.api.services.gameservers.GlobalGameList;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
@@ -73,25 +77,57 @@ public class Nitrapi {
         this.accessToken = accessToken;
         this.client = new ProductionHttpClient();
         this.nitrapiUrl = nitrapiUrl;
-        this.gson = new GsonBuilder().registerTypeAdapter(GregorianCalendar.class, new JsonDeserializer<GregorianCalendar>() {
-            public GregorianCalendar deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
 
-                GregorianCalendar calendar = (GregorianCalendar) (GregorianCalendar.getInstance());
-
-                try {
-                    String value = json.getAsString();
-                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                    format.setLenient(false);
-                    Date date = format.parse(value);
-                    calendar.setTime(date);
-                    return calendar;
-                } catch (JsonParseException e) {
-                    throw new IllegalStateException("Invalid Json format to convert Calendar: " + e.getMessage());
-                } catch (ParseException e) {
-                    throw new IllegalStateException("Error to convert Calendar: " + e.getMessage());
+        TypeAdapter<Boolean> booleanAsIntAdapter = new TypeAdapter<Boolean>() {
+            @Override public void write(JsonWriter out, Boolean value) throws IOException {
+                if (value == null) {
+                    out.nullValue();
+                } else {
+                    out.value(value);
                 }
             }
-        }).registerTypeAdapter(Dimension.DimensionValues.class, new Dimension.DimensionValuesDeserializer()).create();
+            @Override public Boolean read(JsonReader in) throws IOException {
+                JsonToken peek = in.peek();
+                switch (peek) {
+                    case BOOLEAN:
+                        return in.nextBoolean();
+                    case NULL:
+                        in.nextNull();
+                        return null;
+                    case NUMBER:
+                        return in.nextInt() != 0;
+                    case STRING:
+                        return Boolean.parseBoolean(in.nextString());
+                    default:
+                        throw new IllegalStateException("Expected BOOLEAN or NUMBER but was " + peek);
+                }
+            }
+        };
+
+        this.gson = new GsonBuilder()
+                .registerTypeAdapter(GregorianCalendar.class, new JsonDeserializer<GregorianCalendar>() {
+                    public GregorianCalendar deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+
+                        GregorianCalendar calendar = (GregorianCalendar) (GregorianCalendar.getInstance());
+
+                        try {
+                            String value = json.getAsString();
+                            DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                            format.setLenient(false);
+                            Date date = format.parse(value);
+                            calendar.setTime(date);
+                            return calendar;
+                        } catch (JsonParseException e) {
+                            throw new IllegalStateException("Invalid Json format to convert Calendar: " + e.getMessage());
+                        } catch (ParseException e) {
+                            throw new IllegalStateException("Error to convert Calendar: " + e.getMessage());
+                        }
+                    }
+                })
+                .registerTypeAdapter(Dimension.DimensionValues.class, new Dimension.DimensionValuesDeserializer())
+                .registerTypeAdapter(boolean.class, booleanAsIntAdapter)
+                .registerTypeAdapter(Boolean.class, booleanAsIntAdapter)
+                .create();
     }
 
 
