@@ -99,43 +99,15 @@ public abstract class Pricing {
     /**
      * Returns the price for extending a specific service.
      * @param service id of the service
+     * @param rentalTime the time you want to extend this service
      * @return the prices for extending this service
      */
-    public ExtensionPrice[] getExtendPricesForService(Service service) {
-        ExtensionPriceList prices = nitrapi.fromJson(nitrapi.dataGet("order/pricing/" + product, new Parameter[]{
+    public int getExtendPricesForService(Service service, int rentalTime) {
+        return nitrapi.dataGet("order/pricing/" + product, new Parameter[]{
                 new Parameter("method", "extend"),
-                new Parameter("service_id", service.getId())
-        }).get("extend"), ExtensionPriceList.class);
-
-        int[] rentalTimes = prices.getRentalTimes();
-        boolean dynamicRentalTimes = false;
-        if (rentalTimes == null) {
-            dynamicRentalTimes = true;
-            ArrayList<Integer> times = new ArrayList<Integer>();
-            for (int i = prices.getMinRentalTime(); i <= prices.getMaxRentalTime(); i+= 24) {
-                times.add(i);
-            }
-
-            rentalTimes = new int[times.size()];
-            for (int i = 0; i < times.size(); i++) {
-                rentalTimes[i] = times.get(i);
-            }
-        }
-
-        ExtensionPrice[] list = new ExtensionPrice[rentalTimes.length];
-        for (int i = 0; i < rentalTimes.length; i++) {
-            int rentalTime = rentalTimes[i];
-
-            int price = 0;
-            if (dynamicRentalTimes) {
-                price = prices.getPrices().get(prices.getMinRentalTime()) * (rentalTime / prices.getMinRentalTime());
-            } else {
-                price = prices.getPrices().get(rentalTime);
-            }
-
-            list[i] = new ExtensionPrice(rentalTime, price);
-        }
-        return list;
+                new Parameter("service_id", service.getId()),
+                new Parameter("rental_time", rentalTime)
+        }).get("extend").getAsJsonObject().get("prices").getAsJsonObject().get(rentalTime + "").getAsInt();
     }
 
 
