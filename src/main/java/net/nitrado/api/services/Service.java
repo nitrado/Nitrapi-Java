@@ -250,12 +250,7 @@ public abstract class Service {
     protected void init(Nitrapi api) {
         this.api = api;
         if (status == Status.ACTIVE) {
-            try {
-                refresh(); // initially load the data
-            } catch (NitrapiErrorException e) {
-                // Service is active, but refreshing the data does not yet lead to correct results.
-                e.printStackTrace();
-            }
+            refresh(); // initially load the data
         }
     }
 

@@ -290,7 +290,7 @@ public class CloudServer extends Service {
      * @return cloudserverStatus
      */
     public CloudserverStatus getCloudserverStatus() {
-        return data.cloudserverStatus;
+        return data != null ? data.cloudserverStatus : null;
     }
 
     /**
@@ -299,7 +299,7 @@ public class CloudServer extends Service {
      * @return hostname
      */
     public String getHostname() {
-        return data.hostname;
+        return data != null ? data.hostname : null;
     }
 
     /**
@@ -308,7 +308,7 @@ public class CloudServer extends Service {
      * @return dynamic
      */
     public boolean isDynamic() {
-        return data.dynamic;
+        return data != null ? data.dynamic : null;
     }
 
     /**
@@ -317,7 +317,7 @@ public class CloudServer extends Service {
      * @return hardware
      */
     public Hardware getHardware() {
-        return data.hardware;
+        return data != null ? data.hardware : null;
     }
 
     /**
@@ -326,7 +326,7 @@ public class CloudServer extends Service {
      * @return ips
      */
     public Ip[] getIps() {
-        return data.ips;
+        return data != null ? data.ips : null;
     }
 
     /**
@@ -335,7 +335,7 @@ public class CloudServer extends Service {
      * @return image
      */
     public Image getImage() {
-        return data.image;
+        return data != null ? data.image : null;
     }
 
     /**
@@ -344,7 +344,7 @@ public class CloudServer extends Service {
      * @return daemonAvailable
      */
     public boolean isDaemonAvailable() {
-        return data.daemonAvailable;
+        return data != null ? data.daemonAvailable : null;
     }
 
     /**
@@ -353,7 +353,7 @@ public class CloudServer extends Service {
      * @return passwordAvailable
      */
     public boolean isPasswordAvailable() {
-        return data.passwordAvailable;
+        return data != null ? data.passwordAvailable : null;
     }
 
     /**
@@ -362,7 +362,7 @@ public class CloudServer extends Service {
      * @return bandwidthLimited
      */
     public boolean isBandwidthLimited() {
-        return data.bandwidthLimited;
+        return data != null ? data.bandwidthLimited : null;
     }
 
 
@@ -539,12 +539,7 @@ public class CloudServer extends Service {
     protected void init(Nitrapi api) {
         this.api = api;
         if (getStatus() == Status.ACTIVE || getStatus() == Status.SUSPENDED) {
-            try {
-                refresh(); // initially load the data
-            } catch (NitrapiErrorException e) {
-                // Service is active, but refreshing the data does not yet lead to correct results.
-                e.printStackTrace();
-            }
+            refresh(); // initially load the data
         }
     }
 }
