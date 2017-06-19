@@ -115,6 +115,45 @@ public class ProductionHttpClient implements HttpClient {
         }
     }
 
+    public JsonObject dataPut(String url, String accessToken, Parameter[] parameters) {
+        String params = prepareParameterString(parameters);
+
+        url += "?locale=" + locale;
+
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestMethod("PUT");
+            connection.setRequestProperty("Authorization", "Bearer " + accessToken);
+
+            // write post parameters
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
+            writer.write(params);
+            writer.flush();
+            writer.close();
+
+
+            BufferedReader reader;
+            if (connection.getResponseCode() == 200 || connection.getResponseCode() == 201) {
+                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            } else {
+                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+            }
+            StringBuffer response = new StringBuffer();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+
+            reader.close();
+
+            return parseResult(response, connection);
+        } catch (IOException e) {
+            throw new NitrapiHttpException(e);
+        }
+    }
+
 
     public JsonObject dataDelete(String url, String accessToken, Parameter[] parameters) {
         String params = prepareParameterString(parameters);

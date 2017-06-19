@@ -29,6 +29,16 @@ public interface HttpClient {
     JsonObject dataPost(String url, String accessToken, Parameter[] parameters);
 
     /**
+     * Creates a PUT-Request.
+     *
+     * @param url         URL to call
+     * @param accessToken access token of the current user
+     * @param parameters  parameters
+     * @return the result as a JsonObject
+     */
+    JsonObject dataPut(String url, String accessToken, Parameter[] parameters);
+
+    /**
      * Creates a DELETE-Request.
      *
      * @param url         URL to call

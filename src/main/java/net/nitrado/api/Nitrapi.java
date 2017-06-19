@@ -288,6 +288,7 @@ public class Nitrapi {
     public JsonObject dataGet(String url, Parameter[] parameters) {
         return client.dataGet(nitrapiUrl + url, accessToken, parameters);
     }
+
     /**
      * Used internally.
      * <p>
@@ -299,6 +300,19 @@ public class Nitrapi {
      */
     public JsonObject dataPost(String url, Parameter[] parameters) {
         return client.dataPost(nitrapiUrl + url, accessToken, parameters);
+    }
+
+    /**
+     * Used internally.
+     * <p>
+     * Creates a PUT-Request.
+     *
+     * @param url         URL to call
+     * @param parameters  parameters
+     * @return the result as a JsonObject
+     */
+    public JsonObject dataPut(String url, Parameter[] parameters) {
+        return client.dataPut(nitrapiUrl + url, accessToken, parameters);
     }
 
     /**

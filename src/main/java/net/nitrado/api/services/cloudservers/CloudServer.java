@@ -6,6 +6,7 @@ import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.exceptions.NitrapiErrorException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
+import net.nitrado.api.services.cloudservers.apps.AppsManager;
 import net.nitrado.api.services.fileserver.FileServer;
 
 import java.util.GregorianCalendar;
@@ -526,6 +527,12 @@ public class CloudServer extends Service {
      */
     public FileServer getFileServer() {
         return new FileServer(this, api);
+    }
+
+    public AppsManager getAppsManager() {
+        AppsManager manager = new AppsManager();
+        manager.init(this, api);
+        return manager;
     }
 
     @Override
