@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
+
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
@@ -137,7 +138,7 @@ public class Firewall {
      * @param number
      */
     public void deleteRule(int number) {
-        api.dataDelete("services/" + service.getId() + "/cloud_servers/firewall/remove", new Parameter[] {
+        api.dataDelete("services/" + service.getId() + "/cloud_servers/firewall/remove", new Parameter[]{
                 new Parameter("number", number)
         });
     }
@@ -166,7 +167,7 @@ public class Firewall {
      * @param comment
      */
     public void addRule(String sourceIp, String targetIp, Integer targetPort, Protocol protocol, String comment) {
-        api.dataPost("services/" + service.getId() + "/cloud_servers/firewall/add", new Parameter[] {
+        api.dataPost("services/" + service.getId() + "/cloud_servers/firewall/add", new Parameter[]{
                 new Parameter("source_ip", sourceIp),
                 new Parameter("target_ip", targetIp),
                 new Parameter("target_port", targetPort),

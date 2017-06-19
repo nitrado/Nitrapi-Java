@@ -19,12 +19,16 @@ public class DimensionPricing extends Pricing {
     public void addDimension(String dimension, String value) {
         dimensions.put(dimension, value);
     }
+
     public String getSelectedDimension(String dimension) {
         return dimensions.get(dimension);
     }
-    public void removeDimension(String dimension) { dimensions.remove(dimension); }
 
-    public void reset(){
+    public void removeDimension(String dimension) {
+        dimensions.remove(dimension);
+    }
+
+    public void reset() {
         dimensions.clear();
     }
 
@@ -37,7 +41,7 @@ public class DimensionPricing extends Pricing {
 
         Dimension[] realDims = information.getDimensions(); // order them as in the original response
         int j = 0;
-        for (int i = 0; i< realDims.length; i++) {
+        for (int i = 0; i < realDims.length; i++) {
             if (dimensions.containsKey(realDims[i].getId())) {
                 dims[j] = dimensions.get(realDims[i].getId());
                 j++;
@@ -45,7 +49,7 @@ public class DimensionPricing extends Pricing {
 
         }
         // last dimension is rental_time
-        dims[j] = rentalTime+"";
+        dims[j] = rentalTime + "";
 
         if (!prices.containsKey(Dimension.path(dims))) {
             throw new NitrapiErrorException("Can't find price with dimensions " + Dimension.path(dims));
@@ -55,20 +59,20 @@ public class DimensionPricing extends Pricing {
         if (!(price instanceof Dimension.PriceDimensionValue)) {
             throw new NitrapiErrorException("Misformated json for dimension " + Dimension.path(dims));
         }
-        int cost = ((Dimension.PriceDimensionValue)price).getValue();
+        int cost = ((Dimension.PriceDimensionValue) price).getValue();
         return calcAdvicePrice(cost, information.getAdvice(), service);
     }
 
     @Override
     public void orderService(int rentalTime) {
         int ADD_PARAMS = 3;
-        Parameter[] parameters = new Parameter[dimensions.size() + additionals.size()+ ADD_PARAMS];
+        Parameter[] parameters = new Parameter[dimensions.size() + additionals.size() + ADD_PARAMS];
         parameters[0] = new Parameter("price", getPrice(rentalTime));
         parameters[1] = new Parameter("rental_time", rentalTime);
         parameters[2] = new Parameter("location", locationId);
         int j = ADD_PARAMS;
-        for (Map.Entry<String, String> entry: dimensions.entrySet()) {
-            parameters[j] = new Parameter("dimensions["+entry.getKey()+"]", entry.getValue());
+        for (Map.Entry<String, String> entry : dimensions.entrySet()) {
+            parameters[j] = new Parameter("dimensions[" + entry.getKey() + "]", entry.getValue());
             j++;
         }
         for (Map.Entry<String, String> entry : additionals.entrySet()) {
@@ -76,21 +80,21 @@ public class DimensionPricing extends Pricing {
             j++;
         }
 
-        nitrapi.dataPost("order/order/"+product, parameters);
+        nitrapi.dataPost("order/order/" + product, parameters);
     }
 
     @Override
     public void switchService(Service service, int rentalTime) {
         int ADD_PARAMS = 5;
-        Parameter[] parameters = new Parameter[dimensions.size() + additionals.size()+ ADD_PARAMS];
+        Parameter[] parameters = new Parameter[dimensions.size() + additionals.size() + ADD_PARAMS];
         parameters[0] = new Parameter("price", getSwitchPrice(service, rentalTime));
         parameters[1] = new Parameter("rental_time", rentalTime);
         parameters[2] = new Parameter("location", locationId);
         parameters[3] = new Parameter("method", "switch");
         parameters[4] = new Parameter("service_id", service.getId());
         int j = ADD_PARAMS;
-        for (Map.Entry<String, String> entry: dimensions.entrySet()) {
-            parameters[j] = new Parameter("dimensions["+entry.getKey()+"]", entry.getValue());
+        for (Map.Entry<String, String> entry : dimensions.entrySet()) {
+            parameters[j] = new Parameter("dimensions[" + entry.getKey() + "]", entry.getValue());
             j++;
         }
         for (Map.Entry<String, String> entry : additionals.entrySet()) {
@@ -98,6 +102,6 @@ public class DimensionPricing extends Pricing {
             j++;
         }
 
-        nitrapi.dataPost("order/order/"+product, parameters);
+        nitrapi.dataPost("order/order/" + product, parameters);
     }
 }

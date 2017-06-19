@@ -79,14 +79,17 @@ public class Nitrapi {
         this.nitrapiUrl = nitrapiUrl;
 
         TypeAdapter<Boolean> booleanAsIntAdapter = new TypeAdapter<Boolean>() {
-            @Override public void write(JsonWriter out, Boolean value) throws IOException {
+            @Override
+            public void write(JsonWriter out, Boolean value) throws IOException {
                 if (value == null) {
                     out.nullValue();
                 } else {
                     out.value(value);
                 }
             }
-            @Override public Boolean read(JsonReader in) throws IOException {
+
+            @Override
+            public Boolean read(JsonReader in) throws IOException {
                 JsonToken peek = in.peek();
                 switch (peek) {
                     case BOOLEAN:
@@ -196,6 +199,7 @@ public class Nitrapi {
 
     /**
      * Returns the full list of available images.
+     *
      * @return
      */
     public CloudServer.Image[] getImages() {
@@ -217,7 +221,7 @@ public class Nitrapi {
 
         data = data.get("payment_methods").getAsJsonObject();
         ArrayList<PaymentMethod> methods = new ArrayList<PaymentMethod>(data.entrySet().size());
-        for (Map.Entry<String, JsonElement> entry: data.entrySet()) {
+        for (Map.Entry<String, JsonElement> entry : data.entrySet()) {
             PaymentMethod method = fromJson(entry.getValue(), PaymentMethod.class);
             method.setId(entry.getKey());
             methods.add(method);
@@ -264,6 +268,7 @@ public class Nitrapi {
 
     /**
      * Changes the language of error messages
+     *
      * @param lang two char language code
      */
     public void setLanguage(String lang) {
@@ -281,8 +286,8 @@ public class Nitrapi {
      * <p>
      * Creates a GET-Request.
      *
-     * @param url         URL to call
-     * @param parameters  parameters
+     * @param url        URL to call
+     * @param parameters parameters
      * @return the result as a JsonObject
      */
     public JsonObject dataGet(String url, Parameter[] parameters) {
@@ -294,8 +299,8 @@ public class Nitrapi {
      * <p>
      * Creates a POST-Request.
      *
-     * @param url         URL to call
-     * @param parameters  parameters
+     * @param url        URL to call
+     * @param parameters parameters
      * @return the result as a JsonObject
      */
     public JsonObject dataPost(String url, Parameter[] parameters) {
@@ -307,8 +312,8 @@ public class Nitrapi {
      * <p>
      * Creates a PUT-Request.
      *
-     * @param url         URL to call
-     * @param parameters  parameters
+     * @param url        URL to call
+     * @param parameters parameters
      * @return the result as a JsonObject
      */
     public JsonObject dataPut(String url, Parameter[] parameters) {
@@ -320,8 +325,8 @@ public class Nitrapi {
      * <p>
      * Creates a DELETE-Request.
      *
-     * @param url         URL to call
-     * @param parameters  parameters
+     * @param url        URL to call
+     * @param parameters parameters
      * @return the result as a JsonObject
      */
     public JsonObject dataDelete(String url, Parameter[] parameters) {
@@ -356,9 +361,10 @@ public class Nitrapi {
 
     /**
      * This method deserializes the Json read from the specified parse tree into an object of the specified type.
-     * @param json the root of the parse tree of JsonElements from which the object is to be deserialized
+     *
+     * @param json   the root of the parse tree of JsonElements from which the object is to be deserialized
      * @param tClass The class of T
-     * @param <T> the type of the desired object
+     * @param <T>    the type of the desired object
      * @return an object of type T from the json. Returns null if json is null.
      */
     public <T> T fromJson(JsonElement json, Class<T> tClass) {
@@ -376,6 +382,7 @@ public class Nitrapi {
 
     /**
      * Changes the url at which the Nitrapi is.
+     *
      * @param url nitrapi url
      */
     public void changeNitrapiUrl(String url) {
@@ -384,6 +391,7 @@ public class Nitrapi {
 
     /**
      * Changes the name of the application displayed in logs.
+     *
      * @param name name of this application
      */
     public void setApplicationName(String name) {
@@ -392,6 +400,7 @@ public class Nitrapi {
 
     /**
      * Returns the name of the application displayed in logs.
+     *
      * @return the name of this application
      */
     public String getApplicationName() {

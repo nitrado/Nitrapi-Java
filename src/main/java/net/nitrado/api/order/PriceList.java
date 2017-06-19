@@ -31,7 +31,7 @@ public class PriceList {
         if (rentalTimes == null) {
             dynamicRentalTimes = true;
             ArrayList<Integer> times = new ArrayList<Integer>();
-            for (int i = minRentalTime; i <= maxRentalTime; i+= 24) {
+            for (int i = minRentalTime; i <= maxRentalTime; i += 24) {
                 times.add(i);
             }
 
@@ -63,6 +63,7 @@ public class PriceList {
     public Dimension[] getDimensions() {
         return dimensions;
     }
+
     public Dimension.DimensionValues getDimensionPrices() {
         return prices;
     }

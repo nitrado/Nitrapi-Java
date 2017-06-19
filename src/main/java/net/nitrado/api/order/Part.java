@@ -26,7 +26,7 @@ public class Part {
     }
 
     public String getName() {
-        return name == null?type:name;
+        return name == null ? type : name;
     }
 
     public int getMinCount() {

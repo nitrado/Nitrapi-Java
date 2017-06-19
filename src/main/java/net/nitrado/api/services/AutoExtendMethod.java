@@ -40,7 +40,6 @@ public class AutoExtendMethod {
     }
 
     /**
-     *
      * @return a map of rental_time to price
      */
     public HashMap<Integer, Integer> getRentalTimes() {

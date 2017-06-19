@@ -17,9 +17,9 @@ public class TaskManager {
      * <p>
      * Call Gameserver.getTaskManager() instead.
      *
-     * @see Gameserver#getTaskManager()
      * @param service gameserver object
-     * @param api reference to the api
+     * @param api     reference to the api
+     * @see Gameserver#getTaskManager()
      */
     public TaskManager(Gameserver service, Nitrapi api) {
         this.service = service;
@@ -29,8 +29,8 @@ public class TaskManager {
     /**
      * Returns all scheduled tasks for the service.
      *
-     * @permission ROLE_WEBINTERFACE_SCHEDULED_RESTART_READ
      * @return array of ScheduledTasks
+     * @permission ROLE_WEBINTERFACE_SCHEDULED_RESTART_READ
      */
     public Task[] getScheduledTasks() {
         JsonObject data = api.dataGet("services/" + service.getId() + "/gameservers/tasks", null);
@@ -40,7 +40,6 @@ public class TaskManager {
     /**
      * Creates a new scheduled task for the service.
      *
-     * @permission ROLE_WEBINTERFACE_SCHEDULED_RESTART_WRITE
      * @param minute  minutes in cron format
      * @param hour    hours in cron format
      * @param day     days in cron format
@@ -48,6 +47,7 @@ public class TaskManager {
      * @param weekday weekdays in cron format
      * @param method  type of action to be run
      * @param message optional message for restart or stop
+     * @permission ROLE_WEBINTERFACE_SCHEDULED_RESTART_WRITE
      */
     public void createTask(String minute, String hour, String day, String month, String weekday, Task.ActionType method, String message) {
         Parameter[] params = new Parameter[]{
@@ -65,7 +65,6 @@ public class TaskManager {
     /**
      * Updates an existing scheduled task for the service.
      *
-     * @permission ROLE_WEBINTERFACE_SCHEDULED_RESTART_READ
      * @param id      id of the existing scheduled task
      * @param minute  minutes in cron format
      * @param hour    hours in cron format
@@ -74,6 +73,7 @@ public class TaskManager {
      * @param weekday weekdays in cron format
      * @param method  type of action to be run
      * @param message optional message for restart or stop
+     * @permission ROLE_WEBINTERFACE_SCHEDULED_RESTART_READ
      */
     public void updateTask(int id, String minute, String hour, String day, String month, String weekday, Task.ActionType method, String message) {
         Parameter[] params = new Parameter[]{
@@ -91,8 +91,8 @@ public class TaskManager {
     /**
      * Deletes the specific scheduled task for the service.
      *
-     * @permission ROLE_WEBINTERFACE_SCHEDULED_RESTART_READ
      * @param id id of the task
+     * @permission ROLE_WEBINTERFACE_SCHEDULED_RESTART_READ
      */
     public void deleteTask(int id) {
         api.dataDelete("services/" + service.getId() + "/gameservers/tasks/" + id, null);

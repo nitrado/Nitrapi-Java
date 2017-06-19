@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
+
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
@@ -243,8 +244,8 @@ public class AppsManager {
     /**
      * Returns the list of installed apps.
      *
-     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @return App[]
+     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public App[] getInstalledApps() {
         JsonObject data = api.dataGet("services/" + service.getId() + "/cloud_servers/apps/", null);
@@ -256,8 +257,8 @@ public class AppsManager {
     /**
      * Returns a list of available apps.
      *
-     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @return AppDescription[]
+     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public AppDescription[] getAvailableApps() {
         JsonObject data = api.dataGet("services/" + service.getId() + "/cloud_servers/apps/available", null);
@@ -269,13 +270,13 @@ public class AppsManager {
     /**
      * Installs an app.
      *
-     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @param appType Valid application type from available list.
      * @param appName Name for the new application, only /^[a-zA-Z0-9\_]{1,16}$/ allowed.
-     * @param ports ports
+     * @param ports   ports
+     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public void install(String appType, String appName, HashMap<String, String> ports) {
-        api.dataPost("services/" + service.getId() + "/cloud_servers/apps/", new Parameter[] {
+        api.dataPost("services/" + service.getId() + "/cloud_servers/apps/", new Parameter[]{
                 new Parameter("app_type", appType),
                 new Parameter("app_name", appName),
                 new Parameter("ports", ports)
@@ -285,23 +286,23 @@ public class AppsManager {
     /**
      * Uninstalls the application.
      *
-     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @param appName appName
+     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public void uninstall(String appName) {
-        api.dataDelete("services/" + service.getId() + "/cloud_servers/apps/" + appName+ "", null);
+        api.dataDelete("services/" + service.getId() + "/cloud_servers/apps/" + appName + "", null);
     }
 
     /**
      * Configures the application.
      *
-     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
-     * @param appName appName
-     * @param cmd the application start command line
+     * @param appName    appName
+     * @param cmd        the application start command line
      * @param parameters parameters
+     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public void configure(String appName, String cmd, HashMap<String, String> parameters) {
-        api.dataPut("services/" + service.getId() + "/cloud_servers/apps/" + appName+ "", new Parameter[] {
+        api.dataPut("services/" + service.getId() + "/cloud_servers/apps/" + appName + "", new Parameter[]{
                 new Parameter("cmd", cmd),
                 new Parameter("parameters", parameters)
         });
@@ -310,30 +311,30 @@ public class AppsManager {
     /**
      * Installs the latest application version on your server.
      *
-     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @param appName appName
+     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public void update(String appName) {
-        api.dataPost("services/" + service.getId() + "/cloud_servers/apps/" + appName+ "/update", null);
+        api.dataPost("services/" + service.getId() + "/cloud_servers/apps/" + appName + "/update", null);
     }
 
     /**
      * Restarts the application.
      *
-     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @param appName appName
+     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public void restart(String appName) {
-        api.dataPost("services/" + service.getId() + "/cloud_servers/apps/" + appName+ "/restart", null);
+        api.dataPost("services/" + service.getId() + "/cloud_servers/apps/" + appName + "/restart", null);
     }
 
     /**
      * Stopps the application.
      *
-     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @param appName appName
+     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public void stop(String appName) {
-        api.dataPost("services/" + service.getId() + "/cloud_servers/apps/" + appName+ "/stop", null);
+        api.dataPost("services/" + service.getId() + "/cloud_servers/apps/" + appName + "/stop", null);
     }
 }

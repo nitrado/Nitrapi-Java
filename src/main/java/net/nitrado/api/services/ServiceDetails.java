@@ -73,6 +73,7 @@ public class ServiceDetails {
 
     /**
      * Returns the id of the server if it is a cloudserver.
+     *
      * @return the id
      */
     public String getIp() {
@@ -81,6 +82,7 @@ public class ServiceDetails {
 
     /**
      * Returns the hostname of the server if it is a cloudserver.
+     *
      * @return the hostname
      */
     public String getHostname() {

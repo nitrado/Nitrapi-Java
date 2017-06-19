@@ -27,8 +27,6 @@ public abstract class Pricing {
     private HashMap<String, PriceList> prices;
 
 
-
-
     public Pricing(Nitrapi nitrapi, int locationId) {
         this.nitrapi = nitrapi;
         this.locationId = locationId;
@@ -37,7 +35,6 @@ public abstract class Pricing {
     }
 
     /**
-     *
      * @return a list of locations this service is available in.
      */
     public Location[] getLocations() {
@@ -48,7 +45,7 @@ public abstract class Pricing {
         Location[] locations = nitrapi.fromJson(data.get("locations"), Location[].class);
 
         ArrayList<Location> available = new ArrayList<Location>();
-        for (Location loc:locations) {
+        for (Location loc : locations) {
             if (loc.hasService(product)) { // TODO: dependent
                 available.add(loc);
             }
@@ -66,6 +63,7 @@ public abstract class Pricing {
 
     /**
      * Get full price list for a specified product
+     *
      * @param service service id or -1
      * @return the price list for this product
      */
@@ -80,12 +78,12 @@ public abstract class Pricing {
 
         Parameter[] parameters;
         if (service != null) {
-            parameters = new Parameter[] {
+            parameters = new Parameter[]{
                     new Parameter("location", locationId),
                     new Parameter("sale_service", service.getId())
             };
         } else {
-            parameters = new Parameter[] {
+            parameters = new Parameter[]{
                     new Parameter("location", locationId)
             };
         }
@@ -98,7 +96,8 @@ public abstract class Pricing {
 
     /**
      * Returns the price for extending a specific service.
-     * @param service id of the service
+     *
+     * @param service    id of the service
      * @param rentalTime the time you want to extend this service
      * @return the prices for extending this service
      */
@@ -140,13 +139,14 @@ public abstract class Pricing {
 
     /**
      * Extends the specific service about the specific rental time
-     * @param service id of the service
+     *
+     * @param service    id of the service
      * @param rentalTime time to rent
-     * @param price price calculated from getExtendPricesForService
+     * @param price      price calculated from getExtendPricesForService
      */
     public void doExtendService(Service service, int rentalTime, int price) {
         // int price = getExtendPriceForService(service, rentalTime);
-        nitrapi.dataPost("order/order/" + product, new Parameter[] {
+        nitrapi.dataPost("order/order/" + product, new Parameter[]{
                 new Parameter("price", price),
                 new Parameter("rental_time", rentalTime),
                 new Parameter("service_id", service.getId()),
@@ -156,7 +156,7 @@ public abstract class Pricing {
 
     public int calcAdvicePrice(int price, int advice, Service service) {
         // Always return 100% of advice for dynamic cloud servers.
-        if (service instanceof CloudServer && ((CloudServer)service).isDynamic()) {
+        if (service instanceof CloudServer && ((CloudServer) service).isDynamic()) {
             return price - advice;
         }
 
@@ -169,11 +169,15 @@ public abstract class Pricing {
     public int getPrice(int rentalTime) {
         return getPrice(null, rentalTime);
     }
+
     public abstract int getPrice(Service service, int rentalTime);
+
     public abstract void orderService(int rentalTime);
+
     public int getSwitchPrice(Service service, int rentalTime) {
         return getPrice(service, rentalTime);
     }
+
     public abstract void switchService(Service service, int rentalTime);
 
 

@@ -23,23 +23,27 @@ public class Parameter {
         this.key = key;
         this.value = value;
     }
+
     public Parameter(String key, int value) {
         this.key = key;
-        this.value = value+"";
+        this.value = value + "";
     }
+
     public Parameter(String key, Integer value) {
         this.key = key;
         if (value != null) {
             this.value = value.toString();
         }
     }
+
     public Parameter(String key, Enum value) {
         this.key = key;
         this.value = value.toString();
     }
+
     public Parameter(String key, boolean value) {
         this.key = key;
-        this.value = value ? "true": "false";
+        this.value = value ? "true" : "false";
     }
 
     public Parameter(String key, HashMap<String, String> value) {
@@ -48,7 +52,7 @@ public class Parameter {
         Set<String> keys = value.keySet();
         subParameters = new Parameter[keys.size()];
         int i = 0;
-        for (String valueKey: keys) {
+        for (String valueKey : keys) {
             subParameters[i] = new Parameter(key + "[" + valueKey + "]", value.get(valueKey));
             i++;
         }

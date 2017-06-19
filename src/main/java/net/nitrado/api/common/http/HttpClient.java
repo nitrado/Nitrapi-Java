@@ -87,5 +87,6 @@ public interface HttpClient {
     long getRateLimitReset();
 
     void setLanguage(String lang);
+
     String getLanguage();
 }

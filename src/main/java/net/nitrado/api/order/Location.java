@@ -7,6 +7,7 @@ public class Location {
     private String country;
     private String city;
     private Products products;
+
     class Products {
         private boolean bouncer;
         @SerializedName("cloud_server")

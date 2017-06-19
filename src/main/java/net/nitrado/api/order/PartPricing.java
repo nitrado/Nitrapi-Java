@@ -39,22 +39,30 @@ public class PartPricing extends Pricing {
         }
 
         for (Part part : prices.getParts()) {
-            if (!parts.containsKey(part.getType())) { throw new NitrapiErrorException("No amount selected for " + part.getType()); }
+            if (!parts.containsKey(part.getType())) {
+                throw new NitrapiErrorException("No amount selected for " + part.getType());
+            }
             int amount = parts.get(part.getType());
-            if (amount < part.getMinCount()) { throw new NitrapiErrorException("The amount " + amount + " of type " + part.getType() + " is too small."); }
-            if (amount > part.getMaxCount()) { throw new NitrapiErrorException("The amount " + amount + " of type " + part.getType() + " is too big."); }
+            if (amount < part.getMinCount()) {
+                throw new NitrapiErrorException("The amount " + amount + " of type " + part.getType() + " is too small.");
+            }
+            if (amount > part.getMaxCount()) {
+                throw new NitrapiErrorException("The amount " + amount + " of type " + part.getType() + " is too big.");
+            }
 
             double localPrice = -1;
-            for ( PartRentalOption rentalOption :part.getRentalTimes()) {
+            for (PartRentalOption rentalOption : part.getRentalTimes()) {
                 if (rentalOption.getHours() == rentalTime) {
-                    for (Price price:rentalOption.getPrices()) {
+                    for (Price price : rentalOption.getPrices()) {
                         if (price.getCount() == amount) {
                             localPrice = price.getPrice();
                             break;
                         }
                     }
                 }
-                if (localPrice != -1) { break; }
+                if (localPrice != -1) {
+                    break;
+                }
             }
 
             if (localPrice == -1) {
@@ -72,14 +80,14 @@ public class PartPricing extends Pricing {
     public void orderService(int rentalTime) {
         int ADD_PARAMS = 3;
         Part[] priceParts = getParts();
-        Parameter[] parameters = new Parameter[priceParts.length + additionals.size()+ ADD_PARAMS];
+        Parameter[] parameters = new Parameter[priceParts.length + additionals.size() + ADD_PARAMS];
         parameters[0] = new Parameter("price", getPrice(rentalTime));
         parameters[1] = new Parameter("rental_time", rentalTime);
         parameters[2] = new Parameter("location", locationId);
         int j = ADD_PARAMS;
         for (int i = 0; i < priceParts.length; i++) {
             Part part = getParts()[i];
-            parameters[j] = new Parameter("parts["+part.getName()+"]", parts.get(part.getName()));
+            parameters[j] = new Parameter("parts[" + part.getName() + "]", parts.get(part.getName()));
             j++;
         }
         for (Map.Entry<String, String> entry : additionals.entrySet()) {
@@ -87,14 +95,14 @@ public class PartPricing extends Pricing {
             j++;
         }
 
-        nitrapi.dataPost("order/order/"+product, parameters);
+        nitrapi.dataPost("order/order/" + product, parameters);
     }
 
     @Override
     public void switchService(Service service, int rentalTime) {
         int ADD_PARAMS = 5;
         Part[] priceParts = getParts();
-        Parameter[] parameters = new Parameter[priceParts.length + additionals.size()+ ADD_PARAMS];
+        Parameter[] parameters = new Parameter[priceParts.length + additionals.size() + ADD_PARAMS];
         parameters[0] = new Parameter("price", getSwitchPrice(service, rentalTime));
         parameters[1] = new Parameter("rental_time", rentalTime);
         parameters[2] = new Parameter("location", locationId);
@@ -103,7 +111,7 @@ public class PartPricing extends Pricing {
         int j = ADD_PARAMS;
         for (int i = 0; i < priceParts.length; i++) {
             Part part = getParts()[i];
-            parameters[j] = new Parameter("parts["+part.getName()+"]", parts.get(part.getName()));
+            parameters[j] = new Parameter("parts[" + part.getName() + "]", parts.get(part.getName()));
             j++;
         }
         for (Map.Entry<String, String> entry : additionals.entrySet()) {
@@ -111,6 +119,6 @@ public class PartPricing extends Pricing {
             j++;
         }
 
-        nitrapi.dataPost("order/order/"+product, parameters);
+        nitrapi.dataPost("order/order/" + product, parameters);
     }
 }

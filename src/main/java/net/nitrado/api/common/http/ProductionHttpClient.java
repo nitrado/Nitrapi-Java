@@ -233,7 +233,6 @@ public class ProductionHttpClient implements HttpClient {
     }
 
 
-
     private String prepareParameterString(Parameter[] parameters) {
         // create POST parameter string
         boolean first = false;
@@ -285,7 +284,7 @@ public class ProductionHttpClient implements HttpClient {
             if (result.get("data") != null) {
                 return result.get("data").getAsJsonObject();
             }
-            
+
             return result;
         }
 

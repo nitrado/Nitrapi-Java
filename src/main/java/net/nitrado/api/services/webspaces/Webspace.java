@@ -17,6 +17,7 @@ public class Webspace extends Service {
         @SerializedName("paid_until")
         private String paidUntil;
         private String status; // TODO enum?
+
         public String toString() {
             return domain;
         }
@@ -44,8 +45,6 @@ public class Webspace extends Service {
         private Domain[] domains;
 
 
-
-
         class Quota {
             @SerializedName("max_space")
             private int maxSpace;
@@ -61,7 +60,7 @@ public class Webspace extends Service {
     }
 
     public String getName() {
-        return info!=null?info.name:"";
+        return info != null ? info.name : "";
     }
 
     public int getMaxSpace() {
@@ -100,7 +99,7 @@ public class Webspace extends Service {
     }
 
     public Domain[] getDomains() {
-        return info!=null?info.domains:new Domain[0];
+        return info != null ? info.domains : new Domain[0];
     }
 
 

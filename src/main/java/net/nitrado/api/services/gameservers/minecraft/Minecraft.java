@@ -147,11 +147,11 @@ public class Minecraft {
     /**
      * Changes settings of BungeeCord.
      *
-     * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      * @param enabled    is BungeeCord enabled
      * @param only       should only BungeeCord and not the gameserver itself be running
      * @param firewall   the type of firewall that should be activated
      * @param firewallIp ip allowed by the firewall
+     * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
     public void changeBungeeCord(boolean enabled, boolean only, BungeeCord.FirewallStatus firewall, String firewallIp) {
         api.dataPost("services/" + service.getId() + "/gameservers/games/minecraft/bungeecord", new Parameter[]{
@@ -169,9 +169,9 @@ public class Minecraft {
      * <p>
      * Deletes entities from a chunk that are above the limit. Too many entities in a chunk can cause heavy laggs. The chunkfix should first be executed with a high limit and if the problems persist with a limit of 0.
      *
-     * @permission ROLE_WEBINTERFACE_FILEBROWSER_WRITE
      * @param world world to run the chunkfix on. requires /
      * @param limit amount of entities that should stay in a chunk
+     * @permission ROLE_WEBINTERFACE_FILEBROWSER_WRITE
      */
     public void doChunkfix(String world, int limit) {
         api.dataPost("services/" + service.getId() + "/gameservers/games/minecraft/chunkfix", new Parameter[]{
@@ -183,10 +183,10 @@ public class Minecraft {
     /**
      * Changes settings of McMyAdmin.
      *
-     * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      * @param enabled  is McMyAdmin enabled
      * @param username username for McMyAdmin
      * @param password password for McMyAdmin
+     * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
     public void changeMcMyAdmin(boolean enabled, String username, String password) {
         api.dataPost("services/" + service.getId() + "/gameservers/games/minecraft/mcmyadmin", new Parameter[]{
@@ -199,10 +199,10 @@ public class Minecraft {
     /**
      * Changes settings of Remote Toolkit.
      *
-     * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      * @param enabled  is Remote Toolkit enabled
      * @param username username for Remote Toolkit
      * @param password password for Remote Toolkit
+     * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
     public void changeRemoteToolkit(boolean enabled, String username, String password) {
         api.dataPost("services/" + service.getId() + "/gameservers/games/minecraft/rtk", new Parameter[]{
@@ -218,10 +218,10 @@ public class Minecraft {
      * You can change the enabled status only once within 24 hours.
      * You can reset the map only every 3 days.
      *
-     * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      * @param enabled is the overviewmap enabled
      * @param signs   are signs shown on the overview map
      * @param reset   map will be reset if this is true
+     * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
     public void changeOverviewMap(boolean enabled, boolean signs, boolean reset, String ipsonly) {
         api.dataPost("services/" + service.getId() + "/gameservers/games/minecraft/overviewmap", new Parameter[]{
@@ -235,6 +235,7 @@ public class Minecraft {
     /**
      * Starts the rendering process of the overview map.
      * The gameserver will be stopped during the rendering.
+     *
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public void renderOverviewMap() {
@@ -244,8 +245,8 @@ public class Minecraft {
     /**
      * Returns the overview map rendering log if available.
      *
-     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @return the log as a string
+     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public String getOverviewMapLogs() {
         return api.dataGet("services/" + service.getId() + "/gameservers/games/minecraft/overviewmap_log", null).get("log").getAsString();
@@ -256,8 +257,8 @@ public class Minecraft {
      * <p>
      * Only available if you run Minecraft Vanilla or Minecraft Bukkit/Spigot.
      *
-     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @param md5 md5-hash of the version you want to switch to
+     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public void changeVersion(String md5) {
         api.dataPost("/services/" + service.getId() + "/gameservers/games/minecraft/change_version", new Parameter[]{new Parameter("md5", md5)});
@@ -267,9 +268,9 @@ public class Minecraft {
     /**
      * Returns the the minecraft uuid by username.
      *
-     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @param username name of the minecraft-user
      * @return the uuid of this minecraft-user
+     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public String getUserUUID(String username) {
         return api.dataGet("services/" + service.getId() + "/gameservers/games/minecraft/uuid", new Parameter[]{new Parameter("username", username)}).get("user").getAsJsonObject().get("uuid").getAsString();
@@ -278,9 +279,9 @@ public class Minecraft {
     /**
      * Returns the minecraft avatar information by username.
      *
-     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @param username username case sensitive
      * @return the user avatar base64 encoded
+     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public String getUserAvatar(String username) {
         return api.dataGet("services/" + service.getId() + "/gameservers/games/minecraft/avatar", new Parameter[]{new Parameter("username", username)}).get("user").getAsJsonObject().get("avatar").getAsString();
@@ -289,8 +290,8 @@ public class Minecraft {
     /**
      * Returns installed plugins for minecraft bukkit/spigot.
      *
-     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @return a list of installed plugins
+     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public Plugin[] getPlugins() {
         JsonObject data = api.dataGet("services/" + service.getId() + "/gameservers/games/minecraft/plugins", null);
@@ -303,8 +304,8 @@ public class Minecraft {
     /**
      * Creates a new minecraft backup of a specific world.
      *
-     * @permission ROLE_WEBINTERFACE_BACKUPS_WRITE
      * @param world world, requires /
+     * @permission ROLE_WEBINTERFACE_BACKUPS_WRITE
      */
     public void createBackup(String world) {
         api.dataPost("services/" + service.getId() + "/gameservers/games/minecraft/backup", new Parameter[]{new Parameter("world", world)});
@@ -314,8 +315,8 @@ public class Minecraft {
     /**
      * Restores a specific backup to the main directory of the minecraft installation.
      *
-     * @permission ROLE_WEBINTERFACE_BACKUPS_WRITE
      * @param timestamp timestamp of the backup
+     * @permission ROLE_WEBINTERFACE_BACKUPS_WRITE
      */
     public void restoreBackup(long timestamp) {
         api.dataPost("services/" + service.getId() + "/gameservers/games/minecraft/backup/" + timestamp + "/restore", null);
@@ -326,10 +327,10 @@ public class Minecraft {
      * <p>
      * If you delete a backup, it's gone forever.
      *
-     * @permission ROLE_WEBINTERFACE_BACKUPS_WRITE
      * @param timestamp timestamp of the backup
+     * @permission ROLE_WEBINTERFACE_BACKUPS_WRITE
      */
     public void destroyBackup(long timestamp) {
-        api.dataDelete("services/" + service.getId() + "/gameservers/games/minecraft/backup/" + timestamp , null);
+        api.dataDelete("services/" + service.getId() + "/gameservers/games/minecraft/backup/" + timestamp, null);
     }
 }

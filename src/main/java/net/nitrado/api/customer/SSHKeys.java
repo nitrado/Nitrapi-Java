@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
+
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
@@ -97,35 +98,35 @@ public class SSHKeys {
     /**
      * Upload a SSH key.
      *
-     * @param key  
+     * @param key
      */
     public void uploadKey(String key) {
-        api.dataPost("user/ssh_keys/", new Parameter[] {
-           new Parameter("key", key)
+        api.dataPost("user/ssh_keys/", new Parameter[]{
+                new Parameter("key", key)
         });
     }
 
     /**
      * Updates a SSH public key.
      *
-     * @param id  
-     * @param key  
-     * @param enabled  
+     * @param id
+     * @param key
+     * @param enabled
      */
     public void updateKey(int id, String key, boolean enabled) {
-        api.dataPost("user/ssh_keys/" + id+ "", new Parameter[] {
-           new Parameter("key", key),
-           new Parameter("enabled", enabled)
+        api.dataPost("user/ssh_keys/" + id + "", new Parameter[]{
+                new Parameter("key", key),
+                new Parameter("enabled", enabled)
         });
     }
 
     /**
      * Deletes a SSH public key.
      *
-     * @param id  
+     * @param id
      */
     public void deleteKey(int id) {
-        api.dataDelete("user/ssh_keys/" + id+ "", null);
+        api.dataDelete("user/ssh_keys/" + id + "", null);
     }
 
 

@@ -51,6 +51,7 @@ public class PluginSystemInfo {
         @SerializedName("error")
         ERROR
     }
+
     private Status status;
     private String hostname;
     private String ip;

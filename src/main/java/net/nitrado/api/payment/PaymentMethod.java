@@ -24,6 +24,7 @@ public class PaymentMethod {
 
     /**
      * Sets the id of this payment method.
+     *
      * @param id id of this method
      */
     public void setId(String id) {
@@ -48,6 +49,7 @@ public class PaymentMethod {
     public int getMinAmount() {
         return minAmount;
     }
+
     /**
      * @return the maximum amount payable. Overwritten by tariffs array.
      */

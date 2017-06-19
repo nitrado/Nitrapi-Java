@@ -397,6 +397,7 @@ public class CloudServer extends Service {
 
     /**
      * Returns a list of all backups.
+     *
      * @return a list of all backups.
      */
     public Backup[] getBackups() {
@@ -419,7 +420,7 @@ public class CloudServer extends Service {
      * @param backupId
      */
     public void restoreBackup(String backupId) {
-        api.dataPost("services/" + getId() + "/cloud_servers/backups/" + backupId+ "/restore", null);
+        api.dataPost("services/" + getId() + "/cloud_servers/backups/" + backupId + "/restore", null);
     }
 
     /**
@@ -428,7 +429,7 @@ public class CloudServer extends Service {
      * @param backupId
      */
     public void deleteBackup(String backupId) {
-        api.dataDelete("services/" + getId() + "/cloud_servers/backups/" + backupId+ "", null);
+        api.dataDelete("services/" + getId() + "/cloud_servers/backups/" + backupId + "", null);
     }
 
     /**
@@ -438,32 +439,29 @@ public class CloudServer extends Service {
     }
 
     /**
-     *
      * @param hostname
      */
     public void changeHostame(String hostname) {
-        api.dataPost("services/" + getId() + "/cloud_servers/hostname", new Parameter[] {
+        api.dataPost("services/" + getId() + "/cloud_servers/hostname", new Parameter[]{
                 new Parameter("hostname", hostname)
         });
     }
 
     /**
-     *
      * @param ipAddress
      * @param hostname
      */
     public void changePTREntry(String ipAddress, String hostname) {
-        api.dataPost("services/" + getId() + "/cloud_servers/ptr/" + ipAddress+ "", new Parameter[] {
+        api.dataPost("services/" + getId() + "/cloud_servers/ptr/" + ipAddress + "", new Parameter[]{
                 new Parameter("hostname", hostname)
         });
     }
 
     /**
-     *
      * @param imageId
      */
     public void doReinstall(int imageId) {
-        api.dataPost("services/" + getId() + "/cloud_servers/reinstall", new Parameter[] {
+        api.dataPost("services/" + getId() + "/cloud_servers/reinstall", new Parameter[]{
                 new Parameter("image_id", imageId)
         });
     }
@@ -484,11 +482,11 @@ public class CloudServer extends Service {
     /**
      * Returns resource stats.
      *
-     * @param time  valid time parameters: 1h, 4h, 1d, 7d
+     * @param time valid time parameters: 1h, 4h, 1d, 7d
      * @return
      */
     public Resource[] getResourceUsage(int time) {
-        JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/resources", new Parameter[] {
+        JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/resources", new Parameter[]{
                 new Parameter("time", time)
         });
 
@@ -497,12 +495,11 @@ public class CloudServer extends Service {
     }
 
     /**
-     *
      * @param lines
      * @return
      */
     public String getConsoleLogs(int lines) {
-        JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/console_logs", new Parameter[] {
+        JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/console_logs", new Parameter[]{
                 new Parameter("lines", lines)
         });
 
@@ -566,8 +563,8 @@ public class CloudServer extends Service {
     /**
      * Returns the existing support authorization or a NitrapiError if none exists.
      *
-     * @permission ROLE_SUPPORT_AUTHORIZATION
      * @return SupportAuthorization
+     * @permission ROLE_SUPPORT_AUTHORIZATION
      */
     public SupportAuthorization getSupportAuthorization() {
         JsonObject data = api.dataGet("services/" + getId() + "/support_authorization", null);

@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
  * This class represents log entries for a gameserver that are split up in pages.
  * <p>
  * Use Gameserver.getLogs(page) to get a certain page
+ *
  * @see Gameserver#getLogs(int)
  */
 public class Logs {

@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
+
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
@@ -160,6 +161,7 @@ public class Systemd {
 
     /**
      * Lists all the units Systemd manages.
+     *
      * @return Unit[]
      */
     public Unit[] getUnits() {
@@ -170,6 +172,7 @@ public class Systemd {
 
     /**
      * Returns a SSE (server-send event) stream URL, which will stream changes on the Systemd services.
+     *
      * @return String
      */
     public String getChangeFeedUrl() {
@@ -214,11 +217,11 @@ public class Systemd {
      * Send a POSIX signal to the process(es) running in a unit.
      *
      * @param unitName unitName
-     * @param who who
-     * @param signal signal
+     * @param who      who
+     * @param signal   signal
      */
     public void killUnit(String unitName, String who, int signal) {
-        api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/kill", new Parameter[] {
+        api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/kill", new Parameter[]{
                 new Parameter("who", who),
                 new Parameter("signal", signal)
         });
@@ -246,10 +249,10 @@ public class Systemd {
      * Reload a unit.
      *
      * @param unitName unitName
-     * @param replace Replace a job that is already running
+     * @param replace  Replace a job that is already running
      */
     public void reloadUnit(String unitName, boolean replace) {
-        api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/reload", new Parameter[] {
+        api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/reload", new Parameter[]{
                 new Parameter("replace", replace)
         });
     }
@@ -267,10 +270,10 @@ public class Systemd {
      * Restarts a unit.
      *
      * @param unitName unitName
-     * @param replace Replace a job that is already running
+     * @param replace  Replace a job that is already running
      */
     public void restartUnit(String unitName, boolean replace) {
-        api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/restart", new Parameter[] {
+        api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/restart", new Parameter[]{
                 new Parameter("replace", replace)
         });
     }
@@ -279,10 +282,10 @@ public class Systemd {
      * Starts a unit.
      *
      * @param unitName unitName
-     * @param replace Replace a job that is already running
+     * @param replace  Replace a job that is already running
      */
     public void startUnit(String unitName, boolean replace) {
-        api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/start", new Parameter[] {
+        api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/start", new Parameter[]{
                 new Parameter("replace", replace)
         });
     }
@@ -291,10 +294,10 @@ public class Systemd {
      * Stopps a unit.
      *
      * @param unitName unitName
-     * @param replace Replace a job that is already running
+     * @param replace  Replace a job that is already running
      */
     public void stopUnit(String unitName, boolean replace) {
-        api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/stop", new Parameter[] {
+        api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/stop", new Parameter[]{
                 new Parameter("replace", replace)
         });
     }
