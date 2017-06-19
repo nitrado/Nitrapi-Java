@@ -284,6 +284,34 @@ public class CloudServer extends Service {
 
     }
 
+    /**
+     * This class represents a SupportAuthorization.
+     */
+    public class SupportAuthorization {
+        @SerializedName("created_at")
+        private GregorianCalendar createdAt;
+        @SerializedName("expires_at")
+        private GregorianCalendar expiresAt;
+
+        /**
+         * Returns createdAt.
+         *
+         * @return createdAt
+         */
+        public GregorianCalendar getCreatedAt() {
+            return createdAt;
+        }
+
+        /**
+         * Returns expiresAt.
+         *
+         * @return expiresAt
+         */
+        public GregorianCalendar getExpiresAt() {
+            return expiresAt;
+        }
+    }
+
 
     /**
      * The Status of the CloudServer.
@@ -533,6 +561,37 @@ public class CloudServer extends Service {
         AppsManager manager = new AppsManager();
         manager.init(this, api);
         return manager;
+    }
+
+    /**
+     * Returns the existing support authorization or a NitrapiError if none exists.
+     *
+     * @permission ROLE_SUPPORT_AUTHORIZATION
+     * @return SupportAuthorization
+     */
+    public SupportAuthorization getSupportAuthorization() {
+        JsonObject data = api.dataGet("services/" + getId() + "/support_authorization", null);
+
+        SupportAuthorization support_authorization = api.fromJson(data.get("support_authorization"), SupportAuthorization.class);
+        return support_authorization;
+    }
+
+    /**
+     * Creates a support authorization.
+     *
+     * @permission ROLE_SUPPORT_AUTHORIZATION
+     */
+    public void createSupportAuthorization() {
+        api.dataPost("services/" + getId() + "/support_authorization", null);
+    }
+
+    /**
+     * Deletes the support authorization.
+     *
+     * @permission ROLE_SUPPORT_AUTHORIZATION
+     */
+    public void deleteSupportAuthorization() {
+        api.dataDelete("services/" + getId() + "/support_authorization", null);
     }
 
     @Override

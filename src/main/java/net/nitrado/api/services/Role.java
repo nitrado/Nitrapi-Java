@@ -83,5 +83,9 @@ public enum Role {
     /**
      * Can change server settings
      */
-    ROLE_WEBINTERFACE_SETTINGS_WRITE
+    ROLE_WEBINTERFACE_SETTINGS_WRITE,
+    /**
+     * Can authorize the support
+     */
+    ROLE_SUPPORT_AUTHORIZATION
 }
