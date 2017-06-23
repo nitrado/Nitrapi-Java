@@ -77,4 +77,8 @@ public class Parameter {
     public String getValue() {
         return value;
     }
+
+    public Parameter[] getSubParameters() {
+        return subParameters;
+    }
 }

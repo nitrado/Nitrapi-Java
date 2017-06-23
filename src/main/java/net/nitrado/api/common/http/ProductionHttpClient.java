@@ -235,24 +235,34 @@ public class ProductionHttpClient implements HttpClient {
 
     private String prepareParameterString(Parameter[] parameters) {
         // create POST parameter string
-        boolean first = false;
         StringBuilder params = new StringBuilder();
         if (parameters != null) {
             for (Parameter parameter : parameters) {
-                if (parameter.getValue() != null) {
-                    params.append(first ? "?" : "&");
-                    params.append(parameter.getKey());
-                    params.append("=");
-                    try {
-                        params.append(URLEncoder.encode(parameter.getValue(), "UTF-8"));
-                    } catch (UnsupportedEncodingException e) {
-                        // everyone should support utf-8 so this should not happen
-                        e.printStackTrace();
-                    }
-                }
+                addParameter(params, parameter);
             }
         }
         return params.toString();
+    }
+
+    private void addParameter(StringBuilder params, Parameter parameter) {
+        if (parameter.getKey() == null) {
+            // Add subParameters
+            for (Parameter subParameter: parameter.getSubParameters()) {
+                addParameter(params, subParameter);
+            }
+        }
+
+        if (parameter.getValue() != null) {
+            params.append("&");
+            params.append(parameter.getKey());
+            params.append("=");
+            try {
+                params.append(URLEncoder.encode(parameter.getValue(), "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                // everyone should support utf-8 so this should not happen
+                e.printStackTrace();
+            }
+        }
     }
 
     private JsonObject parseResult(StringBuffer response, HttpURLConnection connection) throws IOException {
