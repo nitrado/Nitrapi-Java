@@ -275,10 +275,11 @@ public class AppsManager {
      * @param ports   ports
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void install(String appType, String appName, HashMap<String, String> ports) {
+    public void install(String appType, String appName, String ip, HashMap<String, String> ports) {
         api.dataPost("services/" + service.getId() + "/cloud_servers/apps/", new Parameter[]{
                 new Parameter("app_type", appType),
                 new Parameter("app_name", appName),
+                new Parameter("ip", ip),
                 new Parameter("ports", ports)
         });
     }

@@ -237,6 +237,10 @@ public class CloudServer extends Service {
             return ptr;
         }
 
+        @Override
+        public String toString() {
+            return address;
+        }
     }
 
     public class Image {
