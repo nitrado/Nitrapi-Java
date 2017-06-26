@@ -3,6 +3,7 @@ package net.nitrado.api.order;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -44,7 +45,7 @@ public class Part {
     /**
      * @return better human readable names for the steps
      */
-    public HashMap<Integer, String> getStepNames() {
+    public Map<Integer, String> getStepNames() {
         return stepNames;
     }
 

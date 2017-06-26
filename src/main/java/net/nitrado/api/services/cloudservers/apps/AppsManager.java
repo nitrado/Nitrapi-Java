@@ -6,8 +6,8 @@ import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 
-import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class represents an AppsManager.
@@ -125,7 +125,7 @@ public class AppsManager {
          *
          * @return parameters
          */
-        public HashMap<String, String> getParameters() {
+        public Map<String, String> getParameters() {
             return parameters;
         }
 
@@ -134,7 +134,7 @@ public class AppsManager {
          *
          * @return configurations
          */
-        public HashMap<String, String> getConfigurations() {
+        public Map<String, String> getConfigurations() {
             return configurations;
         }
     }
@@ -275,7 +275,7 @@ public class AppsManager {
      * @param ports   ports
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void install(String appType, String appName, String ip, HashMap<String, String> ports) {
+    public void install(String appType, String appName, String ip, Map<String, String> ports) {
         api.dataPost("services/" + service.getId() + "/cloud_servers/apps/", new Parameter[]{
                 new Parameter("app_type", appType),
                 new Parameter("app_name", appName),
@@ -302,7 +302,7 @@ public class AppsManager {
      * @param parameters parameters
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void configure(String appName, String cmd, HashMap<String, String> parameters) {
+    public void configure(String appName, String cmd, Map<String, String> parameters) {
         api.dataPut("services/" + service.getId() + "/cloud_servers/apps/" + appName + "", new Parameter[]{
                 new Parameter("cmd", cmd),
                 new Parameter("parameters", parameters)

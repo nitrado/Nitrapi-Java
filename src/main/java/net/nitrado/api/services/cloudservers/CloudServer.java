@@ -3,14 +3,13 @@ package net.nitrado.api.services.cloudservers;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
-import net.nitrado.api.common.exceptions.NitrapiErrorException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 import net.nitrado.api.services.cloudservers.apps.AppsManager;
+import net.nitrado.api.services.cloudservers.systemd.Systemd;
 import net.nitrado.api.services.fileserver.FileServer;
 
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 
 /**
  * This class represents a CloudServer.
@@ -593,6 +592,12 @@ public class CloudServer extends Service {
      */
     public void deleteSupportAuthorization() {
         api.dataDelete("services/" + getId() + "/support_authorization", null);
+    }
+
+    public Systemd getSystemd() {
+        Systemd systemd = new Systemd();
+        systemd.init(this, api);
+        return systemd;
     }
 
     @Override

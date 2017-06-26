@@ -6,9 +6,6 @@ import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-
 /**
  * This class represents a Systemd.
  */
@@ -196,7 +193,20 @@ public class Systemd {
     }
 
     /**
-     * Enable a unit so it is automatically run on startup.
+     * Returns details for one Systemd unit.
+     *
+     * @param unitName unitName
+     * @return Unit
+     */
+    public Unit getUnit(String unitName) {
+        JsonObject data = api.dataGet("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "", null);
+
+        Unit unit = api.fromJson(data.get("unit"), Unit.class);
+        return unit;
+    }
+
+    /**
+     * Enables a unit so it is automatically run on startup.
      *
      * @param unitName unitName
      */

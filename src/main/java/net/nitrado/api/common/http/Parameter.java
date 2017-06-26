@@ -1,6 +1,6 @@
 package net.nitrado.api.common.http;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -46,7 +46,7 @@ public class Parameter {
         this.value = value ? "true" : "false";
     }
 
-    public Parameter(String key, HashMap<String, String> value) {
+    public Parameter(String key, Map<String, String> value) {
         this.key = null;
         this.value = null;
         Set<String> keys = value.keySet();
@@ -61,7 +61,7 @@ public class Parameter {
 
     /**
      * Returns the key.
-     * Null, if this is a hashmap
+     * Null, if this parameter has sub parameters
      *
      * @return the key
      */

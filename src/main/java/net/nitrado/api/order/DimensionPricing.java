@@ -14,7 +14,7 @@ public class DimensionPricing extends Pricing {
         super(nitrapi, locationId);
     }
 
-    private HashMap<String, String> dimensions = new HashMap<String, String>();
+    private Map<String, String> dimensions = new HashMap<String, String>();
 
     public void addDimension(String dimension, String value) {
         dimensions.put(dimension, value);

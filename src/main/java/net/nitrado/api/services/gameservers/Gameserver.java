@@ -4,14 +4,15 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
+import net.nitrado.api.services.fileserver.FileServer;
 import net.nitrado.api.services.gameservers.customersettings.CustomerSettings;
 import net.nitrado.api.services.gameservers.ddoshistory.DDoSAttack;
-import net.nitrado.api.services.fileserver.FileServer;
 import net.nitrado.api.services.gameservers.minecraft.Minecraft;
 import net.nitrado.api.services.gameservers.pluginsystem.PluginSystem;
 import net.nitrado.api.services.gameservers.taskmanager.TaskManager;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class represents a gameserver.
@@ -384,7 +385,7 @@ public class Gameserver extends Service {
      *
      * @return a list of modpacks
      */
-    public HashMap<String, Modpack> getModpacks() {
+    public Map<String, Modpack> getModpacks() {
         return info != null ? info.modpacks : null;
     }
 

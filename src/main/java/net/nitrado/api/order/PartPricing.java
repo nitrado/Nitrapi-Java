@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PartPricing extends Pricing {
-    HashMap<String, Integer> parts = new HashMap<String, Integer>();
+    Map<String, Integer> parts = new HashMap<String, Integer>();
 
     public PartPricing(Nitrapi nitrapi, int locationId) {
         super(nitrapi, locationId);

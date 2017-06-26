@@ -3,7 +3,6 @@ package net.nitrado.api.services;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
-import net.nitrado.api.common.exceptions.NitrapiErrorException;
 import net.nitrado.api.common.http.Parameter;
 
 import java.util.GregorianCalendar;

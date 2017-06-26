@@ -5,16 +5,13 @@ import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-
 /**
  * This class represents a Firewall.
  */
 public class Firewall {
 
-    private Service service;
-    private Nitrapi api;
+    private transient Service service;
+    private transient Nitrapi api;
 
     /**
      * Used internally.

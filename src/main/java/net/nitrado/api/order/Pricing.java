@@ -1,6 +1,5 @@
 package net.nitrado.api.order;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
@@ -13,18 +12,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Pricing {
-    Nitrapi nitrapi;
+    private Nitrapi nitrapi;
     protected String product;
-    int locationId;
+    private int locationId;
 
 
-    protected HashMap<String, String> additionals;
+    protected Map<String, String> additionals;
 
 
     /**
      * Cache of prices by location id
      */
-    private HashMap<String, PriceList> prices;
+    private Map<String, PriceList> prices;
 
 
     public Pricing(Nitrapi nitrapi, int locationId) {
@@ -132,7 +131,7 @@ public abstract class Pricing {
             return maxRentalTime;
         }
 
-        public HashMap<Integer, Integer> getPrices() {
+        public Map<Integer, Integer> getPrices() {
             return prices;
         }
     }

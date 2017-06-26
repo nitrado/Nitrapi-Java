@@ -1,9 +1,8 @@
 package net.nitrado.api.services.cloudservers;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class represents a Resource.
@@ -27,7 +26,7 @@ public class Resource {
      *
      * @return datapoints
      */
-    public HashMap<GregorianCalendar, Float> getDatapoints() {
+    public Map<GregorianCalendar, Float> getDatapoints() {
         return datapoints;
     }
 }

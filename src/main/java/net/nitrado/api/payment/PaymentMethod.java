@@ -3,6 +3,7 @@ package net.nitrado.api.payment;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class PaymentMethod {
     private String id;
@@ -74,7 +75,7 @@ public class PaymentMethod {
     /**
      * @return in case of gc_ideal returns an array of banks to choose one from.
      */
-    public HashMap<String, String> getBanks() {
+    public Map<String, String> getBanks() {
         return banks;
     }
 }
