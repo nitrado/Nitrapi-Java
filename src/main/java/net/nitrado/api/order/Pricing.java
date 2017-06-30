@@ -12,9 +12,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Pricing {
-    private Nitrapi nitrapi;
+    Nitrapi nitrapi;
     protected String product;
-    private int locationId;
+    int locationId;
 
 
     protected Map<String, String> additionals;
@@ -37,9 +37,6 @@ public abstract class Pricing {
      * @return a list of locations this service is available in.
      */
     public Location[] getLocations() {
-        if (product == null) {
-            throw new IllegalStateException("You cannot use Pricing.getLocations(). Please use the product class.");
-        }
         JsonObject data = nitrapi.dataGet("order/order/locations", null);
         Location[] locations = nitrapi.fromJson(data.get("locations"), Location[].class);
 

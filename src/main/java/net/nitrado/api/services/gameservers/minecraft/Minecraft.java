@@ -169,7 +169,7 @@ public class Minecraft {
      * <p>
      * Deletes entities from a chunk that are above the limit. Too many entities in a chunk can cause heavy laggs. The chunkfix should first be executed with a high limit and if the problems persist with a limit of 0.
      *
-     * @param world world to run the chunkfix on. requires /
+     * @param world world.getGame() + "/" + world.getWorld()
      * @param limit amount of entities that should stay in a chunk
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_WRITE
      */
@@ -304,11 +304,13 @@ public class Minecraft {
     /**
      * Creates a new minecraft backup of a specific world.
      *
-     * @param world world, requires /
+     * @param world world.getGame() + "/" + world.getWorld()
      * @permission ROLE_WEBINTERFACE_BACKUPS_WRITE
      */
     public void createBackup(String world) {
-        api.dataPost("services/" + service.getId() + "/gameservers/games/minecraft/backup", new Parameter[]{new Parameter("world", world)});
+        api.dataPost("services/" + service.getId() + "/gameservers/games/minecraft/backup", new Parameter[]{
+                new Parameter("world", world)
+        });
     }
 
 

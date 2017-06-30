@@ -6,6 +6,7 @@ import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 import net.nitrado.api.services.cloudservers.apps.AppsManager;
+import net.nitrado.api.services.cloudservers.systemd.Journald;
 import net.nitrado.api.services.cloudservers.systemd.Systemd;
 import net.nitrado.api.services.fileserver.FileServer;
 
@@ -598,6 +599,12 @@ public class CloudServer extends Service {
         Systemd systemd = new Systemd();
         systemd.init(this, api);
         return systemd;
+    }
+
+    public Journald getJournald() {
+        Journald journald = new Journald();
+        journald.init(this, api);
+        return journald;
     }
 
     @Override
