@@ -24,8 +24,6 @@ public class Journald {
         private String cursor;
         @SerializedName("__REALTIME_TIMESTAMP")
         private int realtimeTimestamp;
-        @SerializedName("__MONOTONIC_TIMESTAMP")
-        private int monotonicTimestamp;
         @SerializedName("_BOOT_ID")
         private String bootId;
         @SerializedName("PRIORITY")
@@ -77,15 +75,6 @@ public class Journald {
          */
         public int getRealtimeTimestamp() {
             return realtimeTimestamp;
-        }
-
-        /**
-         * Returns monotonicTimestamp.
-         *
-         * @return monotonicTimestamp
-         */
-        public int getMonotonicTimestamp() {
-            return monotonicTimestamp;
         }
 
         /**
@@ -254,7 +243,7 @@ public class Journald {
      *
      * @param unit Filter by unit name. All journal messages are returned if unset.
      * @param cursor Initial cursor reference obtained from a log event. Seeks to tail if unspecified.
-     * @param backlog Offset from the current log tail, must be >= 0
+     * @param backlog Offset from the current log tail, must be greater or equals 0
      * @param count Number of messages to return, starting at the cursor position specified by backlog. -1 returns all messages and continuously streams any new ones.
      * @return String
      */

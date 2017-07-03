@@ -13,7 +13,7 @@ Add the following to the `<dependencies>` section of your `pom.xml`:
 <dependency>
     <groupId>net.nitrado</groupId>
     <artifactId>nitrapi</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 

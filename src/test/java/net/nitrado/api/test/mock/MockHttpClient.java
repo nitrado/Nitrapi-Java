@@ -82,49 +82,33 @@ public class MockHttpClient implements HttpClient {
     /// MOCKED METHODS ///
 
     public JsonObject dataGet(String url, String accessToken, Parameter[] parameters) {
-        if (this.nextResponses.isEmpty()) {
-            throw new IllegalStateException("not enough nextResponses provided for call to " + url);
-        }
         this.lastUrl = url;
         this.lastParameters = parameters;
-
-        JsonObject res = this.nextResponses.poll();
-        if (!res.get("status").getAsString().equals("success")) {
-            throw new NitrapiErrorException(res.get("message").getAsString(), null);
-        }
-
-        if (res.has("data")) {
-            return res.get("data").getAsJsonObject();
-        }
-
-        return res;
+        return mockResponse();
     }
 
     public JsonObject dataPost(String url, String accessToken, Parameter[] parameters) {
-        if (this.nextResponses.isEmpty()) {
-            throw new IllegalStateException("not enough nextResponses provided for call to " + url);
-        }
         this.lastUrl = url;
         this.lastParameters = parameters;
+        return mockResponse();
+    }
 
-        JsonObject res = this.nextResponses.poll();
-        if (!res.get("status").getAsString().equals("success")) {
-            throw new NitrapiErrorException(res.get("message").getAsString(), null);
-        }
-
-        if (res.has("data")) {
-            return res.get("data").getAsJsonObject();
-        }
-
-        return res;
+    public JsonObject dataPut(String url, String accessToken, Parameter[] parameters) {
+        this.lastUrl = url;
+        this.lastParameters = parameters;
+        return mockResponse();
     }
 
     public JsonObject dataDelete(String url, String accessToken, Parameter[] parameters) {
-        if (this.nextResponses.isEmpty()) {
-            throw new IllegalStateException("not enough nextResponses provided for call to " + url);
-        }
         this.lastUrl = url;
         this.lastParameters = parameters;
+        return mockResponse();
+    }
+
+    private JsonObject mockResponse() {
+        if (this.nextResponses.isEmpty()) {
+            throw new IllegalStateException("not enough nextResponses provided for call");
+        }
 
         JsonObject res = this.nextResponses.poll();
         if (!res.get("status").getAsString().equals("success")) {
