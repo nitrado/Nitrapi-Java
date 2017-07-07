@@ -316,6 +316,77 @@ public class CloudServer extends Service {
         }
     }
 
+    /**
+     * This class represents a Group.
+     */
+    public class Group {
+        private int id;
+        private String name;
+
+        /**
+         * Returns id.
+         *
+         * @return id
+         */
+        public int getId() {
+            return id;
+        }
+
+        /**
+         * Returns name.
+         *
+         * @return name
+         */
+        public String getName() {
+            return name;
+        }
+    }
+
+    /**
+     * This class represents an User.
+     */
+    public class User {
+        private String username;
+        private Group[] groups;
+        private int id;
+        private String home;
+
+        /**
+         * Returns username.
+         *
+         * @return username
+         */
+        public String getUsername() {
+            return username;
+        }
+
+        /**
+         * Returns groups.
+         *
+         * @return groups
+         */
+        public Group[] getGroups() {
+            return groups;
+        }
+
+        /**
+         * Returns id.
+         *
+         * @return id
+         */
+        public int getId() {
+            return id;
+        }
+
+        /**
+         * Returns home.
+         *
+         * @return home
+         */
+        public String getHome() {
+            return home;
+        }
+    }
 
     /**
      * The Status of the CloudServer.
@@ -605,6 +676,17 @@ public class CloudServer extends Service {
         Journald journald = new Journald();
         journald.init(this, api);
         return journald;
+    }
+
+    /**
+     * List all the users (with groups) on a Cloud Server. These users are located in the /etc/passwd. All newly creates users on the system are included in this array.
+     * @return User[]
+     */
+    public User[] getUsers() {
+        JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/user", null);
+
+        User[] usersusers = api.fromJson(data.get("users").getAsJsonObject().get("users"), User[].class);
+        return usersusers;
     }
 
     @Override

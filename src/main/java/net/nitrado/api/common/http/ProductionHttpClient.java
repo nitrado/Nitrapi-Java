@@ -2,6 +2,8 @@ package net.nitrado.api.common.http;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 import net.nitrado.api.common.exceptions.*;
 
 import java.io.*;
@@ -215,7 +217,12 @@ public class ProductionHttpClient implements HttpClient {
             connection.getOutputStream().close();
 
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedReader reader;
+            if (connection.getResponseCode() == 200 || connection.getResponseCode() == 201) {
+                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            } else {
+                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+            }
             StringBuffer response = new StringBuffer();
             String line;
 
@@ -286,7 +293,14 @@ public class ProductionHttpClient implements HttpClient {
         }
 
         JsonParser parser = new JsonParser();
-        JsonObject result = (JsonObject) parser.parse(response.toString());
+        JsonObject result;
+        try {
+            result = (JsonObject) parser.parse(response.toString());
+        } catch (JsonSyntaxException e) {
+            // invalid json
+            result =  new JsonObject();
+            result.addProperty("message", "Invalid json: " + response.toString());
+        }
 
 
         if (connection.getResponseCode() < 300) { // OK
