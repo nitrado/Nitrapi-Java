@@ -26,7 +26,15 @@ public class Firewall {
         TCP,
 
         @SerializedName("udp")
-        UDP;
+        UDP,
+
+        @SerializedName("icmp")
+        ICMP,
+
+        @SerializedName("any")
+        ANY;
+
+
 
         @Override
         public String toString() {
