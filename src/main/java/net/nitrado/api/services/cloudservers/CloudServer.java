@@ -243,12 +243,19 @@ public class CloudServer extends Service {
         }
     }
 
+    /**
+     * This class represents an image.
+     */
     public class Image {
         private int id;
         private String name;
         @SerializedName("is_windows")
         private boolean windows;
-        private boolean daemon;
+        private boolean isDefault;
+        @SerializedName("has_daemon")
+        private boolean hasDaemon;
+        @SerializedName("is_daemon_compatible")
+        private boolean isDaemonCompatible;
 
         /**
          * Returns id.
@@ -278,14 +285,31 @@ public class CloudServer extends Service {
         }
 
         /**
-         * Returns daemon.
+         * Returns isDefault.
          *
-         * @return daemon
+         * @return isDefault
          */
-        public boolean isDaemon() {
-            return daemon;
+        public boolean isDefault() {
+            return isDefault;
         }
 
+        /**
+         * Returns hasDaemon.
+         *
+         * @return hasDaemon
+         */
+        public boolean hasDaemon() {
+            return hasDaemon;
+        }
+
+        /**
+         * Returns isDaemonCompatible.
+         *
+         * @return isDaemonCompatible
+         */
+        public boolean isDaemonCompatible() {
+            return isDaemonCompatible;
+        }
     }
 
     /**
