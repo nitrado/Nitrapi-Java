@@ -238,6 +238,11 @@ public class Nitrapi {
         return keys;
     }
 
+    public AccessToken getAccessTokenInfo() {
+        JsonObject data = this.dataGet("token", null);
+        return gson.fromJson(data.get("token"), AccessToken.class);
+    }
+
     /**
      * Returns the current limit of requests per hour for each user.
      *
