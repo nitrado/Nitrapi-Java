@@ -18,11 +18,11 @@ public class CustomerSettings extends HashMap<String, HashMap<String, String>> {
     /**
      * Returns a specified setting.
      *
-     * @permission ROLE_WEBINTERFACE_SETTINGS_READ
      * @param category category of the setting
      * @param key      key of the setting
      * @return the value of the setting
      * @throws CustomerSettingsNotFoundException if there is no setting with the specified category and key
+     * @permission ROLE_WEBINTERFACE_SETTINGS_READ
      */
     public String readSetting(String category, String key) throws CustomerSettingsNotFoundException {
         if (!hasCategory(category)) {
@@ -40,11 +40,11 @@ public class CustomerSettings extends HashMap<String, HashMap<String, String>> {
      * <p>
      * You have to call Gameserver.refresh() to see the change.
      *
-     * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      * @param category category of the setting
      * @param key      key of the setting
      * @param value    value of the setting
      * @throws CustomerSettingsNotFoundException if there is no setting with the specified category and key
+     * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
     public void writeSetting(String category, String key, String value) throws CustomerSettingsNotFoundException {
         if (!hasCategory(category)) {
@@ -57,8 +57,8 @@ public class CustomerSettings extends HashMap<String, HashMap<String, String>> {
     /**
      * Lists all available saved config sets.
      *
-     * @permission ROLE_WEBINTERFACE_SETTINGS_READ
      * @return array of config sets
+     * @permission ROLE_WEBINTERFACE_SETTINGS_READ
      */
     public CustomerSettingsSet[] getConfigSets() {
         JsonObject data = api.dataGet("services/" + serviceId + "/gameservers/settings/sets", null);
@@ -73,8 +73,8 @@ public class CustomerSettings extends HashMap<String, HashMap<String, String>> {
     /**
      * Restores a specific config set.
      *
-     * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      * @param id id of the config set
+     * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
     public void restoreConfigSet(int id) {
         api.dataPost("services/" + serviceId + "/gameservers/settings/sets/" + id + "/restore", null);
@@ -83,8 +83,8 @@ public class CustomerSettings extends HashMap<String, HashMap<String, String>> {
     /**
      * Deletes a specific config set.
      *
-     * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      * @param id id of the config set
+     * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
     public void deleteConfigSet(int id) {
         api.dataDelete("services/" + serviceId + "/gameservers/settings/sets/" + id, null);
@@ -93,8 +93,8 @@ public class CustomerSettings extends HashMap<String, HashMap<String, String>> {
     /**
      * Creates a new config set with the current settings.
      *
-     * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      * @param name name of the new config set
+     * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
     public void createConfigSet(String name) {
         api.dataPost("services/" + serviceId + "/gameservers/settings/sets", new Parameter[]{new Parameter("name", name)});

@@ -4,14 +4,15 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
+import net.nitrado.api.services.fileserver.FileServer;
 import net.nitrado.api.services.gameservers.customersettings.CustomerSettings;
 import net.nitrado.api.services.gameservers.ddoshistory.DDoSAttack;
-import net.nitrado.api.services.gameservers.fileserver.FileServer;
 import net.nitrado.api.services.gameservers.minecraft.Minecraft;
 import net.nitrado.api.services.gameservers.pluginsystem.PluginSystem;
 import net.nitrado.api.services.gameservers.taskmanager.TaskManager;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class represents a gameserver.
@@ -148,6 +149,7 @@ public class Gameserver extends Service {
         private String path;
         @SerializedName("path_avaiable")
         private boolean pathAvaiable; // TODO: ??
+
         private class Features {
             @SerializedName("has_backups")
             private boolean hasBackups;
@@ -166,6 +168,7 @@ public class Gameserver extends Service {
             @SerializedName("has_database")
             private boolean hasDatabase;
         }
+
         private Features features;
         @SerializedName("log_files")
         private String[] logFiles;
@@ -190,7 +193,7 @@ public class Gameserver extends Service {
      * @return the status
      */
     public Status getGameserverStatus() {
-        return info!=null?info.status:null;
+        return info != null ? info.status : null;
     }
 
     /**
@@ -199,7 +202,7 @@ public class Gameserver extends Service {
      * @return the websocket token
      */
     public String getWebsocketToken() {
-        return info!=null?info.websocketToken:"";
+        return info != null ? info.websocketToken : "";
     }
 
     /**
@@ -209,11 +212,10 @@ public class Gameserver extends Service {
      * @return whether this server is in minecraft mode
      */
     public boolean isMinecraftMode() {
-        return info!=null?info.minecraftMode:false;
+        return info != null ? info.minecraftMode : false;
     }
 
     /**
-     *
      * @return true when the
      */
     public boolean isMinecraftGame() {
@@ -226,7 +228,7 @@ public class Gameserver extends Service {
      * @return the ip
      */
     public String getIp() {
-        return info!=null?info.ip:"";
+        return info != null ? info.ip : "";
     }
 
     /**
@@ -235,7 +237,7 @@ public class Gameserver extends Service {
      * @return the port
      */
     public int getPort() {
-        return info!=null?info.port:0;
+        return info != null ? info.port : 0;
     }
 
     /**
@@ -245,7 +247,7 @@ public class Gameserver extends Service {
      * @return the label
      */
     public String getLabel() {
-        return info!=null?info.label:"";
+        return info != null ? info.label : "";
     }
 
     /**
@@ -254,7 +256,7 @@ public class Gameserver extends Service {
      * @return the type
      */
     public Type getType() {
-        return info!=null?info.type:null;
+        return info != null ? info.type : null;
     }
 
     /**
@@ -263,7 +265,7 @@ public class Gameserver extends Service {
      * @return the memory type
      */
     public MemoryType getMemoryType() {
-        return info!=null?info.memory:null;
+        return info != null ? info.memory : null;
     }
 
     /**
@@ -272,7 +274,7 @@ public class Gameserver extends Service {
      * @return the total amount of memory
      */
     public int getMemoryTotal() {
-        return info!=null?info.memoryTotal:0;
+        return info != null ? info.memoryTotal : 0;
     }
 
     /**
@@ -281,26 +283,27 @@ public class Gameserver extends Service {
      * @return the game
      */
     public String getGame() {
-        return info!=null?info.game:"";
+        return info != null ? info.game : "";
     }
 
     /**
      * Returns the readable name of the game running on this server.
+     *
      * @return
      */
     public String getGameReadable() {
-        return info!=null?info.gameReadable:"";
+        return info != null ? info.gameReadable : "";
     }
 
     public String getPath() {
-        if (info == null || info.gameSpecific==null) {
+        if (info == null || info.gameSpecific == null) {
             return "";
         }
         return info.gameSpecific.path;
     }
 
     public boolean isPathAvaiable() {
-        if (info == null || info.gameSpecific==null) {
+        if (info == null || info.gameSpecific == null) {
             return false;
         }
         return info.gameSpecific.pathAvaiable;
@@ -363,19 +366,18 @@ public class Gameserver extends Service {
     }
 
     public String[] getLogFiles() {
-        if (info == null || info.gameSpecific == null ) {
+        if (info == null || info.gameSpecific == null) {
             return new String[0];
         }
         return info.gameSpecific.logFiles;
     }
 
     public String[] getConfigFiles() {
-        if (info == null || info.gameSpecific == null ) {
+        if (info == null || info.gameSpecific == null) {
             return new String[0];
         }
         return info.gameSpecific.configFiles;
     }
-
 
 
     /**
@@ -383,8 +385,8 @@ public class Gameserver extends Service {
      *
      * @return a list of modpacks
      */
-    public HashMap<String, Modpack> getModpacks() {
-        return info!=null?info.modpacks:null;
+    public Map<String, Modpack> getModpacks() {
+        return info != null ? info.modpacks : null;
     }
 
     /**
@@ -393,7 +395,7 @@ public class Gameserver extends Service {
      * @return the number of slots
      */
     public int getSlots() {
-        return info!=null?info.slots:0;
+        return info != null ? info.slots : 0;
     }
 
     /**
@@ -402,7 +404,7 @@ public class Gameserver extends Service {
      * @return the ISO short of the country the gameserver is in
      */
     public String getLocation() {
-        return info!=null?info.location:"";
+        return info != null ? info.location : "";
     }
 
     /**
@@ -424,7 +426,7 @@ public class Gameserver extends Service {
      * @return the customer settings
      */
     public CustomerSettings getCustomerSettings() {
-        return info!=null?info.settings:null;
+        return info != null ? info.settings : null;
     }
 
     /**
@@ -433,7 +435,7 @@ public class Gameserver extends Service {
      * @return the quota
      */
     public Quota getQuota() {
-        return info!=null?info.quota:null;
+        return info != null ? info.quota : null;
     }
 
     /**
@@ -442,11 +444,12 @@ public class Gameserver extends Service {
      * @return the query
      */
     public Query getQuery() {
-        return info!=null?info.query:null;
+        return info != null ? info.query : null;
     }
 
     /**
      * Starts or restarts the gameserver.
+     *
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public void doRestart() {
@@ -455,9 +458,9 @@ public class Gameserver extends Service {
 
     /**
      * Starts or restarts the gameserver.
-     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      *
      * @param message message for the users
+     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public void doRestart(String message) {
         api.dataPost("services/" + getId() + "/gameservers/restart", new Parameter[]{new Parameter("restart_message", message), new Parameter("message", "Server restart requested (" + api.getApplicationName() + ");)")});
@@ -469,14 +472,14 @@ public class Gameserver extends Service {
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public void doStop() {
-        api.dataPost("services/" + getId() + "/gameservers/stop", new Parameter[]{ new Parameter("message", "Server stop requested (" + api.getApplicationName() + ")")});
+        api.dataPost("services/" + getId() + "/gameservers/stop", new Parameter[]{new Parameter("message", "Server stop requested (" + api.getApplicationName() + ")")});
     }
 
     /**
      * Stops the gameserver.
      *
-     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @param message message for users
+     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public void doStop(String message) {
         api.dataPost("services/" + getId() + "/gameservers/stop", new Parameter[]{new Parameter("stop_message", message), new Parameter("message", "Server stop requested (" + api.getApplicationName() + ")")});
@@ -485,8 +488,8 @@ public class Gameserver extends Service {
     /**
      * Changes the FTP password.
      *
-     * @permission ROLE_WEBINTERFACE_FTP_CREDENTIALS_WRITE
      * @param password new password
+     * @permission ROLE_WEBINTERFACE_FTP_CREDENTIALS_WRITE
      */
     public void changeFTPPassword(String password) {
         api.dataPost("services/" + getId() + "/gameservers/ftp/password", new Parameter[]{new Parameter("password", password)});
@@ -495,8 +498,8 @@ public class Gameserver extends Service {
     /**
      * Changes the MySQL password.
      *
-     * @permission ROLE_WEBINTERFACE_MYSQL_CREDENTIALS_WRITE
      * @param password new password
+     * @permission ROLE_WEBINTERFACE_MYSQL_CREDENTIALS_WRITE
      */
     public void changeMySQLPassword(String password) {
         api.dataPost("services/" + getId() + "/gameservers/mysql/password", new Parameter[]{new Parameter("password", password)});
@@ -504,6 +507,7 @@ public class Gameserver extends Service {
 
     /**
      * Truncates the MySQL database of the gameserver.
+     *
      * @permission ROLE_WEBINTERFACE_MYSQL_CREDENTIALS_WRITE
      */
     public void resetMySQLDatabase() {
@@ -516,8 +520,8 @@ public class Gameserver extends Service {
      * <p>
      * Contains all available games.
      *
-     * @permission ROLE_GAMESERVER_CHANGE_GAME
      * @return a GameList object
+     * @permission ROLE_GAMESERVER_CHANGE_GAME
      */
     public GameList getGames() {
         return GameList.newInstance(api, getId());
@@ -541,8 +545,8 @@ public class Gameserver extends Service {
     /**
      * Installs a new game.
      *
-     * @permission ROLE_GAMESERVER_CHANGE_GAME
      * @param game folder_short of the game
+     * @permission ROLE_GAMESERVER_CHANGE_GAME
      */
     public void installGame(String game) {
         installGame(game, null);
@@ -551,8 +555,8 @@ public class Gameserver extends Service {
     /**
      * Uninstalls a specific game.
      *
-     * @permission ROLE_GAMESERVER_CHANGE_GAME
      * @param game folder_short of the game
+     * @permission ROLE_GAMESERVER_CHANGE_GAME
      */
     public void uninstallGame(String game) {
         api.dataDelete("services/" + getId() + "/gameservers/games/uninstall", new Parameter[]{new Parameter("game", game)});
@@ -561,8 +565,8 @@ public class Gameserver extends Service {
     /**
      * Starts an already installed game.
      *
-     * @permission ROLE_GAMESERVER_CHANGE_GAME
      * @param game folder_short of the game
+     * @permission ROLE_GAMESERVER_CHANGE_GAME
      */
     public void startGame(String game) {
         api.dataPost("services/" + getId() + "/gameservers/games/start", new Parameter[]{new Parameter("game", game)});
@@ -580,9 +584,9 @@ public class Gameserver extends Service {
     /**
      * Returns a PluginSystem object.
      *
+     * @return a PluginSystem object
      * @permission ROLE_WEBINTERFACE_SETTINGS_READ
      * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
-     * @return a PluginSystem object
      */
     public PluginSystem getPluginSystem() {
         return new PluginSystem(this, api);
@@ -634,8 +638,8 @@ public class Gameserver extends Service {
      * <p>
      * Output will be send to the websocket if activated.
      *
-     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @param command the command to execute
+     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public void sendCommand(String command) {
         api.dataPost("services/" + getId() + "/gameservers/app_server/command", new Parameter[]{new Parameter("command", command)});
@@ -646,8 +650,8 @@ public class Gameserver extends Service {
      * <p>
      * Only available for minecraft games.
      *
-     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @return minecraft specific information
+     * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public Minecraft getMinecraft() {
         JsonObject data = api.dataGet("services/" + getId() + "/gameservers/games/minecraft", null);

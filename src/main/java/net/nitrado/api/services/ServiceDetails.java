@@ -14,6 +14,8 @@ public class ServiceDetails {
     @SerializedName("folder_short")
     private String folderShort;
     private String type; // TODO: enum?
+    private String ip;
+    private String hostname;
 
     /**
      * Returns the address of the service.
@@ -67,5 +69,23 @@ public class ServiceDetails {
      */
     public String getType() {
         return type;
+    }
+
+    /**
+     * Returns the id of the server if it is a cloudserver.
+     *
+     * @return the id
+     */
+    public String getIp() {
+        return ip;
+    }
+
+    /**
+     * Returns the hostname of the server if it is a cloudserver.
+     *
+     * @return the hostname
+     */
+    public String getHostname() {
+        return hostname;
     }
 }

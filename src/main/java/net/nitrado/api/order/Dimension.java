@@ -29,7 +29,6 @@ public class Dimension {
     }
 
 
-
     public static class DimensionValues extends HashMap<String, DimensionValue> {
 
     }
@@ -40,8 +39,9 @@ public class Dimension {
     public static class SimpleDimensionValue extends DimensionValue {
         //private String key;
         private int[] value;
+
         public SimpleDimensionValue(int[] value) {
-           // this.key = key;
+            // this.key = key;
             this.value = value;
         }
 
@@ -60,6 +60,7 @@ public class Dimension {
         public ComplexDimensionValue(NameDescription[] values) {
             this.values = values;
         }
+
         public NameDescription[] getValues() {
             return values;
         }
@@ -69,6 +70,7 @@ public class Dimension {
         private String key;
         private String name;
         private String[] description;
+
         public NameDescription(String key, String name, String[] description) {
             this.key = key;
             this.name = name;
@@ -95,7 +97,8 @@ public class Dimension {
 
     public static class PriceDimensionValue extends DimensionValue {
         private int value;
-        public PriceDimensionValue( int value) {
+
+        public PriceDimensionValue(int value) {
             this.value = value;
         }
 
@@ -110,7 +113,9 @@ public class Dimension {
     public static class DimensionValuesDeserializer implements JsonDeserializer<DimensionValues> {
 
         public DimensionValues deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            if (json == null) { return null;}
+            if (json == null) {
+                return null;
+            }
 
             if (!json.isJsonObject()) {
                 throw new JsonParseException("the values of a dimension should be an object {map}");
@@ -126,7 +131,7 @@ public class Dimension {
 
         public void handleJson(JsonElement json, String[] path, DimensionValues values, JsonDeserializationContext context) {
 
-            if (json == null||json.isJsonNull()) {
+            if (json == null || json.isJsonNull()) {
                 return;
             }
             if (json.isJsonArray()) {
@@ -145,9 +150,9 @@ public class Dimension {
                         NameDescription[] intValues = new NameDescription[entries.size()];
 
                         int i = 0;
-                        for (Map.Entry<String, JsonElement> entry: entries) {
+                        for (Map.Entry<String, JsonElement> entry : entries) {
                             JsonObject obj = entry.getValue().getAsJsonObject();
-                            JsonArray desc= obj.get("description").getAsJsonArray();
+                            JsonArray desc = obj.get("description").getAsJsonArray();
                             String[] strDesc = new String[desc.size()];
                             int j = 0;
                             for (JsonElement str : desc) {
@@ -176,8 +181,8 @@ public class Dimension {
 
                 // well, this just seems to be another dimension
 
-                for (Map.Entry<String, JsonElement> entry: entries) {
-                    String[] newPath = new String[path.length+1];
+                for (Map.Entry<String, JsonElement> entry : entries) {
+                    String[] newPath = new String[path.length + 1];
                     for (int i = 0; i < path.length; i++) {
                         newPath[i] = path[i];
                     }
@@ -190,7 +195,7 @@ public class Dimension {
                 return;
             }
 
-            throw new JsonParseException("No idea what to do with "+json);
+            throw new JsonParseException("No idea what to do with " + json);
         }
     }
 

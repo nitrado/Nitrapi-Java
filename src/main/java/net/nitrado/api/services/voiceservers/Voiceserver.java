@@ -29,19 +29,23 @@ public class Voiceserver extends Service {
     }
 
     public Type getType() {
-        return info!=null?info.type:null;
+        return info != null ? info.type : null;
     }
+
     public String getIp() {
-        return info!=null?info.ip:"";
+        return info != null ? info.ip : "";
     }
+
     public int getPort() {
-        return info!=null?info.port:0;
+        return info != null ? info.port : 0;
     }
+
     public int getSlots() {
-        return info!=null?info.slots:0;
+        return info != null ? info.slots : 0;
     }
+
     public boolean isStarted() {
-        return info!=null?info.started:false;
+        return info != null ? info.started : false;
     }
 
     @Override
@@ -53,6 +57,7 @@ public class Voiceserver extends Service {
 
     /**
      * Restarts the voiceserver.
+     *
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public void doRestart() {
@@ -61,6 +66,7 @@ public class Voiceserver extends Service {
 
     /**
      * Stopps the voiceserver. Notice: Not supported by Mumble.
+     *
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public void doStop() {
@@ -69,6 +75,7 @@ public class Voiceserver extends Service {
 
     /**
      * Reinstalls the voiceserver.
+     *
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
     public void doReinstall() {

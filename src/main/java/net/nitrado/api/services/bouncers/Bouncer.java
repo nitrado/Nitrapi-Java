@@ -29,10 +29,10 @@ public class Bouncer extends Service {
 
 
     public int getMaxBouncer() {
-        return info!=null?info.maxBouncer:0;
+        return info != null ? info.maxBouncer : 0;
     }
 
     public BouncerInstance[] getBouncers() {
-        return info!=null?info.bouncers:new BouncerInstance[0];
+        return info != null ? info.bouncers : new BouncerInstance[0];
     }
 }

@@ -3,6 +3,7 @@ package net.nitrado.api.services;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class AutoExtendMethod {
     private int id;
@@ -40,10 +41,9 @@ public class AutoExtendMethod {
     }
 
     /**
-     *
      * @return a map of rental_time to price
      */
-    public HashMap<Integer, Integer> getRentalTimes() {
+    public Map<Integer, Integer> getRentalTimes() {
         return rentalTimes;
     }
 

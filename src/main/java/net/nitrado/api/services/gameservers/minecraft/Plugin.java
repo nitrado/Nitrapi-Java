@@ -3,6 +3,7 @@ package net.nitrado.api.services.gameservers.minecraft;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Information about a Minecraft bukkit/spigot plugin.
@@ -128,7 +129,7 @@ public class Plugin {
      *
      * @return a list of commands
      */
-    public HashMap<String, Command> getCommands() {
+    public Map<String, Command> getCommands() {
         return details.commands;
     }
 }

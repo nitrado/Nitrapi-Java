@@ -12,6 +12,7 @@ public class NitrapiErrorException extends NitrapiException {
     public NitrapiErrorException(String message) {
         this(message, null);
     }
+
     public NitrapiErrorException(String message, String errorId) {
         super(message);
         this.errorId = errorId;
@@ -19,6 +20,7 @@ public class NitrapiErrorException extends NitrapiException {
 
     /**
      * Returns an error id if the error might be on the side of the api. Include this in your support requests.
+     *
      * @return error id for support request
      */
     public String getErrorId() {

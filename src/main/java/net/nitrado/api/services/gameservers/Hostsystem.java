@@ -24,6 +24,7 @@ public class Hostsystem {
         @SerializedName("offline")
         OFFLINE
     }
+
     private Status status;
 
     /**

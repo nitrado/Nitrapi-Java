@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
 public class BungeeCord {
     private boolean enabled;
     private boolean only;
+
     public enum FirewallStatus {
         /**
          * Firewall is deactivated.
@@ -35,6 +36,7 @@ public class BungeeCord {
             }
         }
     }
+
     private FirewallStatus firewall;
     @SerializedName("firewall_ip")
     private String firewallIp;
@@ -51,7 +53,7 @@ public class BungeeCord {
     /**
      * Returns true if only BungeeCord and not the gameserver itself is started.
      *
-     * @return  true if only BungeeCord and not the gameserver itself is started
+     * @return true if only BungeeCord and not the gameserver itself is started
      */
     public boolean isOnly() {
         return only;

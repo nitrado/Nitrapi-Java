@@ -41,7 +41,7 @@ public enum Role {
      */
     ROLE_WEBINTERFACE_FILEBROWSER_WRITE,
     /**
-     * Can see ftp access credentials 
+     * Can see ftp access credentials
      */
     ROLE_WEBINTERFACE_FTP_CREDENTIALS_READ,
     /**
@@ -83,5 +83,9 @@ public enum Role {
     /**
      * Can change server settings
      */
-    ROLE_WEBINTERFACE_SETTINGS_WRITE
+    ROLE_WEBINTERFACE_SETTINGS_WRITE,
+    /**
+     * Can authorize the support
+     */
+    ROLE_SUPPORT_AUTHORIZATION
 }

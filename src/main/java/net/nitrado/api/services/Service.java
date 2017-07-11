@@ -3,7 +3,6 @@ package net.nitrado.api.services;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
-import net.nitrado.api.common.exceptions.NitrapiErrorException;
 import net.nitrado.api.common.http.Parameter;
 
 import java.util.GregorianCalendar;
@@ -147,13 +146,13 @@ public abstract class Service {
     }
 
 
-    private String iso2LangCodeToIso3LangCode(String iso2Code){
+    private String iso2LangCodeToIso3LangCode(String iso2Code) {
         Locale locale = new Locale(iso2Code);
         return locale.getISO3Language();
     }
 
     public String getWebinterfaceUrl() {
-        return "https://webinterface.nitrado.net/?access_token=" + api.getAccessToken() + "&language="+iso2LangCodeToIso3LangCode(api.getLanguage())+"&service_id=" + id;
+        return "https://webinterface.nitrado.net/?access_token=" + api.getAccessToken() + "&language=" + iso2LangCodeToIso3LangCode(api.getLanguage()) + "&service_id=" + id;
     }
 
     /**
@@ -164,7 +163,6 @@ public abstract class Service {
     }
 
     /**
-     *
      * @return true if auto extension is activated for this service
      */
     public boolean hasAutoExtension() {
@@ -172,7 +170,6 @@ public abstract class Service {
     }
 
     /**
-     *
      * @return the comment for this service
      */
     public String getComment() {
@@ -180,8 +177,8 @@ public abstract class Service {
     }
 
     /**
-     * @permission  ROLE_OWNER
      * @return all methods that can be used for auto extending
+     * @permission ROLE_OWNER
      */
     public AutoExtendMethod[] getAutoExtendMethods() {
         JsonObject data = api.dataGet("services/" + id + "/auto_extend", null);
@@ -190,9 +187,9 @@ public abstract class Service {
 
 
     /**
-     * @permission  ROLE_OWNER
      * @param method
      * @param rentalTime
+     * @permission ROLE_OWNER
      */
     public void changeAutoExtendMethod(int method, int rentalTime) {
         api.dataPost("services/" + id + "/auto_extend", new Parameter[]{
@@ -203,18 +200,19 @@ public abstract class Service {
 
     /**
      * internally used.
+     *
      * @param autoExtension
      */
     public void setAutoExtension(boolean autoExtension) {
-        this. autoExtension = autoExtension;
+        this.autoExtension = autoExtension;
     }
 
 
     /**
      * Returns the logs of this server.
      *
-     * @permission ROLE_WEBINTERFACE_LOGS_READ
      * @return a Logs object
+     * @permission ROLE_WEBINTERFACE_LOGS_READ
      */
     public Logs getLogs() {
         JsonObject data = api.dataGet("services/" + getId() + "/logs", null);
@@ -224,14 +222,31 @@ public abstract class Service {
     /**
      * Returns a page of the logs of this server.
      *
-     * @permission ROLE_WEBINTERFACE_LOGS_READ
      * @param page the number of the page
      * @return a Logs object
+     * @permission ROLE_WEBINTERFACE_LOGS_READ
      */
     public Logs getLogs(int page) {
         JsonObject data = api.dataGet("services/" + getId() + "/logs", new Parameter[]{new Parameter("page", page + "")});
         return api.fromJson(data, Logs.class);
     }
+
+    /**
+     * Cancels the service.
+     * Not supported by all product types.
+     */
+    public void cancel() {
+        api.dataPost("services/" + getId() + "/cancel", null);
+    }
+
+    /**
+     * Deletes the service.
+     * You only can delete the service if it's suspended otherwise an error will be thrown.
+     */
+    public void delete() {
+        api.dataDelete("services/" + getId(), null);
+    }
+
 
     /**
      * Refreshes the service-specific data of this service.
@@ -243,24 +258,18 @@ public abstract class Service {
      * <p>
      * Get the service directly via the Nitrapi-Object.
      *
+     * @param api reference to the api
      * @see Nitrapi#getService(int)
      * @see Nitrapi#getServices()
-     * @param api reference to the api
      */
     protected void init(Nitrapi api) {
         this.api = api;
         if (status == Status.ACTIVE) {
-            try {
-                refresh(); // initially load the data
-            } catch (NitrapiErrorException e) {
-                // Service is active, but refreshing the data does not yet lead to correct results.
-                e.printStackTrace();
-            }
+            refresh(); // initially load the data
         }
     }
 
     /**
-     *
      * @param needRole
      * @return true if the user has the requested permission
      */

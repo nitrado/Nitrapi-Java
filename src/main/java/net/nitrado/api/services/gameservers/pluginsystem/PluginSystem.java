@@ -27,6 +27,7 @@ public class PluginSystem {
 
     /**
      * Installs a new plugin system instance.
+     *
      * @permission ROLE_WEBINTERFACE_SETTINGS_READ
      * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
@@ -36,6 +37,7 @@ public class PluginSystem {
 
     /**
      * Removes the current plugin system instance.
+     *
      * @permission ROLE_WEBINTERFACE_SETTINGS_READ
      * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
@@ -45,6 +47,7 @@ public class PluginSystem {
 
     /**
      * Restarts the current plugin system instance.
+     *
      * @permission ROLE_WEBINTERFACE_SETTINGS_READ
      * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
@@ -54,6 +57,7 @@ public class PluginSystem {
 
     /**
      * Stopps the current plugin system instance.
+     *
      * @permission ROLE_WEBINTERFACE_SETTINGS_READ
      * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */

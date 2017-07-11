@@ -1,4 +1,4 @@
-package net.nitrado.api.services.gameservers.fileserver;
+package net.nitrado.api.services.fileserver;
 
 import com.google.gson.annotations.SerializedName;
 

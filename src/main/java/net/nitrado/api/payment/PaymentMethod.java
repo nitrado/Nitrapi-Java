@@ -3,6 +3,7 @@ package net.nitrado.api.payment;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class PaymentMethod {
     private String id;
@@ -24,6 +25,7 @@ public class PaymentMethod {
 
     /**
      * Sets the id of this payment method.
+     *
      * @param id id of this method
      */
     public void setId(String id) {
@@ -48,6 +50,7 @@ public class PaymentMethod {
     public int getMinAmount() {
         return minAmount;
     }
+
     /**
      * @return the maximum amount payable. Overwritten by tariffs array.
      */
@@ -72,7 +75,7 @@ public class PaymentMethod {
     /**
      * @return in case of gc_ideal returns an array of banks to choose one from.
      */
-    public HashMap<String, String> getBanks() {
+    public Map<String, String> getBanks() {
         return banks;
     }
 }

@@ -1,18 +1,24 @@
 package net.nitrado.api;
 
 import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 import net.nitrado.api.common.exceptions.NitrapiErrorException;
 import net.nitrado.api.common.http.HttpClient;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.common.http.ProductionHttpClient;
 import net.nitrado.api.customer.Customer;
+import net.nitrado.api.customer.SSHKeys;
 import net.nitrado.api.order.Dimension;
 import net.nitrado.api.payment.Country;
 import net.nitrado.api.payment.PaymentMethod;
 import net.nitrado.api.services.Service;
 import net.nitrado.api.services.ServiceFactory;
+import net.nitrado.api.services.cloudservers.CloudServer;
 import net.nitrado.api.services.gameservers.GlobalGameList;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
@@ -71,25 +77,60 @@ public class Nitrapi {
         this.accessToken = accessToken;
         this.client = new ProductionHttpClient();
         this.nitrapiUrl = nitrapiUrl;
-        this.gson = new GsonBuilder().registerTypeAdapter(GregorianCalendar.class, new JsonDeserializer<GregorianCalendar>() {
-            public GregorianCalendar deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
 
-                GregorianCalendar calendar = (GregorianCalendar) (GregorianCalendar.getInstance());
-
-                try {
-                    String value = json.getAsString();
-                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                    format.setLenient(false);
-                    Date date = format.parse(value);
-                    calendar.setTime(date);
-                    return calendar;
-                } catch (JsonParseException e) {
-                    throw new IllegalStateException("Invalid Json format to convert Calendar: " + e.getMessage());
-                } catch (ParseException e) {
-                    throw new IllegalStateException("Error to convert Calendar: " + e.getMessage());
+        TypeAdapter<Boolean> booleanAsIntAdapter = new TypeAdapter<Boolean>() {
+            @Override
+            public void write(JsonWriter out, Boolean value) throws IOException {
+                if (value == null) {
+                    out.nullValue();
+                } else {
+                    out.value(value);
                 }
             }
-        }).registerTypeAdapter(Dimension.DimensionValues.class, new Dimension.DimensionValuesDeserializer()).create();
+
+            @Override
+            public Boolean read(JsonReader in) throws IOException {
+                JsonToken peek = in.peek();
+                switch (peek) {
+                    case BOOLEAN:
+                        return in.nextBoolean();
+                    case NULL:
+                        in.nextNull();
+                        return null;
+                    case NUMBER:
+                        return in.nextInt() != 0;
+                    case STRING:
+                        return Boolean.parseBoolean(in.nextString());
+                    default:
+                        throw new IllegalStateException("Expected BOOLEAN or NUMBER but was " + peek);
+                }
+            }
+        };
+
+        this.gson = new GsonBuilder()
+                .registerTypeAdapter(GregorianCalendar.class, new JsonDeserializer<GregorianCalendar>() {
+                    public GregorianCalendar deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+
+                        GregorianCalendar calendar = (GregorianCalendar) (GregorianCalendar.getInstance());
+
+                        try {
+                            String value = json.getAsString();
+                            DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                            format.setLenient(false);
+                            Date date = format.parse(value);
+                            calendar.setTime(date);
+                            return calendar;
+                        } catch (JsonParseException e) {
+                            throw new IllegalStateException("Invalid Json format to convert Calendar: " + e.getMessage());
+                        } catch (ParseException e) {
+                            throw new IllegalStateException("Error to convert Calendar: " + e.getMessage());
+                        }
+                    }
+                })
+                .registerTypeAdapter(Dimension.DimensionValues.class, new Dimension.DimensionValuesDeserializer())
+                .registerTypeAdapter(boolean.class, booleanAsIntAdapter)
+                .registerTypeAdapter(Boolean.class, booleanAsIntAdapter)
+                .create();
     }
 
 
@@ -156,6 +197,18 @@ public class Nitrapi {
     }
 
 
+    /**
+     * Returns the full list of available images.
+     *
+     * @return
+     */
+    public CloudServer.Image[] getImages() {
+        JsonObject data = dataGet("information/cloud_servers/images", null);
+
+        CloudServer.Image[] images = fromJson(data.get("images"), CloudServer.Image[].class);
+        return images;
+    }
+
     // PAYMENT
 
     public Country[] getPaymentCountries() {
@@ -168,13 +221,26 @@ public class Nitrapi {
 
         data = data.get("payment_methods").getAsJsonObject();
         ArrayList<PaymentMethod> methods = new ArrayList<PaymentMethod>(data.entrySet().size());
-        for (Map.Entry<String, JsonElement> entry: data.entrySet()) {
+        for (Map.Entry<String, JsonElement> entry : data.entrySet()) {
             PaymentMethod method = fromJson(entry.getValue(), PaymentMethod.class);
             method.setId(entry.getKey());
             methods.add(method);
         }
 
         return methods.toArray(new PaymentMethod[0]);
+    }
+
+    public SSHKeys getSSHKeys() {
+        JsonObject data = dataGet("user/ssh_keys", null);
+
+        SSHKeys keys = fromJson(data, SSHKeys.class);
+        keys.init(this);
+        return keys;
+    }
+
+    public AccessToken getAccessTokenInfo() {
+        JsonObject data = this.dataGet("token", null);
+        return gson.fromJson(data.get("token"), AccessToken.class);
     }
 
     /**
@@ -207,6 +273,7 @@ public class Nitrapi {
 
     /**
      * Changes the language of error messages
+     *
      * @param lang two char language code
      */
     public void setLanguage(String lang) {
@@ -224,20 +291,21 @@ public class Nitrapi {
      * <p>
      * Creates a GET-Request.
      *
-     * @param url         URL to call
-     * @param parameters  parameters
+     * @param url        URL to call
+     * @param parameters parameters
      * @return the result as a JsonObject
      */
     public JsonObject dataGet(String url, Parameter[] parameters) {
         return client.dataGet(nitrapiUrl + url, accessToken, parameters);
     }
+
     /**
      * Used internally.
      * <p>
      * Creates a POST-Request.
      *
-     * @param url         URL to call
-     * @param parameters  parameters
+     * @param url        URL to call
+     * @param parameters parameters
      * @return the result as a JsonObject
      */
     public JsonObject dataPost(String url, Parameter[] parameters) {
@@ -247,10 +315,23 @@ public class Nitrapi {
     /**
      * Used internally.
      * <p>
+     * Creates a PUT-Request.
+     *
+     * @param url        URL to call
+     * @param parameters parameters
+     * @return the result as a JsonObject
+     */
+    public JsonObject dataPut(String url, Parameter[] parameters) {
+        return client.dataPut(nitrapiUrl + url, accessToken, parameters);
+    }
+
+    /**
+     * Used internally.
+     * <p>
      * Creates a DELETE-Request.
      *
-     * @param url         URL to call
-     * @param parameters  parameters
+     * @param url        URL to call
+     * @param parameters parameters
      * @return the result as a JsonObject
      */
     public JsonObject dataDelete(String url, Parameter[] parameters) {
@@ -285,9 +366,10 @@ public class Nitrapi {
 
     /**
      * This method deserializes the Json read from the specified parse tree into an object of the specified type.
-     * @param json the root of the parse tree of JsonElements from which the object is to be deserialized
+     *
+     * @param json   the root of the parse tree of JsonElements from which the object is to be deserialized
      * @param tClass The class of T
-     * @param <T> the type of the desired object
+     * @param <T>    the type of the desired object
      * @return an object of type T from the json. Returns null if json is null.
      */
     public <T> T fromJson(JsonElement json, Class<T> tClass) {
@@ -305,6 +387,7 @@ public class Nitrapi {
 
     /**
      * Changes the url at which the Nitrapi is.
+     *
      * @param url nitrapi url
      */
     public void changeNitrapiUrl(String url) {
@@ -313,6 +396,7 @@ public class Nitrapi {
 
     /**
      * Changes the name of the application displayed in logs.
+     *
      * @param name name of this application
      */
     public void setApplicationName(String name) {
@@ -321,6 +405,7 @@ public class Nitrapi {
 
     /**
      * Returns the name of the application displayed in logs.
+     *
      * @return the name of this application
      */
     public String getApplicationName() {

@@ -7,6 +7,7 @@ import net.nitrado.api.common.http.Parameter;
 
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Details of the current customer.
@@ -116,7 +117,7 @@ public class Customer {
      *
      * @return the personal details
      */
-    public HashMap<String, String> getProfile() {
+    public Map<String, String> getProfile() {
         return profile;
     }
 

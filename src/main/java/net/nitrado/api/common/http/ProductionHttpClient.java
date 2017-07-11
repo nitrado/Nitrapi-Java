@@ -2,10 +2,9 @@ package net.nitrado.api.common.http;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.nitrado.api.common.exceptions.NitrapiConcurrencyException;
-import net.nitrado.api.common.exceptions.NitrapiErrorException;
-import net.nitrado.api.common.exceptions.NitrapiHttpException;
-import net.nitrado.api.common.exceptions.NitrapiMaintenanceException;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
+import net.nitrado.api.common.exceptions.*;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -30,16 +29,18 @@ public class ProductionHttpClient implements HttpClient {
         fullUrl.append(url);
         if (parameters != null) {
             for (Parameter parameter : parameters) {
-                fullUrl.append(first ? "?" : "&");
-                fullUrl.append(parameter.getKey());
-                fullUrl.append("=");
-                try {
-                    fullUrl.append(URLEncoder.encode(parameter.getValue(), "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    // everyone should support utf-8 so this should not happen
-                    e.printStackTrace();
+                if (parameter.getValue() != null) {
+                    fullUrl.append(first ? "?" : "&");
+                    fullUrl.append(parameter.getKey());
+                    fullUrl.append("=");
+                    try {
+                        fullUrl.append(URLEncoder.encode(parameter.getValue(), "UTF-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        // everyone should support utf-8 so this should not happen
+                        e.printStackTrace();
+                    }
+                    first = false;
                 }
-                first = false;
             }
         }
         fullUrl.append(first ? "?" : "&");
@@ -86,6 +87,45 @@ public class ProductionHttpClient implements HttpClient {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             connection.setDoOutput(true);
             connection.setRequestMethod("POST");
+            connection.setRequestProperty("Authorization", "Bearer " + accessToken);
+
+            // write post parameters
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
+            writer.write(params);
+            writer.flush();
+            writer.close();
+
+
+            BufferedReader reader;
+            if (connection.getResponseCode() == 200 || connection.getResponseCode() == 201) {
+                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            } else {
+                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+            }
+            StringBuffer response = new StringBuffer();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+
+            reader.close();
+
+            return parseResult(response, connection);
+        } catch (IOException e) {
+            throw new NitrapiHttpException(e);
+        }
+    }
+
+    public JsonObject dataPut(String url, String accessToken, Parameter[] parameters) {
+        String params = prepareParameterString(parameters);
+
+        url += "?locale=" + locale;
+
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestMethod("PUT");
             connection.setRequestProperty("Authorization", "Bearer " + accessToken);
 
             // write post parameters
@@ -177,7 +217,12 @@ public class ProductionHttpClient implements HttpClient {
             connection.getOutputStream().close();
 
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedReader reader;
+            if (connection.getResponseCode() == 200 || connection.getResponseCode() == 201) {
+                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            } else {
+                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+            }
             StringBuffer response = new StringBuffer();
             String line;
 
@@ -195,25 +240,36 @@ public class ProductionHttpClient implements HttpClient {
     }
 
 
-
     private String prepareParameterString(Parameter[] parameters) {
         // create POST parameter string
-        boolean first = false;
         StringBuilder params = new StringBuilder();
         if (parameters != null) {
             for (Parameter parameter : parameters) {
-                params.append(first ? "?" : "&");
-                params.append(parameter.getKey());
-                params.append("=");
-                try {
-                    params.append(URLEncoder.encode(parameter.getValue(), "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    // everyone should support utf-8 so this should not happen
-                    e.printStackTrace();
-                }
+                addParameter(params, parameter);
             }
         }
         return params.toString();
+    }
+
+    private void addParameter(StringBuilder params, Parameter parameter) {
+        if (parameter.getKey() == null) {
+            // Add subParameters
+            for (Parameter subParameter: parameter.getSubParameters()) {
+                addParameter(params, subParameter);
+            }
+        }
+
+        if (parameter.getValue() != null) {
+            params.append("&");
+            params.append(parameter.getKey());
+            params.append("=");
+            try {
+                params.append(URLEncoder.encode(parameter.getValue(), "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                // everyone should support utf-8 so this should not happen
+                e.printStackTrace();
+            }
+        }
     }
 
     private JsonObject parseResult(StringBuffer response, HttpURLConnection connection) throws IOException {
@@ -237,7 +293,14 @@ public class ProductionHttpClient implements HttpClient {
         }
 
         JsonParser parser = new JsonParser();
-        JsonObject result = (JsonObject) parser.parse(response.toString());
+        JsonObject result;
+        try {
+            result = (JsonObject) parser.parse(response.toString());
+        } catch (JsonSyntaxException e) {
+            // invalid json
+            result =  new JsonObject();
+            result.addProperty("message", "Invalid json: " + response.toString());
+        }
 
 
         if (connection.getResponseCode() < 300) { // OK
@@ -245,7 +308,7 @@ public class ProductionHttpClient implements HttpClient {
             if (result.get("data") != null) {
                 return result.get("data").getAsJsonObject();
             }
-            
+
             return result;
         }
 
@@ -258,6 +321,8 @@ public class ProductionHttpClient implements HttpClient {
 
 
         switch (connection.getResponseCode()) {
+            case 401:
+                throw new NitrapiAccessTokenInvalidException(message);
             case 428:
                 throw new NitrapiConcurrencyException(message);
             case 503:

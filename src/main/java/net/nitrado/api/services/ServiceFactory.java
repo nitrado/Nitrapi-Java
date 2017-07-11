@@ -39,7 +39,7 @@ public class ServiceFactory {
     private static String toCamelCase(String s) {
         String[] parts = s.split("_");
         String camelCaseString = "";
-        for (String part : parts){
+        for (String part : parts) {
             camelCaseString = camelCaseString + toProperCase(part);
         }
         return camelCaseString;

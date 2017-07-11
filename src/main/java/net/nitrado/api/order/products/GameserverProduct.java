@@ -11,7 +11,6 @@ public class GameserverProduct extends DimensionPricing {
     }
 
     /**
-     *
      * @param game folder short
      */
     public void setGame(String game) {

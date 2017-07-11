@@ -13,7 +13,7 @@ Add the following to the `<dependencies>` section of your `pom.xml`:
 <dependency>
     <groupId>net.nitrado</groupId>
     <artifactId>nitrapi</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -37,6 +37,9 @@ try {
     // ...
 } catch (NitrapiErrorException e) {
     // There was an error in our request to the api.
+    // ...
+} catch (NitrapiAccessTokenInvalidException e) {
+    // The access token is no longer valid.
     // ...
 } catch (NitrapiHttpException e) {
     // There was an error connecting to the api.

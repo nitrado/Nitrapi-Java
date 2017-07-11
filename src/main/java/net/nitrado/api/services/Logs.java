@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
  * This class represents log entries for a gameserver that are split up in pages.
  * <p>
  * Use Gameserver.getLogs(page) to get a certain page
+ *
  * @see Gameserver#getLogs(int)
  */
 public class Logs {
@@ -22,6 +23,7 @@ public class Logs {
         @SerializedName("created_at")
         private GregorianCalendar createdAt;
         private String ip;
+        @SerializedName("admin")
         private boolean isAdmin;
 
         /**
@@ -60,12 +62,23 @@ public class Logs {
             return createdAt;
         }
 
-        public String getIp() {
-            return ip;
-        }
 
+        /**
+         * Returns admin.
+         *
+         * @return admin
+         */
         public boolean isAdmin() {
             return isAdmin;
+        }
+
+        /**
+         * Returns ip.
+         *
+         * @return ip
+         */
+        public String getIp() {
+            return ip;
         }
     }
 

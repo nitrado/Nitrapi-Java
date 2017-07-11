@@ -9,8 +9,8 @@ import net.nitrado.api.services.gameservers.customersettings.CustomerSettings;
 import net.nitrado.api.services.gameservers.customersettings.CustomerSettingsNotFoundException;
 import net.nitrado.api.services.gameservers.ddoshistory.DDoSAttack;
 import net.nitrado.api.services.gameservers.ddoshistory.DDoSStat;
-import net.nitrado.api.services.gameservers.fileserver.FileEntry;
-import net.nitrado.api.services.gameservers.fileserver.FileServer;
+import net.nitrado.api.services.fileserver.FileEntry;
+import net.nitrado.api.services.fileserver.FileServer;
 import net.nitrado.api.services.gameservers.taskmanager.Task;
 import net.nitrado.api.services.gameservers.taskmanager.TaskManager;
 import org.junit.Before;
@@ -157,7 +157,6 @@ public class GameserverTest extends ApiTestCase {
         client.addNextResponseFromFile("services/gameservers/stats.json");
         Stats stats = server.getStats();
         assertEquals(5, stats.getCurrentPlayers().length);
-        assertEquals(3, stats.getMaxPlayers().length);
         assertEquals(3, stats.getCpuUsage().length);
         assertEquals(3, stats.getMemoryUsage().length);
     }

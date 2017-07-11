@@ -15,15 +15,19 @@ public class BouncerInstance {
     public String getIdent() {
         return ident;
     }
+
     public String getPassword() {
         return password;
     }
+
     public String getComment() {
         return comment;
     }
+
     public String getServerName() {
         return server.name;
     }
+
     public int getServerPort() {
         return server.port;
     }
