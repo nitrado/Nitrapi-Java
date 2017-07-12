@@ -1,5 +1,6 @@
 package net.nitrado.api.order;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
@@ -131,6 +132,23 @@ public abstract class Pricing {
         public Map<Integer, Integer> getPrices() {
             return prices;
         }
+    }
+
+    /**
+     * Returns the price for extending a specific service.
+     * @param service id of the service
+     * @return the prices for extending this service
+     */
+    public Map<Integer, Integer> getExtendPricesForService(int service) {
+        JsonObject data = nitrapi.dataGet("order/pricing/" + product, new Parameter[]{
+                new Parameter("method", "extend"),
+                new Parameter("service_id", service)
+        }).get("extend").getAsJsonObject().get("prices").getAsJsonObject();
+        HashMap<Integer, Integer> result = new HashMap<Integer, Integer>();
+        for (Map.Entry<String, JsonElement> entry: data.entrySet()) {
+            result.put(Integer.parseInt(entry.getKey()), entry.getValue().getAsInt());
+        }
+        return result;
     }
 
     /**
