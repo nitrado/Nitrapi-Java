@@ -251,6 +251,7 @@ public class CloudServer extends Service {
         private String name;
         @SerializedName("is_windows")
         private boolean windows;
+        @SerializedName("default")
         private boolean isDefault;
         @SerializedName("has_daemon")
         private boolean hasDaemon;

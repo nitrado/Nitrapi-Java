@@ -85,6 +85,14 @@ public enum Role {
      */
     ROLE_WEBINTERFACE_SETTINGS_WRITE,
     /**
+     * Can edit the server page
+     */
+    ROLE_WEBINTERFACE_SERVERPAGE_EDIT,
+    /**
+     * Can execute live commands
+     */
+    ROLE_WEBINTERFACE_LIVE_COMMANDS,
+    /**
      * Can authorize the support
      */
     ROLE_SUPPORT_AUTHORIZATION
