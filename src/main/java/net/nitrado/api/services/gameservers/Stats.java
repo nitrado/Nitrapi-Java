@@ -4,17 +4,16 @@ package net.nitrado.api.services.gameservers;
  * This class represents the statistics of the gameserver.
  */
 public class Stats {
-    private long[][] currentPlayers;
-    private long[][] cpuUsage;
-    private long[][] cpuUsageNitradorized;
-    private long[][] memoryUsage;
+    private Long[][] currentPlayers;
+    private Long[][] cpuUsage;
+    private Long[][] memoryUsage;
 
     /**
      * Returns statistics of the amount of current players.
      *
      * @return statistics of the amount of current players
      */
-    public long[][] getCurrentPlayers() {
+    public Long[][] getCurrentPlayers() {
         return currentPlayers;
     }
 
@@ -23,12 +22,8 @@ public class Stats {
      *
      * @return statistics of the cpu usage
      */
-    public long[][] getCpuUsage() {
+    public Long[][] getCpuUsage() {
         return cpuUsage;
-    }
-
-    public long[][] getCpuUsageNitradorized() {
-        return cpuUsageNitradorized;
     }
 
     /**
@@ -36,7 +31,7 @@ public class Stats {
      *
      * @return statistics of the memory usage
      */
-    public long[][] getMemoryUsage() {
+    public Long[][] getMemoryUsage() {
         return memoryUsage;
     }
 }

@@ -585,7 +585,7 @@ public class CloudServer extends Service {
      * @param time valid time parameters: 1h, 4h, 1d, 7d
      * @return
      */
-    public Resource[] getResourceUsage(int time) {
+    public Resource[] getResourceUsage(String time) {
         JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/resources", new Parameter[]{
                 new Parameter("time", time)
         });
