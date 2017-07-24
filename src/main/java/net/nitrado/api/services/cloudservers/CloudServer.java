@@ -11,6 +11,7 @@ import net.nitrado.api.services.cloudservers.systemd.Systemd;
 import net.nitrado.api.services.fileserver.FileServer;
 
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 /**
  * This class represents a CloudServer.
@@ -414,6 +415,86 @@ public class CloudServer extends Service {
     }
 
     /**
+     * This class represents a current_month.
+     */
+    public class CurrentMonth {
+        private int used;
+        private int available;
+
+        /**
+         * Returns used traffic in MB.
+         *
+         * @return used traffic in MB
+         */
+        public int getUsed() {
+            return used;
+        }
+
+        /**
+         * Returns available traffic in MB.
+         *
+         * @return available traffic in MB
+         */
+        public int getAvailable() {
+            return available;
+        }
+    }
+
+    /**
+     * This class represents a TrafficEntry.
+     */
+    public class TrafficEntry {
+        private int incoming;
+        private int outgoing;
+
+        /**
+         * Returns incoming traffic in MB.
+         *
+         * @return incoming traffic in MB
+         */
+        public int getIncoming() {
+            return incoming;
+        }
+
+        /**
+         * Returns outgoing traffic in MB.
+         *
+         * @return outgoing traffic in MB
+         */
+        public int getOutgoing() {
+            return outgoing;
+        }
+    }
+
+    /**
+     * This class represents a TrafficStatistics.
+     */
+    public class TrafficStatistics {
+        @SerializedName("current_month")
+        private CurrentMonth currentMonth;
+        @SerializedName("last_31_days")
+        private HashMap<String, TrafficEntry> last31Days;
+
+        /**
+         * Returns currentMonth.
+         *
+         * @return currentMonth
+         */
+        public CurrentMonth getCurrentMonth() {
+            return currentMonth;
+        }
+
+        /**
+         * Returns last31Days.
+         *
+         * @return last31Days
+         */
+        public HashMap<String, TrafficEntry> getLast31Days() {
+            return last31Days;
+        }
+    }
+
+    /**
      * The Status of the CloudServer.
      *
      * @return cloudserverStatus
@@ -712,6 +793,17 @@ public class CloudServer extends Service {
 
         User[] usersusers = api.fromJson(data.get("users").getAsJsonObject().get("users"), User[].class);
         return usersusers;
+    }
+
+    /**
+     * Returns the daily traffic usage of the last 30 days.
+     * @return TrafficStatistics
+     */
+    public TrafficStatistics getTrafficStatistics() {
+        JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/traffic", null);
+
+        TrafficStatistics traffic = api.fromJson(data.get("traffic"), TrafficStatistics.class);
+        return traffic;
     }
 
     @Override
