@@ -112,7 +112,12 @@ public class Gameserver extends Service {
          * The host of this gameserver is currently unreachable.
          */
         @SerializedName("hostdown")
-        HOST_DOWN
+        HOST_DOWN,
+        /**
+         * The server is currently updating.
+         */
+        @SerializedName("updating")
+        UPDATING
     }
 
     /**
