@@ -3,6 +3,7 @@ package net.nitrado.api.services.gameservers.minecraft;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.gameservers.Gameserver;
 
@@ -153,7 +154,7 @@ public class Minecraft {
      * @param firewallIp ip allowed by the firewall
      * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
-    public void changeBungeeCord(boolean enabled, boolean only, BungeeCord.FirewallStatus firewall, String firewallIp) {
+    public void changeBungeeCord(boolean enabled, boolean only, BungeeCord.FirewallStatus firewall, String firewallIp) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/gameservers/games/minecraft/bungeecord", new Parameter[]{
                 new Parameter("enabled", enabled ? "1" : "0"),
                 new Parameter("only", only ? "1" : "0"),
@@ -173,7 +174,7 @@ public class Minecraft {
      * @param limit amount of entities that should stay in a chunk
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_WRITE
      */
-    public void doChunkfix(String world, int limit) {
+    public void doChunkfix(String world, int limit) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/gameservers/games/minecraft/chunkfix", new Parameter[]{
                 new Parameter("world", world),
                 new Parameter("limit", limit + "")
@@ -188,7 +189,7 @@ public class Minecraft {
      * @param password password for McMyAdmin
      * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
-    public void changeMcMyAdmin(boolean enabled, String username, String password) {
+    public void changeMcMyAdmin(boolean enabled, String username, String password) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/gameservers/games/minecraft/mcmyadmin", new Parameter[]{
                 new Parameter("enabled", enabled ? "1" : "0"),
                 new Parameter("username", username),
@@ -204,7 +205,7 @@ public class Minecraft {
      * @param password password for Remote Toolkit
      * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
-    public void changeRemoteToolkit(boolean enabled, String username, String password) {
+    public void changeRemoteToolkit(boolean enabled, String username, String password) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/gameservers/games/minecraft/rtk", new Parameter[]{
                 new Parameter("enabled", enabled ? "1" : "0"),
                 new Parameter("username", username),
@@ -223,7 +224,7 @@ public class Minecraft {
      * @param reset   map will be reset if this is true
      * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
-    public void changeOverviewMap(boolean enabled, boolean signs, boolean reset, String ipsonly) {
+    public void changeOverviewMap(boolean enabled, boolean signs, boolean reset, String ipsonly) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/gameservers/games/minecraft/overviewmap", new Parameter[]{
                 new Parameter("enabled", enabled ? "1" : "0"),
                 new Parameter("signs", signs ? "1" : "0"),
@@ -238,7 +239,7 @@ public class Minecraft {
      *
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void renderOverviewMap() {
+    public void renderOverviewMap() throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/gameservers/games/minecraft/overviewmap_render", null);
     }
 
@@ -248,7 +249,7 @@ public class Minecraft {
      * @return the log as a string
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public String getOverviewMapLogs() {
+    public String getOverviewMapLogs() throws NitrapiException {
         return api.dataGet("services/" + service.getId() + "/gameservers/games/minecraft/overviewmap_log", null).get("log").getAsString();
     }
 
@@ -260,7 +261,7 @@ public class Minecraft {
      * @param md5 md5-hash of the version you want to switch to
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void changeVersion(String md5) {
+    public void changeVersion(String md5) throws NitrapiException {
         api.dataPost("/services/" + service.getId() + "/gameservers/games/minecraft/change_version", new Parameter[]{new Parameter("md5", md5)});
     }
 
@@ -272,7 +273,7 @@ public class Minecraft {
      * @return the uuid of this minecraft-user
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public String getUserUUID(String username) {
+    public String getUserUUID(String username) throws NitrapiException {
         return api.dataGet("services/" + service.getId() + "/gameservers/games/minecraft/uuid", new Parameter[]{new Parameter("username", username)}).get("user").getAsJsonObject().get("uuid").getAsString();
     }
 
@@ -283,7 +284,7 @@ public class Minecraft {
      * @return the user avatar base64 encoded
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public String getUserAvatar(String username) {
+    public String getUserAvatar(String username) throws NitrapiException {
         return api.dataGet("services/" + service.getId() + "/gameservers/games/minecraft/avatar", new Parameter[]{new Parameter("username", username)}).get("user").getAsJsonObject().get("avatar").getAsString();
     }
 
@@ -293,7 +294,7 @@ public class Minecraft {
      * @return a list of installed plugins
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public Plugin[] getPlugins() {
+    public Plugin[] getPlugins() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + service.getId() + "/gameservers/games/minecraft/plugins", null);
         return api.fromJson(data.get("plugins"), Plugin[].class);
     }
@@ -307,7 +308,7 @@ public class Minecraft {
      * @param world world.getGame() + "/" + world.getWorld()
      * @permission ROLE_WEBINTERFACE_BACKUPS_WRITE
      */
-    public void createBackup(String world) {
+    public void createBackup(String world) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/gameservers/games/minecraft/backup", new Parameter[]{
                 new Parameter("world", world)
         });
@@ -320,7 +321,7 @@ public class Minecraft {
      * @param timestamp timestamp of the backup
      * @permission ROLE_WEBINTERFACE_BACKUPS_WRITE
      */
-    public void restoreBackup(long timestamp) {
+    public void restoreBackup(long timestamp) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/gameservers/games/minecraft/backup/" + timestamp + "/restore", null);
     }
 
@@ -332,7 +333,7 @@ public class Minecraft {
      * @param timestamp timestamp of the backup
      * @permission ROLE_WEBINTERFACE_BACKUPS_WRITE
      */
-    public void destroyBackup(long timestamp) {
+    public void destroyBackup(long timestamp) throws NitrapiException {
         api.dataDelete("services/" + service.getId() + "/gameservers/games/minecraft/backup/" + timestamp, null);
     }
 }

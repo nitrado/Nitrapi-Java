@@ -1,6 +1,7 @@
 package net.nitrado.api.common.http;
 
 import com.google.gson.JsonObject;
+import net.nitrado.api.common.exceptions.NitrapiException;
 
 import java.io.InputStream;
 
@@ -16,7 +17,7 @@ public interface HttpClient {
      * @param parameters  parameters
      * @return the result as a JsonObject
      */
-    JsonObject dataGet(String url, String accessToken, Parameter[] parameters);
+    JsonObject dataGet(String url, String accessToken, Parameter[] parameters) throws NitrapiException;
 
     /**
      * Creates a POST-Request.
@@ -26,7 +27,7 @@ public interface HttpClient {
      * @param parameters  parameters
      * @return the result as a JsonObject
      */
-    JsonObject dataPost(String url, String accessToken, Parameter[] parameters);
+    JsonObject dataPost(String url, String accessToken, Parameter[] parameters) throws NitrapiException;
 
     /**
      * Creates a PUT-Request.
@@ -36,7 +37,7 @@ public interface HttpClient {
      * @param parameters  parameters
      * @return the result as a JsonObject
      */
-    JsonObject dataPut(String url, String accessToken, Parameter[] parameters);
+    JsonObject dataPut(String url, String accessToken, Parameter[] parameters) throws NitrapiException;
 
     /**
      * Creates a DELETE-Request.
@@ -46,7 +47,7 @@ public interface HttpClient {
      * @param parameters  parameters
      * @return the result as a JsonObject
      */
-    JsonObject dataDelete(String url, String accessToken, Parameter[] parameters);
+    JsonObject dataDelete(String url, String accessToken, Parameter[] parameters) throws NitrapiException;
 
     /**
      * Creates a GET-Request and returns the raw InputStream.
@@ -54,7 +55,7 @@ public interface HttpClient {
      * @param url URL to call
      * @return the InputStream of the response
      */
-    InputStream rawGet(String url);
+    InputStream rawGet(String url) throws NitrapiException;
 
     /**
      * Creates a POST-Request and returns the raw InputStream.
@@ -63,7 +64,7 @@ public interface HttpClient {
      * @param token access token of the current user
      * @param body  body of the POST-REQUEST
      */
-    void rawPost(String url, String token, byte[] body);
+    void rawPost(String url, String token, byte[] body) throws NitrapiException;
 
     /**
      * Returns the total rate limit for the current user.

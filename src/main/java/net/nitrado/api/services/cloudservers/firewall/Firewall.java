@@ -2,6 +2,7 @@ package net.nitrado.api.services.cloudservers.firewall;
 
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 
@@ -142,7 +143,7 @@ public class Firewall {
      *
      * @param number
      */
-    public void deleteRule(int number) {
+    public void deleteRule(int number) throws NitrapiException {
         api.dataDelete("services/" + service.getId() + "/cloud_servers/firewall/remove", new Parameter[]{
                 new Parameter("number", number)
         });
@@ -151,14 +152,14 @@ public class Firewall {
     /**
      * Enables the firewall
      */
-    public void enableFirewall() {
+    public void enableFirewall() throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/firewall/enable", null);
     }
 
     /**
      * Disables the firewall
      */
-    public void disableFirewall() {
+    public void disableFirewall() throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/firewall/disable", null);
     }
 
@@ -171,7 +172,7 @@ public class Firewall {
      * @param protocol
      * @param comment
      */
-    public void addRule(String sourceIp, String targetIp, Integer targetPort, Protocol protocol, String comment) {
+    public void addRule(String sourceIp, String targetIp, Integer targetPort, Protocol protocol, String comment) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/firewall/add", new Parameter[]{
                 new Parameter("source_ip", sourceIp),
                 new Parameter("target_ip", targetIp),

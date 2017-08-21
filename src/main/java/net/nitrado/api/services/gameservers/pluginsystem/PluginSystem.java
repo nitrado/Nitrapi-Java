@@ -2,6 +2,7 @@ package net.nitrado.api.services.gameservers.pluginsystem;
 
 import com.google.gson.JsonObject;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.services.gameservers.Gameserver;
 
 /**
@@ -31,7 +32,7 @@ public class PluginSystem {
      * @permission ROLE_WEBINTERFACE_SETTINGS_READ
      * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
-    public void doInstall() {
+    public void doInstall() throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/gameservers/plugin_system/install", null);
     }
 
@@ -41,7 +42,7 @@ public class PluginSystem {
      * @permission ROLE_WEBINTERFACE_SETTINGS_READ
      * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
-    public void doUninstall() {
+    public void doUninstall() throws NitrapiException {
         api.dataDelete("services/" + service.getId() + "/gameservers/plugin_system/uninstall", null);
     }
 
@@ -51,7 +52,7 @@ public class PluginSystem {
      * @permission ROLE_WEBINTERFACE_SETTINGS_READ
      * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
-    public void doRestart() {
+    public void doRestart() throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/gameservers/plugin_system/restart", null);
     }
 
@@ -61,7 +62,7 @@ public class PluginSystem {
      * @permission ROLE_WEBINTERFACE_SETTINGS_READ
      * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
-    public void doStop() {
+    public void doStop() throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/gameservers/plugin_system/stop", null);
     }
 
@@ -70,7 +71,7 @@ public class PluginSystem {
      *
      * @return a PluginSystemInfo object with further information
      */
-    public PluginSystemInfo info() {
+    public PluginSystemInfo info() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + service.getId() + "/gameservers/plugin_system/info", null);
         return api.fromJson(data, PluginSystemInfo.class);
     }

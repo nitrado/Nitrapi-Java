@@ -3,6 +3,7 @@ package net.nitrado.api.services.cloudservers;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 import net.nitrado.api.services.cloudservers.apps.AppsManager;
@@ -518,7 +519,7 @@ public class CloudServer extends Service {
      * @return dynamic
      */
     public boolean isDynamic() {
-        return data != null ? data.dynamic : null;
+        return data != null && data.dynamic;
     }
 
     /**
@@ -554,7 +555,7 @@ public class CloudServer extends Service {
      * @return daemonAvailable
      */
     public boolean isDaemonAvailable() {
-        return data != null ? data.daemonAvailable : null;
+        return data != null && data.daemonAvailable;
     }
 
     /**
@@ -563,7 +564,7 @@ public class CloudServer extends Service {
      * @return passwordAvailable
      */
     public boolean isPasswordAvailable() {
-        return data != null ? data.passwordAvailable : null;
+        return data != null && data.passwordAvailable;
     }
 
     /**
@@ -572,7 +573,7 @@ public class CloudServer extends Service {
      * @return bandwidthLimited
      */
     public boolean isBandwidthLimited() {
-        return data != null ? data.bandwidthLimited : null;
+        return data != null && data.bandwidthLimited;
     }
 
 
@@ -581,7 +582,7 @@ public class CloudServer extends Service {
      *
      * @return a list of all backups.
      */
-    public Backup[] getBackups() {
+    public Backup[] getBackups() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/backups", null);
 
         Backup[] backups = api.fromJson(data.get("backups"), Backup[].class);
@@ -591,7 +592,7 @@ public class CloudServer extends Service {
     /**
      * Creates a new backup.
      */
-    public void createBackup() {
+    public void createBackup() throws NitrapiException {
         api.dataPost("services/" + getId() + "/cloud_servers/backups", null);
     }
 
@@ -600,7 +601,7 @@ public class CloudServer extends Service {
      *
      * @param backupId
      */
-    public void restoreBackup(String backupId) {
+    public void restoreBackup(String backupId) throws NitrapiException {
         api.dataPost("services/" + getId() + "/cloud_servers/backups/" + backupId + "/restore", null);
     }
 
@@ -609,20 +610,20 @@ public class CloudServer extends Service {
      *
      * @param backupId
      */
-    public void deleteBackup(String backupId) {
+    public void deleteBackup(String backupId) throws NitrapiException {
         api.dataDelete("services/" + getId() + "/cloud_servers/backups/" + backupId + "", null);
     }
 
     /**
      */
-    public void doBoot() {
+    public void doBoot() throws NitrapiException {
         api.dataPost("services/" + getId() + "/cloud_servers/boot", null);
     }
 
     /**
      * @param hostname
      */
-    public void changeHostame(String hostname) {
+    public void changeHostame(String hostname) throws NitrapiException {
         api.dataPost("services/" + getId() + "/cloud_servers/hostname", new Parameter[]{
                 new Parameter("hostname", hostname)
         });
@@ -632,7 +633,7 @@ public class CloudServer extends Service {
      * @param ipAddress
      * @param hostname
      */
-    public void changePTREntry(String ipAddress, String hostname) {
+    public void changePTREntry(String ipAddress, String hostname) throws NitrapiException {
         api.dataPost("services/" + getId() + "/cloud_servers/ptr/" + ipAddress + "", new Parameter[]{
                 new Parameter("hostname", hostname)
         });
@@ -641,7 +642,7 @@ public class CloudServer extends Service {
     /**
      * @param imageId
      */
-    public void doReinstall(int imageId) {
+    public void doReinstall(int imageId) throws NitrapiException {
         api.dataPost("services/" + getId() + "/cloud_servers/reinstall", new Parameter[]{
                 new Parameter("image_id", imageId)
         });
@@ -649,14 +650,14 @@ public class CloudServer extends Service {
 
     /**
      */
-    public void doReboot() {
+    public void doReboot() throws NitrapiException {
         api.dataPost("services/" + getId() + "/cloud_servers/reboot", null);
     }
 
     /**
      * A hard reset will turn of your Cloud Server instantly. This can cause data loss or file system corruption. Only trigger if the instance does not respond to normal reboots.
      */
-    public void doReset() {
+    public void doReset() throws NitrapiException {
         api.dataPost("services/" + getId() + "/cloud_servers/hard_reset", null);
     }
 
@@ -666,7 +667,7 @@ public class CloudServer extends Service {
      * @param time valid time parameters: 1h, 4h, 1d, 7d
      * @return
      */
-    public Resource[] getResourceUsage(String time) {
+    public Resource[] getResourceUsage(String time) throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/resources", new Parameter[]{
                 new Parameter("time", time)
         });
@@ -679,7 +680,7 @@ public class CloudServer extends Service {
      * @param lines
      * @return
      */
-    public String getConsoleLogs(int lines) {
+    public String getConsoleLogs(int lines) throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/console_logs", new Parameter[]{
                 new Parameter("lines", lines)
         });
@@ -691,7 +692,7 @@ public class CloudServer extends Service {
     /**
      * @return
      */
-    public String getNoVNCUrl() {
+    public String getNoVNCUrl() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/console", null);
 
         String consoleurl = api.fromJson(data.get("console").getAsJsonObject().get("url"), String.class);
@@ -701,7 +702,7 @@ public class CloudServer extends Service {
     /**
      * @return
      */
-    public String getInitialPassword() {
+    public String getInitialPassword() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/password", null);
 
         String password = api.fromJson(data.get("password"), String.class);
@@ -710,14 +711,14 @@ public class CloudServer extends Service {
 
     /**
      */
-    public void doShutdown() {
+    public void doShutdown() throws NitrapiException {
         api.dataPost("services/" + getId() + "/cloud_servers/shutdown", null);
     }
 
     /**
      * @return
      */
-    public net.nitrado.api.services.cloudservers.firewall.Firewall getFirewall() {
+    public net.nitrado.api.services.cloudservers.firewall.Firewall getFirewall() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/firewall", null);
 
         net.nitrado.api.services.cloudservers.firewall.Firewall firewall = api.fromJson(data.get("firewall"), net.nitrado.api.services.cloudservers.firewall.Firewall.class);
@@ -747,7 +748,7 @@ public class CloudServer extends Service {
      * @return SupportAuthorization
      * @permission ROLE_SUPPORT_AUTHORIZATION
      */
-    public SupportAuthorization getSupportAuthorization() {
+    public SupportAuthorization getSupportAuthorization() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/support_authorization", null);
 
         SupportAuthorization support_authorization = api.fromJson(data.get("support_authorization"), SupportAuthorization.class);
@@ -759,7 +760,7 @@ public class CloudServer extends Service {
      *
      * @permission ROLE_SUPPORT_AUTHORIZATION
      */
-    public void createSupportAuthorization() {
+    public void createSupportAuthorization() throws NitrapiException {
         api.dataPost("services/" + getId() + "/support_authorization", null);
     }
 
@@ -768,7 +769,7 @@ public class CloudServer extends Service {
      *
      * @permission ROLE_SUPPORT_AUTHORIZATION
      */
-    public void deleteSupportAuthorization() {
+    public void deleteSupportAuthorization() throws NitrapiException {
         api.dataDelete("services/" + getId() + "/support_authorization", null);
     }
 
@@ -788,7 +789,7 @@ public class CloudServer extends Service {
      * List all the users (with groups) on a Cloud Server. These users are located in the /etc/passwd. All newly creates users on the system are included in this array.
      * @return User[]
      */
-    public User[] getUsers() {
+    public User[] getUsers() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/user", null);
 
         User[] usersusers = api.fromJson(data.get("users").getAsJsonObject().get("users"), User[].class);
@@ -799,7 +800,7 @@ public class CloudServer extends Service {
      * Returns the daily traffic usage of the last 30 days.
      * @return TrafficStatistics
      */
-    public TrafficStatistics getTrafficStatistics() {
+    public TrafficStatistics getTrafficStatistics() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers/traffic", null);
 
         TrafficStatistics traffic = api.fromJson(data.get("traffic"), TrafficStatistics.class);
@@ -807,14 +808,14 @@ public class CloudServer extends Service {
     }
 
     @Override
-    public void refresh() {
+    public void refresh() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/cloud_servers", null);
         CloudServerData datas = api.fromJson(data.get("cloud_server"), CloudServerData.class);
         this.data = datas;
     }
 
     @Override
-    protected void init(Nitrapi api) {
+    protected void init(Nitrapi api) throws NitrapiException {
         this.api = api;
         if (getStatus() == Status.ACTIVE || getStatus() == Status.SUSPENDED) {
             refresh(); // initially load the data

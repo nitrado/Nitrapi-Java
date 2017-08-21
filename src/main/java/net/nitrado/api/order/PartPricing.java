@@ -2,6 +2,7 @@ package net.nitrado.api.order;
 
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.exceptions.NitrapiErrorException;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 
@@ -19,12 +20,12 @@ public class PartPricing extends Pricing {
         parts.put(part, value);
     }
 
-    public Part[] getParts() {
+    public Part[] getParts() throws NitrapiException {
         return getPrices().getParts();
     }
 
     @Override
-    public int getPrice(Service service, int rentalTime) {
+    public int getPrice(Service service, int rentalTime) throws NitrapiException {
         PriceList prices = getPrices(service);
 
         double totalPrice = 0;
@@ -77,7 +78,7 @@ public class PartPricing extends Pricing {
     }
 
     @Override
-    public void orderService(int rentalTime) {
+    public void orderService(int rentalTime) throws NitrapiException {
         int ADD_PARAMS = 3;
         Part[] priceParts = getParts();
         Parameter[] parameters = new Parameter[priceParts.length + additionals.size() + ADD_PARAMS];
@@ -99,7 +100,7 @@ public class PartPricing extends Pricing {
     }
 
     @Override
-    public void switchService(Service service, int rentalTime) {
+    public void switchService(Service service, int rentalTime) throws NitrapiException {
         int ADD_PARAMS = 5;
         Part[] priceParts = getParts();
         Parameter[] parameters = new Parameter[priceParts.length + additionals.size() + ADD_PARAMS];

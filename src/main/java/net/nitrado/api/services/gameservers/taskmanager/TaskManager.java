@@ -2,6 +2,7 @@ package net.nitrado.api.services.gameservers.taskmanager;
 
 import com.google.gson.JsonObject;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.gameservers.Gameserver;
 
@@ -32,7 +33,7 @@ public class TaskManager {
      * @return array of ScheduledTasks
      * @permission ROLE_WEBINTERFACE_SCHEDULED_RESTART_READ
      */
-    public Task[] getScheduledTasks() {
+    public Task[] getScheduledTasks() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + service.getId() + "/gameservers/tasks", null);
         return api.fromJson(data.get("tasks"), Task[].class);
     }
@@ -49,7 +50,7 @@ public class TaskManager {
      * @param message optional message for restart or stop
      * @permission ROLE_WEBINTERFACE_SCHEDULED_RESTART_WRITE
      */
-    public void createTask(String minute, String hour, String day, String month, String weekday, Task.ActionType method, String message) {
+    public void createTask(String minute, String hour, String day, String month, String weekday, Task.ActionType method, String message) throws NitrapiException {
         Parameter[] params = new Parameter[]{
                 new Parameter("minute", minute),
                 new Parameter("hour", hour),
@@ -75,7 +76,7 @@ public class TaskManager {
      * @param message optional message for restart or stop
      * @permission ROLE_WEBINTERFACE_SCHEDULED_RESTART_READ
      */
-    public void updateTask(int id, String minute, String hour, String day, String month, String weekday, Task.ActionType method, String message) {
+    public void updateTask(int id, String minute, String hour, String day, String month, String weekday, Task.ActionType method, String message) throws NitrapiException {
         Parameter[] params = new Parameter[]{
                 new Parameter("minute", minute),
                 new Parameter("hour", hour),
@@ -94,7 +95,7 @@ public class TaskManager {
      * @param id id of the task
      * @permission ROLE_WEBINTERFACE_SCHEDULED_RESTART_READ
      */
-    public void deleteTask(int id) {
+    public void deleteTask(int id) throws NitrapiException {
         api.dataDelete("services/" + service.getId() + "/gameservers/tasks/" + id, null);
     }
 

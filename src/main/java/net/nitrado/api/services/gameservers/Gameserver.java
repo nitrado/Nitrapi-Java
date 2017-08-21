@@ -2,6 +2,7 @@ package net.nitrado.api.services.gameservers;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 import net.nitrado.api.services.fileserver.FileServer;
@@ -184,7 +185,7 @@ public class Gameserver extends Service {
     private transient GameserverInfo info;
 
     @Override
-    public void refresh() {
+    public void refresh() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/gameservers", null);
         GameserverInfo infos = api.fromJson(data.get("gameserver"), GameserverInfo.class);
         infos.settings.init(api, getId());
@@ -457,7 +458,7 @@ public class Gameserver extends Service {
      *
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void doRestart() {
+    public void doRestart() throws NitrapiException {
         api.dataPost("services/" + getId() + "/gameservers/restart", new Parameter[]{new Parameter("message", "Server restart requested (" + api.getApplicationName() + ");)")});
     }
 
@@ -467,7 +468,7 @@ public class Gameserver extends Service {
      * @param message message for the users
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void doRestart(String message) {
+    public void doRestart(String message) throws NitrapiException {
         api.dataPost("services/" + getId() + "/gameservers/restart", new Parameter[]{new Parameter("restart_message", message), new Parameter("message", "Server restart requested (" + api.getApplicationName() + ");)")});
     }
 
@@ -476,7 +477,7 @@ public class Gameserver extends Service {
      *
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void doStop() {
+    public void doStop() throws NitrapiException {
         api.dataPost("services/" + getId() + "/gameservers/stop", new Parameter[]{new Parameter("message", "Server stop requested (" + api.getApplicationName() + ")")});
     }
 
@@ -486,7 +487,7 @@ public class Gameserver extends Service {
      * @param message message for users
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void doStop(String message) {
+    public void doStop(String message) throws NitrapiException {
         api.dataPost("services/" + getId() + "/gameservers/stop", new Parameter[]{new Parameter("stop_message", message), new Parameter("message", "Server stop requested (" + api.getApplicationName() + ")")});
     }
 
@@ -496,7 +497,7 @@ public class Gameserver extends Service {
      * @param password new password
      * @permission ROLE_WEBINTERFACE_FTP_CREDENTIALS_WRITE
      */
-    public void changeFTPPassword(String password) {
+    public void changeFTPPassword(String password) throws NitrapiException {
         api.dataPost("services/" + getId() + "/gameservers/ftp/password", new Parameter[]{new Parameter("password", password)});
     }
 
@@ -506,7 +507,7 @@ public class Gameserver extends Service {
      * @param password new password
      * @permission ROLE_WEBINTERFACE_MYSQL_CREDENTIALS_WRITE
      */
-    public void changeMySQLPassword(String password) {
+    public void changeMySQLPassword(String password) throws NitrapiException {
         api.dataPost("services/" + getId() + "/gameservers/mysql/password", new Parameter[]{new Parameter("password", password)});
     }
 
@@ -515,7 +516,7 @@ public class Gameserver extends Service {
      *
      * @permission ROLE_WEBINTERFACE_MYSQL_CREDENTIALS_WRITE
      */
-    public void resetMySQLDatabase() {
+    public void resetMySQLDatabase() throws NitrapiException {
         api.dataPost("services/" + getId() + "/gameservers/mysql/reset", null);
     }
 
@@ -528,7 +529,7 @@ public class Gameserver extends Service {
      * @return a GameList object
      * @permission ROLE_GAMESERVER_CHANGE_GAME
      */
-    public GameList getGames() {
+    public GameList getGames() throws NitrapiException {
         return GameList.newInstance(api, getId());
     }
 
@@ -538,7 +539,7 @@ public class Gameserver extends Service {
      * @param game    folder_short of the game
      * @param modpack filename of the modpack
      */
-    public void installGame(String game, String modpack) {
+    public void installGame(String game, String modpack) throws NitrapiException {
         Parameter[] params = new Parameter[modpack == null ? 1 : 2];
         params[0] = new Parameter("game", game);
         if (modpack != null) {
@@ -553,7 +554,7 @@ public class Gameserver extends Service {
      * @param game folder_short of the game
      * @permission ROLE_GAMESERVER_CHANGE_GAME
      */
-    public void installGame(String game) {
+    public void installGame(String game) throws NitrapiException {
         installGame(game, null);
     }
 
@@ -563,7 +564,7 @@ public class Gameserver extends Service {
      * @param game folder_short of the game
      * @permission ROLE_GAMESERVER_CHANGE_GAME
      */
-    public void uninstallGame(String game) {
+    public void uninstallGame(String game) throws NitrapiException {
         api.dataDelete("services/" + getId() + "/gameservers/games/uninstall", new Parameter[]{new Parameter("game", game)});
     }
 
@@ -573,7 +574,7 @@ public class Gameserver extends Service {
      * @param game folder_short of the game
      * @permission ROLE_GAMESERVER_CHANGE_GAME
      */
-    public void startGame(String game) {
+    public void startGame(String game) throws NitrapiException {
         api.dataPost("services/" + getId() + "/gameservers/games/start", new Parameter[]{new Parameter("game", game)});
     }
 
@@ -603,7 +604,7 @@ public class Gameserver extends Service {
      * @return a list of DDoS-Attacks
      * @see DDoSAttack
      */
-    public DDoSAttack[] getDDoSHistory() {
+    public DDoSAttack[] getDDoSHistory() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/gameservers/ddos", null);
         return api.fromJson(data.get("history"), DDoSAttack[].class);
     }
@@ -622,7 +623,7 @@ public class Gameserver extends Service {
      *
      * @return the usage statistics
      */
-    public Stats getStats() {
+    public Stats getStats() throws NitrapiException {
         return getStats(24);
     }
 
@@ -632,7 +633,7 @@ public class Gameserver extends Service {
      * @param hours time range. Can be between 1 and 24.
      * @return a Stats object
      */
-    public Stats getStats(int hours) {
+    public Stats getStats(int hours) throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/gameservers/stats", new Parameter[]{new Parameter("hours", "" + hours)});
         return api.fromJson(data.get("stats"), Stats.class);
     }
@@ -646,7 +647,7 @@ public class Gameserver extends Service {
      * @param command the command to execute
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void sendCommand(String command) {
+    public void sendCommand(String command) throws NitrapiException {
         api.dataPost("services/" + getId() + "/gameservers/app_server/command", new Parameter[]{new Parameter("command", command)});
     }
 
@@ -658,7 +659,7 @@ public class Gameserver extends Service {
      * @return minecraft specific information
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public Minecraft getMinecraft() {
+    public Minecraft getMinecraft() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/gameservers/games/minecraft", null);
         Minecraft minecraft = api.fromJson(data.get("minecraft"), Minecraft.class);
         minecraft.init(this, api);

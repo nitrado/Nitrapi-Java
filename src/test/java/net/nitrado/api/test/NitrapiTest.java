@@ -39,14 +39,14 @@ public class NitrapiTest extends ApiTestCase {
 
 
     @Test(expected = NitrapiErrorException.class)
-    public void testError() {
+    public void testError() throws NitrapiException {
         client.addNextResponseFromFile("error.json");
         api.getServices();
     }
 
 
     @Test
-    public void testUnsupportedService() {
+    public void testUnsupportedService() throws NitrapiException {
         client.addNextResponseFromFile("services/unsupported_service_in_servicelist.json");
         System.out.println("Warning about CoolServer should appear: ");
         Service[] services = api.getServices();

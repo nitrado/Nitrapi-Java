@@ -3,6 +3,7 @@ package net.nitrado.api.services.gameservers;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.exceptions.NitrapiException;
 
 /**
  * This class represents the list of all games that exist in the Nitrado universe.
@@ -41,7 +42,7 @@ public class GlobalGameList {
      * @return a gamelist object
      * @see Gameserver#getGames()
      */
-    public static GlobalGameList newInstance(Nitrapi api) {
+    public static GlobalGameList newInstance(Nitrapi api) throws NitrapiException {
         JsonObject data = api.dataGet("gameserver/games", null);
         GlobalGameList list = api.fromJson(data.get("games"), GlobalGameList.class);
         return list;

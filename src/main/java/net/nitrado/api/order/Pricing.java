@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 import net.nitrado.api.services.cloudservers.CloudServer;
@@ -37,7 +38,7 @@ public abstract class Pricing {
     /**
      * @return a list of locations this service is available in.
      */
-    public Location[] getLocations() {
+    public Location[] getLocations() throws NitrapiException {
         JsonObject data = nitrapi.dataGet("order/order/locations", null);
         Location[] locations = nitrapi.fromJson(data.get("locations"), Location[].class);
 
@@ -54,7 +55,7 @@ public abstract class Pricing {
         this.locationId = id;
     }
 
-    public PriceList getPrices() {
+    public PriceList getPrices() throws NitrapiException {
         return getPrices(null);
     }
 
@@ -64,7 +65,7 @@ public abstract class Pricing {
      * @param service service id or -1
      * @return the price list for this product
      */
-    public PriceList getPrices(Service service) {
+    public PriceList getPrices(Service service) throws NitrapiException {
         String cacheName = "" + locationId;
         if (service != null) {
             cacheName += "/" + service;
@@ -98,7 +99,7 @@ public abstract class Pricing {
      * @param rentalTime the time you want to extend this service
      * @return the prices for extending this service
      */
-    public int getExtendPricesForService(Service service, int rentalTime) {
+    public int getExtendPricesForService(Service service, int rentalTime) throws NitrapiException {
         return nitrapi.dataGet("order/pricing/" + product, new Parameter[]{
                 new Parameter("method", "extend"),
                 new Parameter("service_id", service.getId()),
@@ -139,7 +140,7 @@ public abstract class Pricing {
      * @param service id of the service
      * @return the prices for extending this service
      */
-    public Map<Integer, Integer> getExtendPricesForService(int service) {
+    public Map<Integer, Integer> getExtendPricesForService(int service) throws NitrapiException {
         JsonObject data = nitrapi.dataGet("order/pricing/" + product, new Parameter[]{
                 new Parameter("method", "extend"),
                 new Parameter("service_id", service)
@@ -158,7 +159,7 @@ public abstract class Pricing {
      * @param rentalTime time to rent
      * @param price      price calculated from getExtendPricesForService
      */
-    public void doExtendService(Service service, int rentalTime, int price) {
+    public void doExtendService(Service service, int rentalTime, int price) throws NitrapiException {
         // int price = getExtendPriceForService(service, rentalTime);
         nitrapi.dataPost("order/order/" + product, new Parameter[]{
                 new Parameter("price", price),
@@ -180,19 +181,19 @@ public abstract class Pricing {
         return price - advice;
     }
 
-    public int getPrice(int rentalTime) {
+    public int getPrice(int rentalTime) throws NitrapiException {
         return getPrice(null, rentalTime);
     }
 
-    public abstract int getPrice(Service service, int rentalTime);
+    public abstract int getPrice(Service service, int rentalTime) throws NitrapiException;
 
-    public abstract void orderService(int rentalTime);
+    public abstract void orderService(int rentalTime) throws NitrapiException;
 
-    public int getSwitchPrice(Service service, int rentalTime) {
+    public int getSwitchPrice(Service service, int rentalTime) throws NitrapiException {
         return getPrice(service, rentalTime);
     }
 
-    public abstract void switchService(Service service, int rentalTime);
+    public abstract void switchService(Service service, int rentalTime) throws NitrapiException;
 
 
 }

@@ -1,5 +1,6 @@
 package net.nitrado.api.test;
 
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.services.Service;
 import net.nitrado.api.services.gameservers.Gameserver;
 import net.nitrado.api.services.gameservers.minecraft.*;
@@ -14,7 +15,7 @@ public class MinecraftTest extends ApiTestCase {
     Minecraft minecraft;
 
     @Before
-    public void init() {
+    public void init() throws NitrapiException {
 
         client.addNextResponseFromFile("services/service_3.json");
         client.addNextResponseFromFile("services/gameservers/gameserver.json");
@@ -87,19 +88,19 @@ public class MinecraftTest extends ApiTestCase {
     }
 
     @Test
-    public void testUUID() {
+    public void testUUID() throws NitrapiException {
         client.addNextResponseFromFile("services/gameservers/minecraft/uuid.json");
         assertEquals("abcde123-1234-1234-1234-abcdef123456", minecraft.getUserUUID("tyrola"));
     }
 
     @Test
-    public void testAvatar() {
+    public void testAvatar() throws NitrapiException {
         client.addNextResponseFromFile("services/gameservers/minecraft/avatar.json");
         assertEquals("blob", minecraft.getUserAvatar("tyrola"));
     }
 
     @Test
-    public void testPlugins() {
+    public void testPlugins() throws NitrapiException {
         client.addNextResponseFromFile("services/gameservers/minecraft/plugins.json");
         Plugin[] plugins = minecraft.getPlugins();
         assertEquals(3, plugins.length);
