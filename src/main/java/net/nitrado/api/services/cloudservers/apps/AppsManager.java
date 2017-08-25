@@ -250,7 +250,7 @@ public class AppsManager {
     public class MinimumRequirements {
         private int cpu;
         private int ram;
-        private int sdd;
+        private int ssd;
 
         /**
          * Returns needed cpu cores.
@@ -275,8 +275,8 @@ public class AppsManager {
          *
          * @return needed SSD space in GB
          */
-        public int getSdd() {
-            return sdd;
+        public int getSsd() {
+            return ssd;
         }
     }
 
