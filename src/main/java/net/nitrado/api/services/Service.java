@@ -308,7 +308,7 @@ public abstract class Service {
         GregorianCalendar now = new GregorianCalendar();
         if (deleteDate.before(now) && status != Service.Status.DELETED) {
             status = Status.DELETING;
-        } else if (suspendDate.before(now) && status != Service.Status.SUSPENDED) {
+        } else if (suspendDate.before(now) && status != Service.Status.SUSPENDED && status != Status.DELETED) {
             status = Status.SUSPENDING;
         }
     }
