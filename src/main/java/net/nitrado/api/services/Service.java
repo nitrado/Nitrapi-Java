@@ -304,7 +304,7 @@ public abstract class Service {
     /**
      * Sets the status correctly if suspendDate or deleteDate are in the past.
      */
-    private void fixServiceStatus() {
+    protected void fixServiceStatus() {
         GregorianCalendar now = new GregorianCalendar();
         if (deleteDate.before(now) && status != Service.Status.DELETED) {
             status = Status.DELETING;
