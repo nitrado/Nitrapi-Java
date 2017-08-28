@@ -810,7 +810,7 @@ public class CloudServer extends Service {
     @Override
     protected void init(Nitrapi api) {
         this.api = api;
-        if (getStatus() == Status.ACTIVE || getStatus() == Status.SUSPENDED) {
+        if (getStatus().equals(Status.ACTIVE) || getStatus().equals(Status.SUSPENDED)) {
             refresh(); // initially load the data
         }
     }
