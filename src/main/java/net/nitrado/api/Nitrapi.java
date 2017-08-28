@@ -4,6 +4,7 @@ import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
+import net.nitrado.api.common.Value;
 import net.nitrado.api.common.exceptions.NitrapiErrorException;
 import net.nitrado.api.common.http.HttpClient;
 import net.nitrado.api.common.http.Parameter;
@@ -20,6 +21,7 @@ import net.nitrado.api.services.gameservers.GlobalGameList;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -130,6 +132,29 @@ public class Nitrapi {
                 .registerTypeAdapter(Dimension.DimensionValues.class, new Dimension.DimensionValuesDeserializer())
                 .registerTypeAdapter(boolean.class, booleanAsIntAdapter)
                 .registerTypeAdapter(Boolean.class, booleanAsIntAdapter)
+                .registerTypeHierarchyAdapter(Value.class, new JsonDeserializer<Value>() {
+                    public Value deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+                        if (jsonElement == null) {
+                            return null;
+                        }
+                        String value = jsonElement.getAsString();
+
+                        if (type instanceof Class) {
+                            try {
+                                return (Value) ((Class) type).getConstructor(String.class).newInstance(value);
+                            } catch (InstantiationException e) {
+                                e.printStackTrace();
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        return null;
+                    }
+                })
                 .create();
     }
 

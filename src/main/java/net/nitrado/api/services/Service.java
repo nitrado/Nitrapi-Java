@@ -3,6 +3,7 @@ package net.nitrado.api.services;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.Value;
 import net.nitrado.api.common.http.Parameter;
 
 import java.util.GregorianCalendar;
@@ -14,37 +15,41 @@ import java.util.Locale;
 public abstract class Service {
     protected transient Nitrapi api;
 
-    public enum Status {
+    public static class Status extends Value {
+
+        public Status(String value) {
+            super(value);
+        }
+
         /**
          * The service is active and useable
          */
-        @SerializedName("active")
-        ACTIVE,
+        public static Status ACTIVE = new Status("active");
+
         /**
          * The service is currently installing
          */
-        @SerializedName("installing")
-        INSTALLING,
+        public static Status INSTALLING = new Status("installing");
+
         /**
          * The service is suspended and can be reactivated
          */
-        @SerializedName("suspended")
-        SUSPENDED,
+        public static Status SUSPENDED = new Status("suspended");
+
         /**
          * The service is admin locked, please contact support.
          */
-        @SerializedName("adminlocked")
-        ADMINLOCKED,
+        public static Status ADMINLOCKED = new Status("adminlocked");
+
         /**
          * The service is admin locked and suspended.
          */
-        @SerializedName("adminlocked_suspended")
-        ADMINLOCKED_SUSPENDED,
+        public static Status ADMINLOCKED_SUSPENDED = new Status("adminlocked_suspended");
+
         /**
          * The service is deleted.
          */
-        @SerializedName("deleted")
-        DELETED
+        public static Status DELETED = new Status("deleted");
     }
 
     private int id;
@@ -264,7 +269,7 @@ public abstract class Service {
      */
     protected void init(Nitrapi api) {
         this.api = api;
-        if (status == Status.ACTIVE) {
+        if (status.equals(Status.ACTIVE)) {
             refresh(); // initially load the data
         }
     }
