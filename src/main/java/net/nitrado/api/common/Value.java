@@ -20,4 +20,9 @@ public class Value {
     public boolean equals(Object obj) {
         return obj instanceof Value && value.equals(((Value) obj).getValue());
     }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
 }
