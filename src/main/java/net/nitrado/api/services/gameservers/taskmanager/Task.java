@@ -1,6 +1,7 @@
 package net.nitrado.api.services.gameservers.taskmanager;
 
 import com.google.gson.annotations.SerializedName;
+import net.nitrado.api.common.Value;
 
 import java.util.GregorianCalendar;
 
@@ -11,32 +12,22 @@ public class Task {
     /**
      * Type of the action.
      */
-    public enum ActionType {
+    public static class ActionType extends Value {
+        public ActionType(String value) {
+            super(value);
+        }
         /**
          * Restarts the gameserver.
          */
-        @SerializedName("restart")
-        RESTART,
+        public static final ActionType RESTART = new ActionType("restart");
         /**
          * Stops the gameserver.
          */
-        @SerializedName("stop")
-        STOP,
+        public static final ActionType STOP = new ActionType("stop");
         /**
          * Starts the gameserver.
          */
-        @SerializedName("start")
-        START;
-
-        @Override
-        public String toString() {
-            try {
-                return ActionType.class.getDeclaredField(super.toString()).getAnnotation(SerializedName.class).value();
-            } catch (NoSuchFieldException e) {
-                // should not happen
-                return super.toString();
-            }
-        }
+        public static final ActionType START = new ActionType("start");
     }
 
     private int id;

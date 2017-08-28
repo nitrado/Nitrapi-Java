@@ -1,6 +1,7 @@
 package net.nitrado.api.customer;
 
 import com.google.gson.annotations.SerializedName;
+import net.nitrado.api.common.Value;
 
 import java.util.GregorianCalendar;
 
@@ -11,11 +12,13 @@ public class AccountOverview {
 
 
     public static class Payment {
-        public enum Type {
-            @SerializedName("increase")
-            INCREASE,
-            @SerializedName("decrease")
-            DECREASE
+        public static class Type extends Value {
+            public Type(String value) {
+                super(value);
+            }
+
+            public static final Type INCREASE = new Type("increase");
+            public static final Type DECREASE = new Type("decrease");
         }
 
         private int id;

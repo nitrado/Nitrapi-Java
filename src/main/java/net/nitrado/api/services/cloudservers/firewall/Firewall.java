@@ -2,6 +2,7 @@ package net.nitrado.api.services.cloudservers.firewall;
 
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.Value;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 
@@ -21,30 +22,16 @@ public class Firewall {
         this.api = api;
     }
 
-    public enum Protocol {
-        @SerializedName("tcp")
-        TCP,
-
-        @SerializedName("udp")
-        UDP,
-
-        @SerializedName("icmp")
-        ICMP,
-
-        @SerializedName("any")
-        ANY;
-
-
-
-        @Override
-        public String toString() {
-            try {
-                return Protocol.class.getDeclaredField(super.toString()).getAnnotation(SerializedName.class).value();
-            } catch (NoSuchFieldException e) {
-                // should not happen
-                return super.toString();
-            }
+    public static class Protocol extends Value {
+        public Protocol(String value) {
+            super(value);
         }
+
+        public static final Protocol TCP = new Protocol("tcp");
+        public static final Protocol UDP = new Protocol("udp");
+        public static final Protocol ICMP = new Protocol("icmp");
+        public static final Protocol ANY = new Protocol("any");
+
     }
 
     private boolean enabled;

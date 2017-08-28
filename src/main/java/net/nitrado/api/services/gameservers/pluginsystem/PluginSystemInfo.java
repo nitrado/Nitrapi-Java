@@ -1,6 +1,7 @@
 package net.nitrado.api.services.gameservers.pluginsystem;
 
 import com.google.gson.annotations.SerializedName;
+import net.nitrado.api.common.Value;
 import net.nitrado.api.services.gameservers.Credentials;
 
 import java.util.GregorianCalendar;
@@ -14,42 +15,38 @@ public class PluginSystemInfo {
     /**
      * Status of the plugin system
      */
-    public enum Status {
+    public static class Status extends Value {
+        public Status(String value) {
+            super(value);
+        }
         /**
          * Plugin system is stopping.
          */
-        @SerializedName("do_stop")
-        STOPPING,
+        public static final Status STOPPING = new Status("do_stop");
         /**
          * Plugin system is restarting.
          */
-        @SerializedName("do_restart")
-        RESTARTING,
+        public static final Status RESTARTING = new Status("do_restart");
         /**
          * Plugin system is installing.
          */
-        @SerializedName("do_install")
-        INSTALLING,
+        public static final Status INSTALLING = new Status("do_install");
         /**
          * Plugin system is uninstalling.
          */
-        @SerializedName("do_uninstall")
-        UNINSTALLING,
+        public static final Status UNINSTALLING = new Status("do_uninstall");
         /**
          * Plugin system is started.
          */
-        @SerializedName("started")
-        STARTED,
+        public static final Status STARTED = new Status("started");
         /**
          * Plugin system is stopped.
          */
-        @SerializedName("stopped")
-        STOPPED,
+        public static final Status STOPPED = new Status("stopped");
         /**
          * Plugin system has an error.
          */
-        @SerializedName("error")
-        ERROR
+        public static final Status ERROR = new Status("error");
     }
 
     private Status status;

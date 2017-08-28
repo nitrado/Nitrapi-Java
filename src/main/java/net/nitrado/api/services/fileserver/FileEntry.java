@@ -1,6 +1,7 @@
 package net.nitrado.api.services.fileserver;
 
 import com.google.gson.annotations.SerializedName;
+import net.nitrado.api.common.Value;
 
 /**
  * A single file or single directory.
@@ -9,17 +10,19 @@ public class FileEntry {
     /**
      * Type of this entry.
      */
-    public enum Type {
+    public static class Type extends Value {
+        public Type(String value) {
+            super(value);
+        }
+
         /**
          * This entry is a file.
          */
-        @SerializedName("file")
-        FILE,
+        public static final Type FILE = new Type("file");
         /**
          * This entry is a directory.
          */
-        @SerializedName("dir")
-        DIR
+        public static final Type DIR = new Type("dir");
     }
 
     private Type type;
