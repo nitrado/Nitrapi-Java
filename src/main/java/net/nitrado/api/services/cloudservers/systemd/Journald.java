@@ -3,6 +3,7 @@ package net.nitrado.api.services.cloudservers.systemd;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 import java.util.GregorianCalendar;
@@ -247,7 +248,7 @@ public class Journald {
      * @param count Number of messages to return, starting at the cursor position specified by backlog. -1 returns all messages and continuously streams any new ones.
      * @return String
      */
-    public String getUrl(String unit, String cursor, int backlog, int count) {
+    public String getUrl(String unit, String cursor, int backlog, int count) throws NitrapiException {
         JsonObject data = api.dataGet("services/" + service.getId() + "/cloud_servers/system/journal/", new Parameter[] {
                 new Parameter("unit", unit),
                 new Parameter("cursor", cursor),

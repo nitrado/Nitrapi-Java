@@ -2,6 +2,7 @@ package net.nitrado.api.services.webspaces;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.services.Service;
 
 /**
@@ -104,7 +105,7 @@ public class Webspace extends Service {
 
 
     @Override
-    public void refresh() {
+    public void refresh() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/webspaces", null);
         WebspaceInfo infos = api.fromJson(data.get("webspace"), WebspaceInfo.class);
         this.info = infos;

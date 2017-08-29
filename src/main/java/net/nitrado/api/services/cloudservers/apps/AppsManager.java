@@ -3,6 +3,7 @@ package net.nitrado.api.services.cloudservers.apps;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 
@@ -294,7 +295,7 @@ public class AppsManager {
      * @return App[]
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public App[] getInstalledApps() {
+    public App[] getInstalledApps() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + service.getId() + "/cloud_servers/apps/", null);
 
         App[] apps = api.fromJson(data.get("apps"), App[].class);
@@ -307,7 +308,7 @@ public class AppsManager {
      * @return AppDescription[]
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public AppDescription[] getAvailableApps() {
+    public AppDescription[] getAvailableApps() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + service.getId() + "/cloud_servers/apps/available", null);
 
         AppDescription[] apps = api.fromJson(data.get("apps"), AppDescription[].class);
@@ -322,7 +323,7 @@ public class AppsManager {
      * @param ports   ports
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void install(String appType, String appName, String ip, Map<String, String> ports) {
+    public void install(String appType, String appName, String ip, Map<String, String> ports) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/apps/", new Parameter[]{
                 new Parameter("app_type", appType),
                 new Parameter("app_name", appName),
@@ -337,7 +338,7 @@ public class AppsManager {
      * @param appName appName
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void uninstall(String appName) {
+    public void uninstall(String appName) throws NitrapiException {
         api.dataDelete("services/" + service.getId() + "/cloud_servers/apps/" + appName + "", null);
     }
 
@@ -349,7 +350,7 @@ public class AppsManager {
      * @param parameters parameters
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void configure(String appName, String cmd, Map<String, String> parameters) {
+    public void configure(String appName, String cmd, Map<String, String> parameters) throws NitrapiException {
         api.dataPut("services/" + service.getId() + "/cloud_servers/apps/" + appName + "", new Parameter[]{
                 new Parameter("cmd", cmd),
                 new Parameter("parameters", parameters)
@@ -362,7 +363,7 @@ public class AppsManager {
      * @param appName appName
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void update(String appName) {
+    public void update(String appName) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/apps/" + appName + "/update", null);
     }
 
@@ -372,7 +373,7 @@ public class AppsManager {
      * @param appName appName
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void restart(String appName) {
+    public void restart(String appName) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/apps/" + appName + "/restart", null);
     }
 
@@ -382,7 +383,7 @@ public class AppsManager {
      * @param appName appName
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void stop(String appName) {
+    public void stop(String appName) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/apps/" + appName + "/stop", null);
     }
 }

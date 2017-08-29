@@ -2,6 +2,7 @@ package net.nitrado.api.services.bouncers;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.services.Service;
 
 /**
@@ -21,7 +22,7 @@ public class Bouncer extends Service {
     }
 
     @Override
-    public void refresh() {
+    public void refresh() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/bouncers", null);
         BouncerInfo infos = api.fromJson(data.get("bouncer"), BouncerInfo.class);
         this.info = infos;

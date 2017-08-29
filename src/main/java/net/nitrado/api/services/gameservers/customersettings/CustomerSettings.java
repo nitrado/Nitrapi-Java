@@ -3,6 +3,7 @@ package net.nitrado.api.services.gameservers.customersettings;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.gameservers.Gameserver;
 
@@ -46,7 +47,7 @@ public class CustomerSettings extends HashMap<String, HashMap<String, String>> {
      * @throws CustomerSettingsNotFoundException if there is no setting with the specified category and key
      * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
-    public void writeSetting(String category, String key, String value) throws CustomerSettingsNotFoundException {
+    public void writeSetting(String category, String key, String value) throws CustomerSettingsNotFoundException, NitrapiException {
         if (!hasCategory(category)) {
             throw new CustomerSettingsNotFoundException("Category \"" + category + "\" not found.");
         }
@@ -60,7 +61,7 @@ public class CustomerSettings extends HashMap<String, HashMap<String, String>> {
      * @return array of config sets
      * @permission ROLE_WEBINTERFACE_SETTINGS_READ
      */
-    public CustomerSettingsSet[] getConfigSets() {
+    public CustomerSettingsSet[] getConfigSets() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + serviceId + "/gameservers/settings/sets", null);
         JsonArray sets = data.get("sets").getAsJsonArray();
         CustomerSettingsSet[] configSets = new CustomerSettingsSet[sets.size()];
@@ -76,7 +77,7 @@ public class CustomerSettings extends HashMap<String, HashMap<String, String>> {
      * @param id id of the config set
      * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
-    public void restoreConfigSet(int id) {
+    public void restoreConfigSet(int id) throws NitrapiException {
         api.dataPost("services/" + serviceId + "/gameservers/settings/sets/" + id + "/restore", null);
     }
 
@@ -86,7 +87,7 @@ public class CustomerSettings extends HashMap<String, HashMap<String, String>> {
      * @param id id of the config set
      * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
-    public void deleteConfigSet(int id) {
+    public void deleteConfigSet(int id) throws NitrapiException {
         api.dataDelete("services/" + serviceId + "/gameservers/settings/sets/" + id, null);
     }
 
@@ -96,7 +97,7 @@ public class CustomerSettings extends HashMap<String, HashMap<String, String>> {
      * @param name name of the new config set
      * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
      */
-    public void createConfigSet(String name) {
+    public void createConfigSet(String name) throws NitrapiException {
         api.dataPost("services/" + serviceId + "/gameservers/settings/sets", new Parameter[]{new Parameter("name", name)});
     }
 

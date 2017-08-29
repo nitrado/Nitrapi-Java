@@ -1,6 +1,7 @@
 package net.nitrado.api.test;
 
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.services.gameservers.Modpack;
 import net.nitrado.api.services.Service;
 import net.nitrado.api.services.ServiceDetails;
@@ -23,7 +24,7 @@ public class GameserverTest extends ApiTestCase {
     Gameserver server;
 
     @Before
-    public void init() {
+    public void init() throws NitrapiException {
 
         client.addNextResponseFromFile("services/service_3.json");
         client.addNextResponseFromFile("services/gameservers/gameserver.json");
@@ -94,7 +95,7 @@ public class GameserverTest extends ApiTestCase {
     }
 
     @Test
-    public void testScheduledTasks() {
+    public void testScheduledTasks() throws NitrapiException {
         client.addNextResponseFromFile("services/gameservers/scheduledtasks.json");
         TaskManager manager = server.getTaskManager();
         Task[] tasks = manager.getScheduledTasks();
@@ -114,7 +115,7 @@ public class GameserverTest extends ApiTestCase {
     }
 
     @Test
-    public void testFileServer() {
+    public void testFileServer() throws NitrapiException {
         client.addNextResponseFromFile("services/gameservers/filelist.json");
         FileServer fileServer = server.getFileServer();
 
@@ -134,7 +135,7 @@ public class GameserverTest extends ApiTestCase {
     }
 
     @Test
-    public void testDDoSHistory() {
+    public void testDDoSHistory() throws NitrapiException {
         client.addNextResponseFromFile("services/gameservers/ddoshistory.json");
         DDoSAttack[] history = server.getDDoSHistory();
         assertEquals(2, history.length);
@@ -153,7 +154,7 @@ public class GameserverTest extends ApiTestCase {
     }
 
     @Test
-    public void testStats() {
+    public void testStats() throws NitrapiException {
         client.addNextResponseFromFile("services/gameservers/stats.json");
         Stats stats = server.getStats();
         assertEquals(5, stats.getCurrentPlayers().length);
@@ -196,7 +197,7 @@ public class GameserverTest extends ApiTestCase {
 
 
     @Test
-    public void testGameserverActions() {
+    public void testGameserverActions() throws NitrapiException {
         client.addNextResponseFromFile("success.json");
         server.doRestart("asdf");
         assertEquals(Nitrapi.NITRAPI_LIVE_URL + "services/3/gameservers/restart", client.getLastUrl());
