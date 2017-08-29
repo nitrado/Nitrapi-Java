@@ -819,5 +819,7 @@ public class CloudServer extends Service {
         if (getStatus() == Status.ACTIVE || getStatus() == Status.SUSPENDED) {
             refresh(); // initially load the data
         }
+
+        fixServiceStatus();
     }
 }

@@ -44,7 +44,17 @@ public abstract class Service {
          * The service is deleted.
          */
         @SerializedName("deleted")
-        DELETED
+        DELETED,
+
+        // These statuses are set by fixServiceStatus() if suspendDate or deleteDate are in the past.
+        /**
+         * The service is currently being suspended.
+         */
+        SUSPENDING,
+        /**
+         * The service is currently being deleted.
+         */
+        DELETING
     }
 
     private int id;
@@ -267,6 +277,8 @@ public abstract class Service {
         if (status == Status.ACTIVE) {
             refresh(); // initially load the data
         }
+
+        fixServiceStatus();
     }
 
     /**
@@ -287,5 +299,17 @@ public abstract class Service {
             }
         }
         return false;
+    }
+
+    /**
+     * Sets the status correctly if suspendDate or deleteDate are in the past.
+     */
+    protected void fixServiceStatus() {
+        GregorianCalendar now = new GregorianCalendar();
+        if (deleteDate.before(now) && status != Service.Status.DELETED) {
+            status = Status.DELETING;
+        } else if (suspendDate.before(now) && status != Service.Status.SUSPENDED && status != Status.DELETED) {
+            status = Status.SUSPENDING;
+        }
     }
 }
