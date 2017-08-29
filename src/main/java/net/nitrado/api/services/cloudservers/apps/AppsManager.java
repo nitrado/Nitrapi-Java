@@ -186,6 +186,8 @@ public class AppsManager {
         @SerializedName("supports_ip_binding")
         private boolean supportsIpBinding;
         private Port[] ports;
+        @SerializedName("minimum_requirements")
+        private MinimumRequirements minimumRequirements;
 
         /**
          * Returns appType.
@@ -230,6 +232,51 @@ public class AppsManager {
          */
         public Port[] getPorts() {
             return ports;
+        }
+
+        /**
+         * Returns the minimum requirements.
+         *
+         * @return the minimum requirements
+         */
+        public MinimumRequirements getMinimumRequirements() {
+            return minimumRequirements;
+        }
+    }
+
+    /**
+     * This class represents the minimum requirements.
+     */
+    public class MinimumRequirements {
+        private int cpu;
+        private int ram;
+        private int ssd;
+
+        /**
+         * Returns needed cpu cores.
+         *
+         * @return needed cpu cores
+         */
+        public int getCpu() {
+            return cpu;
+        }
+
+        /**
+         * Returns needed RAM in MB.
+         *
+         * @return needed RAM in MB
+         */
+        public int getRam() {
+            return ram;
+        }
+
+        /**
+         * Returns needed SSD space in GB.
+         *
+         * @return needed SSD space in GB
+         */
+        public int getSsd() {
+            return ssd;
         }
     }
 
