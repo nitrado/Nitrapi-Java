@@ -1,6 +1,6 @@
 package net.nitrado.api.services.gameservers;
 
-import com.google.gson.annotations.SerializedName;
+import net.nitrado.api.common.Value;
 
 /**
  * This class represents the system a gameserver is running on.
@@ -12,17 +12,18 @@ public class Hostsystem {
     /**
      * Status of the hostsystem.
      */
-    public enum Status {
+    public static class Status extends Value {
+        public Status(String value) {
+            super(value);
+        }
         /**
          * Hostsystem is online.
          */
-        @SerializedName("online")
-        ONLINE,
+        public static final Status ONLINE = new Status("online");
         /**
          * Hostsystem if offline.
          */
-        @SerializedName("offline")
-        OFFLINE
+        public static final Status OFFLINE = new Status("offline");
     }
 
     private Status status;

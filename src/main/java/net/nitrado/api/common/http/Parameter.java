@@ -1,5 +1,7 @@
 package net.nitrado.api.common.http;
 
+import net.nitrado.api.common.Value;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -36,9 +38,9 @@ public class Parameter {
         }
     }
 
-    public Parameter(String key, Enum value) {
+    public Parameter(String key, Value value) {
         this.key = key;
-        this.value = value.toString();
+        this.value = value.getValue();
     }
 
     public Parameter(String key, boolean value) {

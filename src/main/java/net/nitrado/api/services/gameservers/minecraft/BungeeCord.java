@@ -1,6 +1,7 @@
 package net.nitrado.api.services.gameservers.minecraft;
 
 import com.google.gson.annotations.SerializedName;
+import net.nitrado.api.common.Value;
 
 /**
  * Settings of BungeeCord.
@@ -9,32 +10,22 @@ public class BungeeCord {
     private boolean enabled;
     private boolean only;
 
-    public enum FirewallStatus {
+    public static class FirewallStatus extends Value {
+        public FirewallStatus(String value) {
+            super(value);
+        }
         /**
          * Firewall is deactivated.
          */
-        @SerializedName("off")
-        OFF,
+        public static final FirewallStatus OFF = new FirewallStatus("off");
         /**
          * Firewall only allows its ip address.
          */
-        @SerializedName("on_self")
-        ON_SELF,
+        public static final FirewallStatus ON_SELF = new FirewallStatus("on_self");
         /**
          * Firewall only allows the ip address returned by getFirewallIp()
          */
-        @SerializedName("on_ip")
-        ON_IP;
-
-        @Override
-        public String toString() {
-            try {
-                return FirewallStatus.class.getDeclaredField(super.toString()).getAnnotation(SerializedName.class).value();
-            } catch (NoSuchFieldException e) {
-                // should not happen
-                return super.toString();
-            }
-        }
+        public static final FirewallStatus ON_IP= new FirewallStatus("on_ip");
     }
 
     private FirewallStatus firewall;

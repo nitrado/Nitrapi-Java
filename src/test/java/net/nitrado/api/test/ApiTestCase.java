@@ -4,12 +4,11 @@ import net.nitrado.api.Nitrapi;
 import net.nitrado.api.test.mock.MockHttpClient;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ApiTestCase {
     MockHttpClient client;

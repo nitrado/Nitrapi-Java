@@ -6,8 +6,6 @@ import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 
 /**
  * This class represents a Journald.

@@ -3,7 +3,6 @@ package net.nitrado.api.common.http;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.stream.MalformedJsonException;
 import net.nitrado.api.common.exceptions.*;
 
 import java.io.*;
