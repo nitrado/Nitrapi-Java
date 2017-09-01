@@ -10,21 +10,21 @@ public class Query {
      * This class represents a player on a gameserver.
      */
     public class Player {
-        private int id = -1;
+        private Integer id = -1;
         private String name;
-        private boolean bot;
-        private int score = -1;
-        private int frags = -1;
-        private int deaths = -1;
-        private int time = -1;
-        private int ping = -1;
+        private Boolean bot;
+        private Integer score = -1;
+        private Integer frags = -1;
+        private Integer deaths = -1;
+        private Integer time = -1;
+        private Integer ping = -1;
 
         /**
          * Returns the id of the player.
          *
          * @return the id of the player
          */
-        public int getId() {
+        public Integer getId() {
             return id;
         }
 
@@ -42,7 +42,7 @@ public class Query {
          *
          * @return true if the player is a bot
          */
-        public boolean isBot() {
+        public Boolean isBot() {
             return bot;
         }
 
@@ -51,7 +51,7 @@ public class Query {
          *
          * @return the score
          */
-        public int getScore() {
+        public Integer getScore() {
             return score;
         }
 
@@ -60,7 +60,7 @@ public class Query {
          *
          * @return the number of frags
          */
-        public int getFrags() {
+        public Integer getFrags() {
             return frags;
         }
 
@@ -69,7 +69,7 @@ public class Query {
          *
          * @return the number of deaths
          */
-        public int getDeaths() {
+        public Integer getDeaths() {
             return deaths;
         }
 
@@ -78,7 +78,7 @@ public class Query {
          *
          * @return the time the player has spend on the server in seconds
          */
-        public int getTime() {
+        public Integer getTime() {
             return time;
         }
 
@@ -87,7 +87,7 @@ public class Query {
          *
          * @return the ping as a number
          */
-        public int getPing() {
+        public Integer getPing() {
             return ping;
         }
 
