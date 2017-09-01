@@ -3,6 +3,7 @@ package net.nitrado.api.services.gameservers;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.exceptions.NitrapiException;
 
 /**
  * This class represents the list of games that can be installed on a server.
@@ -24,7 +25,7 @@ public class GameList {
      * @return a gamelist object
      * @see Gameserver#getGames()
      */
-    public static GameList newInstance(Nitrapi api, int id) {
+    public static GameList newInstance(Nitrapi api, int id) throws NitrapiException {
         JsonObject data = api.dataGet("services/" + id + "/gameservers/games", null);
         GameList list = api.fromJson(data, GameList.class);
         return list;

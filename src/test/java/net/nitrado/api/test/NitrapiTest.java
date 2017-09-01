@@ -1,18 +1,12 @@
 package net.nitrado.api.test;
 
-import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.exceptions.NitrapiErrorException;
 import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.customer.Customer;
 import net.nitrado.api.services.Service;
-import net.nitrado.api.services.gameservers.GameList;
-import net.nitrado.api.services.gameservers.Gameserver;
-import net.nitrado.api.services.gameservers.minecraft.Minecraft;
-import net.nitrado.api.services.gameservers.minecraft.Plugin;
-
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class NitrapiTest extends ApiTestCase {
 
@@ -39,14 +33,14 @@ public class NitrapiTest extends ApiTestCase {
 
 
     @Test(expected = NitrapiErrorException.class)
-    public void testError() {
+    public void testError() throws NitrapiException {
         client.addNextResponseFromFile("error.json");
         api.getServices();
     }
 
 
     @Test
-    public void testUnsupportedService() {
+    public void testUnsupportedService() throws NitrapiException {
         client.addNextResponseFromFile("services/unsupported_service_in_servicelist.json");
         System.out.println("Warning about CoolServer should appear: ");
         Service[] services = api.getServices();

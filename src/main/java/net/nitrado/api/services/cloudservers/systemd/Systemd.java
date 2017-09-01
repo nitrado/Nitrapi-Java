@@ -3,6 +3,7 @@ package net.nitrado.api.services.cloudservers.systemd;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 
@@ -161,7 +162,7 @@ public class Systemd {
      *
      * @return Unit[]
      */
-    public Unit[] getUnits() {
+    public Unit[] getUnits() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + service.getId() + "/cloud_servers/system/units/", null);
 
         return api.fromJson(data.get("units"), Unit[].class);
@@ -172,7 +173,7 @@ public class Systemd {
      *
      * @return String
      */
-    public String getChangeFeedUrl() {
+    public String getChangeFeedUrl() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + service.getId() + "/cloud_servers/system/units/changefeed", null);
 
         return api.fromJson(data.get("token").getAsJsonObject().get("url"), String.class);
@@ -181,14 +182,14 @@ public class Systemd {
     /**
      * Resets all units in failure state back to normal.
      */
-    public void resetAllFailedUnits() {
+    public void resetAllFailedUnits() throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/reset_all_failed", null);
     }
 
     /**
      * Reload the Systemd daemon.
      */
-    public void reloadDeamon() {
+    public void reloadDeamon() throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/daemon_reload", null);
     }
 
@@ -198,7 +199,7 @@ public class Systemd {
      * @param unitName unitName
      * @return Unit
      */
-    public Unit getUnit(String unitName) {
+    public Unit getUnit(String unitName) throws NitrapiException {
         JsonObject data = api.dataGet("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "", null);
 
         Unit unit = api.fromJson(data.get("unit"), Unit.class);
@@ -210,7 +211,7 @@ public class Systemd {
      *
      * @param unitName unitName
      */
-    public void enableUnit(String unitName) {
+    public void enableUnit(String unitName) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/enable", null);
     }
 
@@ -219,7 +220,7 @@ public class Systemd {
      *
      * @param unitName unitName
      */
-    public void disableUnit(String unitName) {
+    public void disableUnit(String unitName) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/disable", null);
     }
 
@@ -230,7 +231,7 @@ public class Systemd {
      * @param who      who
      * @param signal   signal
      */
-    public void killUnit(String unitName, String who, int signal) {
+    public void killUnit(String unitName, String who, int signal) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/kill", new Parameter[]{
                 new Parameter("who", who),
                 new Parameter("signal", signal)
@@ -242,7 +243,7 @@ public class Systemd {
      *
      * @param unitName unitName
      */
-    public void maskUnit(String unitName) {
+    public void maskUnit(String unitName) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/mask", null);
     }
 
@@ -251,7 +252,7 @@ public class Systemd {
      *
      * @param unitName unitName
      */
-    public void unmaskUnit(String unitName) {
+    public void unmaskUnit(String unitName) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/unmask", null);
     }
 
@@ -261,7 +262,7 @@ public class Systemd {
      * @param unitName unitName
      * @param replace  Replace a job that is already running
      */
-    public void reloadUnit(String unitName, boolean replace) {
+    public void reloadUnit(String unitName, boolean replace) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/reload", new Parameter[]{
                 new Parameter("replace", replace)
         });
@@ -272,7 +273,7 @@ public class Systemd {
      *
      * @param unitName unitName
      */
-    public void resetUnitFailedState(String unitName) {
+    public void resetUnitFailedState(String unitName) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/reset_failed", null);
     }
 
@@ -282,7 +283,7 @@ public class Systemd {
      * @param unitName unitName
      * @param replace  Replace a job that is already running
      */
-    public void restartUnit(String unitName, boolean replace) {
+    public void restartUnit(String unitName, boolean replace) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/restart", new Parameter[]{
                 new Parameter("replace", replace)
         });
@@ -294,7 +295,7 @@ public class Systemd {
      * @param unitName unitName
      * @param replace  Replace a job that is already running
      */
-    public void startUnit(String unitName, boolean replace) {
+    public void startUnit(String unitName, boolean replace) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/start", new Parameter[]{
                 new Parameter("replace", replace)
         });
@@ -306,7 +307,7 @@ public class Systemd {
      * @param unitName unitName
      * @param replace  Replace a job that is already running
      */
-    public void stopUnit(String unitName, boolean replace) {
+    public void stopUnit(String unitName, boolean replace) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/stop", new Parameter[]{
                 new Parameter("replace", replace)
         });

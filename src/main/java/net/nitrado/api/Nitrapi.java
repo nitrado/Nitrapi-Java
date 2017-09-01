@@ -6,6 +6,7 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import net.nitrado.api.common.Value;
 import net.nitrado.api.common.exceptions.NitrapiErrorException;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.HttpClient;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.common.http.ProductionHttpClient;
@@ -164,7 +165,7 @@ public class Nitrapi {
      *
      * @return the current customer
      */
-    public Customer getCustomer() {
+    public Customer getCustomer() throws NitrapiException {
         return Customer.newInstance(this);
     }
 
@@ -175,7 +176,7 @@ public class Nitrapi {
      * @param id id of the service
      * @return the service specified by the id
      */
-    public Service getService(int id) {
+    public Service getService(int id) throws NitrapiException {
         JsonObject data = this.dataGet("services/" + id, null);
         return ServiceFactory.factory(this, data.get("service"));
     }
@@ -186,7 +187,7 @@ public class Nitrapi {
      *
      * @return a list of all services for the current user
      */
-    public Service[] getServices() {
+    public Service[] getServices() throws NitrapiException {
         JsonObject data = this.dataGet("services", null);
         JsonArray serviceArray = data.get("services").getAsJsonArray();
         ArrayList<Service> services = new ArrayList<Service>();
@@ -205,7 +206,7 @@ public class Nitrapi {
      *
      * @return true if the api is working. otherwise an exception is thrown
      */
-    public boolean ping() {
+    public boolean ping() throws NitrapiException {
         this.dataGet("ping", null);
         return true;
     }
@@ -217,7 +218,7 @@ public class Nitrapi {
      *
      * @return a GlobalGameList object
      */
-    public GlobalGameList getGames() {
+    public GlobalGameList getGames() throws NitrapiException {
         return GlobalGameList.newInstance(this);
     }
 
@@ -227,7 +228,7 @@ public class Nitrapi {
      *
      * @return
      */
-    public CloudServer.Image[] getImages() {
+    public CloudServer.Image[] getImages() throws NitrapiException {
         JsonObject data = dataGet("information/cloud_servers/images", null);
 
         CloudServer.Image[] images = fromJson(data.get("images"), CloudServer.Image[].class);
@@ -236,12 +237,12 @@ public class Nitrapi {
 
     // PAYMENT
 
-    public Country[] getPaymentCountries() {
+    public Country[] getPaymentCountries() throws NitrapiException {
         JsonObject data = this.dataGet("order/payment/countries", null);
         return gson.fromJson(data.get("countries"), Country[].class);
     }
 
-    public PaymentMethod[] getPaymentMethods() {
+    public PaymentMethod[] getPaymentMethods() throws NitrapiException {
         JsonObject data = this.dataGet("order/payment/payment_methods", null);
 
         data = data.get("payment_methods").getAsJsonObject();
@@ -255,7 +256,7 @@ public class Nitrapi {
         return methods.toArray(new PaymentMethod[0]);
     }
 
-    public SSHKeys getSSHKeys() {
+    public SSHKeys getSSHKeys() throws NitrapiException {
         JsonObject data = dataGet("user/ssh_keys", null);
 
         SSHKeys keys = fromJson(data, SSHKeys.class);
@@ -263,7 +264,7 @@ public class Nitrapi {
         return keys;
     }
 
-    public AccessToken getAccessTokenInfo() {
+    public AccessToken getAccessTokenInfo() throws NitrapiException {
         JsonObject data = this.dataGet("token", null);
         return gson.fromJson(data.get("token"), AccessToken.class);
     }
@@ -320,7 +321,7 @@ public class Nitrapi {
      * @param parameters parameters
      * @return the result as a JsonObject
      */
-    public JsonObject dataGet(String url, Parameter[] parameters) {
+    public JsonObject dataGet(String url, Parameter[] parameters) throws NitrapiException {
         return client.dataGet(nitrapiUrl + url, accessToken, parameters);
     }
 
@@ -333,7 +334,7 @@ public class Nitrapi {
      * @param parameters parameters
      * @return the result as a JsonObject
      */
-    public JsonObject dataPost(String url, Parameter[] parameters) {
+    public JsonObject dataPost(String url, Parameter[] parameters) throws NitrapiException {
         return client.dataPost(nitrapiUrl + url, accessToken, parameters);
     }
 
@@ -346,7 +347,7 @@ public class Nitrapi {
      * @param parameters parameters
      * @return the result as a JsonObject
      */
-    public JsonObject dataPut(String url, Parameter[] parameters) {
+    public JsonObject dataPut(String url, Parameter[] parameters) throws NitrapiException {
         return client.dataPut(nitrapiUrl + url, accessToken, parameters);
     }
 
@@ -359,7 +360,7 @@ public class Nitrapi {
      * @param parameters parameters
      * @return the result as a JsonObject
      */
-    public JsonObject dataDelete(String url, Parameter[] parameters) {
+    public JsonObject dataDelete(String url, Parameter[] parameters) throws NitrapiException {
         return client.dataDelete(nitrapiUrl + url, accessToken, parameters);
     }
 
@@ -371,7 +372,7 @@ public class Nitrapi {
      * @param url URL to call
      * @return the InputStream of the response
      */
-    public InputStream rawGet(String url) {
+    public InputStream rawGet(String url) throws NitrapiException {
         return client.rawGet(url);
     }
 
@@ -385,7 +386,7 @@ public class Nitrapi {
      * @param body  body of the POST-REQUEST
      */
 
-    public void rawPost(String url, String token, byte[] body) {
+    public void rawPost(String url, String token, byte[] body) throws NitrapiException {
         client.rawPost(url, token, body);
     }
 

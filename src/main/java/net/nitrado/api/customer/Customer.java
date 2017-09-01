@@ -3,6 +3,7 @@ package net.nitrado.api.customer;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 
 import java.util.GregorianCalendar;
@@ -33,7 +34,7 @@ public class Customer {
      * @param api reference to the Nitrapi
      * @return the customer object
      */
-    public static Customer newInstance(Nitrapi api) {
+    public static Customer newInstance(Nitrapi api) throws NitrapiException {
         JsonObject data = api.dataGet("user", null);
         Customer customer = api.fromJson(data.get("user"), Customer.class);
         customer.api = api;
@@ -121,12 +122,12 @@ public class Customer {
         return profile;
     }
 
-    public AccountOverview getAccountOverview() {
+    public AccountOverview getAccountOverview() throws NitrapiException {
         JsonObject data = api.dataGet("user/account_overview", null);
         return api.fromJson(data.get("account_overview"), AccountOverview.class);
     }
 
-    public AccountOverview getAccountOverview(int year, int month) {
+    public AccountOverview getAccountOverview(int year, int month) throws NitrapiException {
         JsonObject data = api.dataGet("user/account_overview", new Parameter[]{
                 new Parameter("year", year),
                 new Parameter("month", month)

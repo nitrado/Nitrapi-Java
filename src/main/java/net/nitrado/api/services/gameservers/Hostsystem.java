@@ -1,6 +1,5 @@
 package net.nitrado.api.services.gameservers;
 
-import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.common.Value;
 
 /**

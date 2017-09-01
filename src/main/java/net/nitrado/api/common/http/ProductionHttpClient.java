@@ -3,7 +3,6 @@ package net.nitrado.api.common.http;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.stream.MalformedJsonException;
 import net.nitrado.api.common.exceptions.*;
 
 import java.io.*;
@@ -21,7 +20,7 @@ public class ProductionHttpClient implements HttpClient {
     private long rateLimitReset;
     private String locale = "en";
 
-    public JsonObject dataGet(String url, String accessToken, Parameter[] parameters) {
+    public JsonObject dataGet(String url, String accessToken, Parameter[] parameters) throws NitrapiException {
 
         // create the full url string with parameters
         boolean first = true;
@@ -78,7 +77,7 @@ public class ProductionHttpClient implements HttpClient {
     }
 
 
-    public JsonObject dataPost(String url, String accessToken, Parameter[] parameters) {
+    public JsonObject dataPost(String url, String accessToken, Parameter[] parameters) throws NitrapiException {
         String params = prepareParameterString(parameters);
 
         url += "?locale=" + locale;
@@ -117,7 +116,7 @@ public class ProductionHttpClient implements HttpClient {
         }
     }
 
-    public JsonObject dataPut(String url, String accessToken, Parameter[] parameters) {
+    public JsonObject dataPut(String url, String accessToken, Parameter[] parameters) throws NitrapiException {
         String params = prepareParameterString(parameters);
 
         url += "?locale=" + locale;
@@ -157,7 +156,7 @@ public class ProductionHttpClient implements HttpClient {
     }
 
 
-    public JsonObject dataDelete(String url, String accessToken, Parameter[] parameters) {
+    public JsonObject dataDelete(String url, String accessToken, Parameter[] parameters) throws NitrapiException {
         String params = prepareParameterString(parameters);
 
         url += "?locale=" + locale;
@@ -194,7 +193,7 @@ public class ProductionHttpClient implements HttpClient {
         }
     }
 
-    public InputStream rawGet(String url) {
+    public InputStream rawGet(String url) throws NitrapiException {
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             connection.setRequestMethod("GET");
@@ -204,7 +203,7 @@ public class ProductionHttpClient implements HttpClient {
         }
     }
 
-    public void rawPost(String url, String token, byte[] body) {
+    public void rawPost(String url, String token, byte[] body) throws NitrapiException {
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             connection.setDoOutput(true);
@@ -272,7 +271,7 @@ public class ProductionHttpClient implements HttpClient {
         }
     }
 
-    private JsonObject parseResult(StringBuffer response, HttpURLConnection connection) throws IOException {
+    private JsonObject parseResult(StringBuffer response, HttpURLConnection connection) throws IOException, NitrapiException {
 
         if (connection.getHeaderField("X-Rate-Limit") != null) {
             rateLimit = Integer.parseInt(connection.getHeaderField("X-RateLimit-Limit"));

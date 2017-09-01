@@ -2,6 +2,7 @@ package net.nitrado.api.customer;
 
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 
 /**
@@ -96,7 +97,7 @@ public class SSHKeys {
      *
      * @param key
      */
-    public void uploadKey(String key) {
+    public void uploadKey(String key) throws NitrapiException {
         api.dataPost("user/ssh_keys/", new Parameter[]{
                 new Parameter("key", key)
         });
@@ -109,7 +110,7 @@ public class SSHKeys {
      * @param key
      * @param enabled
      */
-    public void updateKey(int id, String key, boolean enabled) {
+    public void updateKey(int id, String key, boolean enabled) throws NitrapiException {
         api.dataPost("user/ssh_keys/" + id + "", new Parameter[]{
                 new Parameter("key", key),
                 new Parameter("enabled", enabled)
@@ -121,7 +122,7 @@ public class SSHKeys {
      *
      * @param id
      */
-    public void deleteKey(int id) {
+    public void deleteKey(int id) throws NitrapiException {
         api.dataDelete("user/ssh_keys/" + id + "", null);
     }
 

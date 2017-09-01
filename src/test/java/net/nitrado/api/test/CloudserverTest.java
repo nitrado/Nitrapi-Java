@@ -1,5 +1,6 @@
 package net.nitrado.api.test;
 
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.services.Service;
 import net.nitrado.api.services.cloudservers.CloudServer;
 import org.junit.Before;
@@ -12,7 +13,7 @@ public class CloudserverTest extends ApiTestCase {
     CloudServer server;
 
     @Before
-    public void init() {
+    public void init() throws NitrapiException {
 
         client.addNextResponseFromFile("services/cloud_server.json");
         client.addNextResponseFromFile("services/cloudservers/cloudserver.json");

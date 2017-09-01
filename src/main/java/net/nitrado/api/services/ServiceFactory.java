@@ -3,6 +3,7 @@ package net.nitrado.api.services;
 import com.google.gson.JsonElement;
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.exceptions.NitrapiErrorException;
+import net.nitrado.api.common.exceptions.NitrapiException;
 
 /**
  * A class to create a specific service-class from json data.
@@ -15,7 +16,7 @@ public class ServiceFactory {
      * @param data json-data containing a single service object
      * @return an object of a subclass of service
      */
-    public static Service factory(Nitrapi api, JsonElement data) {
+    public static Service factory(Nitrapi api, JsonElement data) throws NitrapiException {
 
         // build the class name for the service
         String type = data.getAsJsonObject().get("type").getAsString();

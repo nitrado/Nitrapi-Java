@@ -1,8 +1,8 @@
 package net.nitrado.api.services.voiceservers;
 
 import com.google.gson.JsonObject;
-import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.common.Value;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.services.Service;
 
 /**
@@ -47,11 +47,11 @@ public class Voiceserver extends Service {
     }
 
     public boolean isStarted() {
-        return info != null ? info.started : false;
+        return info != null && info.started;
     }
 
     @Override
-    public void refresh() {
+    public void refresh() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/voiceservers", null);
         VoiceserverInfo infos = api.fromJson(data.get("voiceserver"), VoiceserverInfo.class);
         this.info = infos;
@@ -62,7 +62,7 @@ public class Voiceserver extends Service {
      *
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void doRestart() {
+    public void doRestart() throws NitrapiException {
         api.dataPost("services/" + getId() + "/voiceservers/restart", null);
     }
 
@@ -71,7 +71,7 @@ public class Voiceserver extends Service {
      *
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void doStop() {
+    public void doStop() throws NitrapiException {
         api.dataPost("services/" + getId() + "/voiceservers/stop", null);
     }
 
@@ -80,7 +80,7 @@ public class Voiceserver extends Service {
      *
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void doReinstall() {
+    public void doReinstall() throws NitrapiException {
         api.dataPost("services/" + getId() + "/voiceservers/reinstall", null);
     }
 }

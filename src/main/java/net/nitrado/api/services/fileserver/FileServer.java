@@ -3,6 +3,7 @@ package net.nitrado.api.services.fileserver;
 import com.google.gson.JsonObject;
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.exceptions.NitrapiErrorException;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
 import net.nitrado.api.services.cloudservers.CloudServer;
@@ -89,7 +90,7 @@ public class FileServer {
      * @param username name of the user which should execute this request (for Cloud Servers)
      * @return upload token
      */
-    public Token getUploadToken(String path, String name, String username) {
+    public Token getUploadToken(String path, String name, String username) throws NitrapiException {
         JsonObject data = api.dataPost("services/" + service.getId() + "/" + url + "/file_server/upload", new Parameter[]{
                 new Parameter("path", path),
                 new Parameter("file", name),
@@ -98,7 +99,7 @@ public class FileServer {
         return api.fromJson(data.get("token"), Token.class);
     }
 
-    public Token getUploadToken(String path, String name) {
+    public Token getUploadToken(String path, String name) throws NitrapiException {
         return getUploadToken(path, name, null);
     }
 
@@ -112,7 +113,7 @@ public class FileServer {
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_READ
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_WRITE
      */
-    public void uploadFile(String file, String path, String name) throws IOException {
+    public void uploadFile(String file, String path, String name) throws IOException, NitrapiException {
         File localFile = new File(file);
         if (!localFile.exists()) {
             throw new NitrapiErrorException("Can't find local file \"" + file + "\".");
@@ -137,13 +138,13 @@ public class FileServer {
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_READ
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_WRITE
      */
-    public void writeFile(String path, String name, String content, String username) throws IOException {
+    public void writeFile(String path, String name, String content, String username) throws IOException, NitrapiException {
         Token token = getUploadToken(path, name, username);
 
         api.rawPost(token.getUrl(), token.getToken(), content.getBytes(Charset.forName("UTF-8")));
     }
 
-    public void writeFile(String path, String name, String content) throws IOException {
+    public void writeFile(String path, String name, String content) throws IOException, NitrapiException {
         writeFile(path, name, content, null);
     }
 
@@ -154,7 +155,7 @@ public class FileServer {
      * @return a list of the contents of the root directory
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_READ
      */
-    public FileEntry[] getFileList() {
+    public FileEntry[] getFileList() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + service.getId() + "/" + url + "/file_server/list", null);
         return api.fromJson(data.get("entries"), FileEntry[].class);
     }
@@ -166,7 +167,7 @@ public class FileServer {
      * @return a list of the contents of the given directory
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_READ
      */
-    public FileEntry[] getFileList(String path) {
+    public FileEntry[] getFileList(String path) throws NitrapiException {
         JsonObject data = api.dataGet("services/" + service.getId() + "/" + url + "/file_server/list", new Parameter[]{new Parameter("dir", path)});
         return api.fromJson(data.get("entries"), FileEntry[].class);
     }
@@ -179,7 +180,7 @@ public class FileServer {
      * @return a list of files matching the pattern
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_READ
      */
-    public FileEntry[] doFileSearch(String path, String search) {
+    public FileEntry[] doFileSearch(String path, String search) throws NitrapiException {
         JsonObject data = api.dataGet("services/" + service.getId() + "/" + url + "/file_server/list", new Parameter[]{new Parameter("dir", path), new Parameter("search", search)});
         return api.fromJson(data.get("entries"), FileEntry[].class);
     }
@@ -191,7 +192,7 @@ public class FileServer {
      * @return the download token
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_READ
      */
-    private Token getDownloadToken(String file) {
+    private Token getDownloadToken(String file) throws NitrapiException {
         JsonObject data = api.dataGet("services/" + service.getId() + "/" + url + "/file_server/download", new Parameter[]{new Parameter("file", file)});
         return api.fromJson(data.get("token"), Token.class);
     }
@@ -205,7 +206,7 @@ public class FileServer {
      * @throws IOException If an I/O error occurs
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_READ
      */
-    public void downloadFile(String file, String path, String name) throws IOException {
+    public void downloadFile(String file, String path, String name) throws IOException, NitrapiException {
         File outputFolder = new File(path);
         if (!outputFolder.canWrite()) {
             throw new NitrapiErrorException("The folder \"" + outputFolder.getPath() + "\" is not writable.");
@@ -233,7 +234,7 @@ public class FileServer {
      * @throws IOException If an I/O error occurs
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_READ
      */
-    public String readFile(String file) throws IOException {
+    public String readFile(String file) throws IOException, NitrapiException {
         Token token = getDownloadToken(file);
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(api.rawGet(token.getUrl())));
@@ -254,7 +255,7 @@ public class FileServer {
      * @return url where you can download the file
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_READ
      */
-    public String getDownloadUrl(String file) {
+    public String getDownloadUrl(String file) throws NitrapiException {
         Token token = getDownloadToken(file);
         return token.getUrl();
     }
@@ -266,7 +267,7 @@ public class FileServer {
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_READ
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_WRITE
      */
-    public void deleteFile(String file) {
+    public void deleteFile(String file) throws NitrapiException {
         api.dataDelete("services/" + service.getId() + "/" + url + "/file_server/delete", new Parameter[]{new Parameter("path", file)});
     }
 
@@ -279,7 +280,7 @@ public class FileServer {
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_READ
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_WRITE
      */
-    public void deleteDirectory(String file) {
+    public void deleteDirectory(String file) throws NitrapiException {
         deleteFile(file);
     }
 
@@ -293,7 +294,7 @@ public class FileServer {
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_READ
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_WRITE
      */
-    public void moveFile(String sourceFile, String targetDir, String fileName, String username) {
+    public void moveFile(String sourceFile, String targetDir, String fileName, String username) throws NitrapiException {
         if (sameDirectory(sourceFile, targetDir)) {
             return;
         }
@@ -305,7 +306,7 @@ public class FileServer {
         });
     }
 
-    public void moveFile(String sourceFile, String targetDir, String fileName) {
+    public void moveFile(String sourceFile, String targetDir, String fileName) throws NitrapiException {
         moveFile(sourceFile, targetDir, fileName, null);
     }
 
@@ -318,7 +319,7 @@ public class FileServer {
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_READ
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_WRITE
      */
-    public void moveDirectory(String source, String target, String username) {
+    public void moveDirectory(String source, String target, String username) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/" + url + "/file_server/move", new Parameter[]{
                 new Parameter("source_path", source),
                 new Parameter("target_path", target),
@@ -326,7 +327,7 @@ public class FileServer {
         });
     }
 
-    public void moveDirectory(String source, String target) {
+    public void moveDirectory(String source, String target) throws NitrapiException {
         moveDirectory(source, target, null);
     }
 
@@ -340,18 +341,19 @@ public class FileServer {
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_READ
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_WRITE
      */
-    public void copyFile(String sourceFile, String targetDir, String fileName, String username) {
+    public void copyFile(String sourceFile, String targetDir, String fileName, String username) throws NitrapiException {
         if (sameDirectory(sourceFile, targetDir)) {
             return;
         }
         api.dataPost("services/" + service.getId() + "/" + url + "/file_server/copy", new Parameter[]{
                 new Parameter("source_path", sourceFile),
                 new Parameter("target_path", targetDir),
-                new Parameter("target_filename", fileName)
+                new Parameter("target_filename", fileName),
+                new Parameter("username", username)
         });
     }
 
-    public void copyFile(String sourceFile, String targetDir, String fileName) {
+    public void copyFile(String sourceFile, String targetDir, String fileName) throws NitrapiException {
         copyFile(sourceFile, targetDir, fileName, null);
     }
 
@@ -368,11 +370,11 @@ public class FileServer {
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_READ
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_WRITE
      */
-    public void copyDirectory(String source, String targetDir, String dirName, String username) {
+    public void copyDirectory(String source, String targetDir, String dirName, String username) throws NitrapiException {
         copyFile(source, targetDir, dirName, username);
     }
 
-    public void copyDirectory(String source, String targetDir, String dirName) {
+    public void copyDirectory(String source, String targetDir, String dirName) throws NitrapiException {
         copyFile(source, targetDir, dirName, null);
     }
 
@@ -385,7 +387,7 @@ public class FileServer {
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_READ
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_WRITE
      */
-    public void createDirectory(String path, String name, String username) {
+    public void createDirectory(String path, String name, String username) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/" + url + "/file_server/mkdir", new Parameter[]{
                 new Parameter("path", path),
                 new Parameter("name", name),
@@ -393,7 +395,7 @@ public class FileServer {
         });
     }
 
-    public void createDirectory(String path, String name) {
+    public void createDirectory(String path, String name) throws NitrapiException {
         createDirectory(path, name, null);
     }
 
@@ -404,7 +406,7 @@ public class FileServer {
      * @return the size
      * @permission ROLE_WEBINTERFACE_FILEBROWSER_READ
      */
-    public long getFileSize(String path) {
+    public long getFileSize(String path) throws NitrapiException {
         JsonObject data = api.dataGet("services/" + service.getId() + "/" + url + "/file_server/size", new Parameter[]{new Parameter("path", path)});
         return data.get("size").getAsLong();
     }
@@ -422,7 +424,7 @@ public class FileServer {
      * @param group
      * @param recursive
      */
-    public void chown(String path, String username, String group, boolean recursive) {
+    public void chown(String path, String username, String group, boolean recursive) throws NitrapiException {
         if (!hasPermissions) {
             throw new NitrapiErrorException("This service does not support chown.");
         }
@@ -434,7 +436,7 @@ public class FileServer {
         });
     }
 
-    public void chown(String path, String username, String group) {
+    public void chown(String path, String username, String group) throws NitrapiException {
         chown(path, username, group, false);
     }
 
@@ -446,7 +448,7 @@ public class FileServer {
      * @param chmod
      * @param recursive
      */
-    public void chmod(String path, String chmod, boolean recursive) {
+    public void chmod(String path, String chmod, boolean recursive) throws NitrapiException {
         if (!hasPermissions) {
             throw new NitrapiErrorException("This service does not support chmod.");
         }
@@ -457,7 +459,7 @@ public class FileServer {
         });
     }
 
-    public void chmod(String path, String chmod) {
+    public void chmod(String path, String chmod) throws NitrapiException {
         chmod(path, chmod, false);
     }
 
@@ -467,7 +469,7 @@ public class FileServer {
      *
      * @return
      */
-    public String[] getBookmarks() {
+    public String[] getBookmarks() throws NitrapiException {
         if (!hasBookmarks) {
             throw new NitrapiErrorException("This service does not support bookmarks.");
         }

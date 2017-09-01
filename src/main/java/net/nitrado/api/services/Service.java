@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.Value;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 
 import java.util.GregorianCalendar;
@@ -50,6 +51,16 @@ public abstract class Service {
          * The service is deleted.
          */
         public static Status DELETED = new Status("deleted");
+
+        // These statuses are set by fixServiceStatus() if suspendDate or deleteDate are in the past.
+        /**
+         * The service is currently being suspended.
+         */
+        public static Status SUSPENDING = new Status("suspending");
+        /**
+         * The service is currently being deleted.
+         */
+        public static Status DELETING = new Status("deleting");
     }
 
     private int id;
@@ -185,7 +196,7 @@ public abstract class Service {
      * @return all methods that can be used for auto extending
      * @permission ROLE_OWNER
      */
-    public AutoExtendMethod[] getAutoExtendMethods() {
+    public AutoExtendMethod[] getAutoExtendMethods() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + id + "/auto_extend", null);
         return api.fromJson(data.get("auto_extend"), AutoExtendMethod[].class);
     }
@@ -196,7 +207,7 @@ public abstract class Service {
      * @param rentalTime
      * @permission ROLE_OWNER
      */
-    public void changeAutoExtendMethod(int method, int rentalTime) {
+    public void changeAutoExtendMethod(int method, int rentalTime) throws NitrapiException {
         api.dataPost("services/" + id + "/auto_extend", new Parameter[]{
                 new Parameter("auto_extend_id", method),
                 new Parameter("rental_time", rentalTime)
@@ -219,7 +230,7 @@ public abstract class Service {
      * @return a Logs object
      * @permission ROLE_WEBINTERFACE_LOGS_READ
      */
-    public Logs getLogs() {
+    public Logs getLogs() throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/logs", null);
         return api.fromJson(data, Logs.class);
     }
@@ -231,7 +242,7 @@ public abstract class Service {
      * @return a Logs object
      * @permission ROLE_WEBINTERFACE_LOGS_READ
      */
-    public Logs getLogs(int page) {
+    public Logs getLogs(int page) throws NitrapiException {
         JsonObject data = api.dataGet("services/" + getId() + "/logs", new Parameter[]{new Parameter("page", page + "")});
         return api.fromJson(data, Logs.class);
     }
@@ -240,7 +251,7 @@ public abstract class Service {
      * Cancels the service.
      * Not supported by all product types.
      */
-    public void cancel() {
+    public void cancel() throws NitrapiException {
         api.dataPost("services/" + getId() + "/cancel", null);
     }
 
@@ -248,7 +259,7 @@ public abstract class Service {
      * Deletes the service.
      * You only can delete the service if it's suspended otherwise an error will be thrown.
      */
-    public void delete() {
+    public void delete() throws NitrapiException {
         api.dataDelete("services/" + getId(), null);
     }
 
@@ -256,7 +267,7 @@ public abstract class Service {
     /**
      * Refreshes the service-specific data of this service.
      */
-    public abstract void refresh();
+    public abstract void refresh() throws NitrapiException;
 
     /**
      * Used internally.
@@ -267,11 +278,13 @@ public abstract class Service {
      * @see Nitrapi#getService(int)
      * @see Nitrapi#getServices()
      */
-    protected void init(Nitrapi api) {
+    protected void init(Nitrapi api) throws NitrapiException {
         this.api = api;
         if (status.equals(Status.ACTIVE)) {
             refresh(); // initially load the data
         }
+
+        fixServiceStatus();
     }
 
     /**
@@ -292,5 +305,17 @@ public abstract class Service {
             }
         }
         return false;
+    }
+
+    /**
+     * Sets the status correctly if suspendDate or deleteDate are in the past.
+     */
+    protected void fixServiceStatus() {
+        GregorianCalendar now = new GregorianCalendar();
+        if (deleteDate.before(now) && status != Service.Status.DELETED) {
+            status = Status.DELETING;
+        } else if (suspendDate.before(now) && status != Service.Status.SUSPENDED && status != Status.DELETED) {
+            status = Status.SUSPENDING;
+        }
     }
 }

@@ -3,12 +3,11 @@ package net.nitrado.api.test.mock;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.nitrado.api.common.exceptions.NitrapiErrorException;
+import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.HttpClient;
 import net.nitrado.api.common.http.Parameter;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -81,31 +80,31 @@ public class MockHttpClient implements HttpClient {
 
     /// MOCKED METHODS ///
 
-    public JsonObject dataGet(String url, String accessToken, Parameter[] parameters) {
+    public JsonObject dataGet(String url, String accessToken, Parameter[] parameters) throws NitrapiException {
         this.lastUrl = url;
         this.lastParameters = parameters;
         return mockResponse();
     }
 
-    public JsonObject dataPost(String url, String accessToken, Parameter[] parameters) {
+    public JsonObject dataPost(String url, String accessToken, Parameter[] parameters) throws NitrapiException {
         this.lastUrl = url;
         this.lastParameters = parameters;
         return mockResponse();
     }
 
-    public JsonObject dataPut(String url, String accessToken, Parameter[] parameters) {
+    public JsonObject dataPut(String url, String accessToken, Parameter[] parameters) throws NitrapiException {
         this.lastUrl = url;
         this.lastParameters = parameters;
         return mockResponse();
     }
 
-    public JsonObject dataDelete(String url, String accessToken, Parameter[] parameters) {
+    public JsonObject dataDelete(String url, String accessToken, Parameter[] parameters) throws NitrapiException {
         this.lastUrl = url;
         this.lastParameters = parameters;
         return mockResponse();
     }
 
-    private JsonObject mockResponse() {
+    private JsonObject mockResponse() throws NitrapiException {
         if (this.nextResponses.isEmpty()) {
             throw new IllegalStateException("not enough nextResponses provided for call");
         }
