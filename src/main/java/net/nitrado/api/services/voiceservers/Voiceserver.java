@@ -1,7 +1,7 @@
 package net.nitrado.api.services.voiceservers;
 
 import com.google.gson.JsonObject;
-import com.google.gson.annotations.SerializedName;
+import net.nitrado.api.common.Value;
 import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.services.Service;
 
@@ -20,13 +20,14 @@ public class Voiceserver extends Service {
         private JsonObject specific;
     }
 
-    public enum Type {
-        @SerializedName("teamspeak3")
-        TEAMSPEAK3,
-        @SerializedName("mumble")
-        MUMBLE,
-        @SerializedName("ventrilo")
-        VENTRILO
+    public static class Type extends Value {
+        public Type(String value) {
+            super(value);
+        }
+
+        public static final Type TEAMSPEAK3 = new Type("teamspeak3");
+        public static final Type MUMBLE = new Type("mumble");
+        public static final Type VENTRILO = new Type("ventrilo");
     }
 
     public Type getType() {

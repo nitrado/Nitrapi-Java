@@ -2,6 +2,7 @@ package net.nitrado.api.services.gameservers;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import net.nitrado.api.common.Value;
 import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
@@ -23,102 +24,94 @@ public class Gameserver extends Service {
     /**
      * This enum represents the type of a gameserver.
      */
-    public enum Type {
-        @SerializedName("Gameserver")
-        GAMESERVER,
-        @SerializedName("Gameserver_Basic")
-        GAMESERVER_BASIC,
-        @SerializedName("Gameserver_EPS")
-        GAMESERVER_EPS
+    public static class Type extends Value {
+        public Type(String value) {
+            super(value);
+        }
+
+        public static final Type GAMESERVER = new Type("Gameserver");
+        public static final Type GAMESERVER_BASIC = new Type("Gameserver_Basic");
+        public static final Type GAMESERVER_EPC = new Type("Gameserver_EPS");
     }
 
     /**
      * This enum represents the type of the memory of a gameserver.
      */
-    public enum MemoryType {
-        @SerializedName("Standard")
-        STANDARD,
-        @SerializedName("Advanced")
-        ADVANCED,
-        @SerializedName("Professional")
-        PROFESSIONAL,
-        @SerializedName("Ultimate")
-        ULTIMATE
+    public static class MemoryType extends Value {
+        public MemoryType(String value) {
+            super(value);
+        }
+
+        public static final MemoryType STANDARD = new MemoryType("Standard");
+        public static final MemoryType ADVANCED = new MemoryType("Advanced");
+        public static final MemoryType PROFESSIONAL = new MemoryType("Professional");
+        public static final MemoryType ULTIMATE = new MemoryType("Ultimate");
     }
 
     /**
      * This enum represents the status of a gameserver.
      */
-    public enum Status {
+    public static class Status extends Value {
+        public Status(String value) {
+            super(value);
+        }
+
         /**
          * Will be returned if the gameserver is currently running.
          */
-        @SerializedName("started")
-        STARTED,
+        public static final Status STARTED = new Status("started");
         /**
          * The server is currently stopped.
          */
-        @SerializedName("stopped")
-        STOPPED,
+        public static final Status STOPPED = new Status("stopped");
         /**
          * The server will be stopped now.
          */
-        @SerializedName("stopping")
-        STOPPING,
+        public static final Status STOPPING = new Status("stopping");
         /**
          * The server is currently performing a restart.
          */
-        @SerializedName("restarting")
-        RESTARTING,
+        public static final Status RESTARTING = new Status("restarting");
         /**
          * Will be returned if the server is suspended, which means it needs to be reactivated on the website.
          */
-        @SerializedName("suspended")
-        SUSPENDED,
+        public static final Status SUSPENDED = new Status("suspended");
         /**
          * If your services are guardian protected, you are currently outside of the allowed times.
          */
-        @SerializedName("guardian_locked")
-        GUARDIAN_LOCKED,
+        public static final Status GUARDIAN_LOCKED = new Status("guardian_locked");
         /**
          * The server is currently performing a game switching action.
          */
-        @SerializedName("gs_installation")
-        GS_INSTALLATION,
+        public static final Status GS_INSTALLATION = new Status("gs_installation");
         /**
          * A backup will be restored now.
          */
-        @SerializedName("backup_restore")
-        BACKUP_RESTORE,
+        public static final Status BACKUP_RESTORE = new Status("backup_restore");
         /**
          * A new backup will be created now.
          */
-        @SerializedName("backup_creation")
-        BACKUP_CREATION,
+        public static final Status BACKUP_CREATION = new Status("backup_creation");
         /**
          * The Server is running a chunkfix.
          * <p>
          * Only available for Minecraft.
          */
-        @SerializedName("chunkfix")
-        CHUNKFIX,
+        public static final Status CHUNKFIX = new Status("chunkfix");
         /**
          * The Server is running a overview map rendering.
          * <p>
          * Only available for Minecraft.
          */
-        @SerializedName("overviewmap_render")
-        OVERVIEWMAP_RENDER,
+        public static final Status OVERVIEWMAP_RENDER = new Status("overviewmap_render");
         /**
          * The host of this gameserver is currently unreachable.
          */
-        @SerializedName("hostdown")
-        HOST_DOWN,
+        public static final Status HOST_DOWN = new Status("hostdown");
         /**
          * The server is currently updating.
          */
-        @SerializedName("updating")
-        UPDATING
+        public static final Status UPDATING = new Status("updating");
     }
 
     /**
@@ -153,8 +146,8 @@ public class Gameserver extends Service {
 
     private class GameSpecific {
         private String path;
-        @SerializedName("path_avaiable")
-        private boolean pathAvaiable; // TODO: ??
+        @SerializedName("path_available")
+        private boolean pathAvailable;
 
         private class Features {
             @SerializedName("has_backups")
@@ -308,11 +301,11 @@ public class Gameserver extends Service {
         return info.gameSpecific.path;
     }
 
-    public boolean isPathAvaiable() {
+    public boolean isPathAvailable() {
         if (info == null || info.gameSpecific == null) {
             return false;
         }
-        return info.gameSpecific.pathAvaiable;
+        return info.gameSpecific.pathAvailable;
     }
 
     public boolean hasBackups() {

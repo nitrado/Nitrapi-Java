@@ -3,6 +3,7 @@ package net.nitrado.api.services.cloudservers;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.Value;
 import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
@@ -22,66 +23,59 @@ public class CloudServer extends Service {
     /**
      * The Status of the CloudServer.
      */
-    public enum CloudserverStatus {
+    public static class CloudserverStatus extends Value {
+        public CloudserverStatus(String value) {
+            super(value);
+        }
         /**
          * The Server is running.
          */
-        @SerializedName("running")
-        RUNNING,
+        public static final CloudserverStatus RUNNING = new CloudserverStatus("running");
 
         /**
          * The Server is stopped.
          */
-        @SerializedName("stopped")
-        STOPPED,
+        public static final CloudserverStatus STOPPED = new CloudserverStatus("stopped");
 
         /**
          * The Server is currently installing. This can take some minutes.
          */
-        @SerializedName("installing")
-        INSTALLING,
+        public static final CloudserverStatus INSTALLING = new CloudserverStatus("installing");
 
         /**
          * The Server is currently re-installing. This can take some minutes.
          */
-        @SerializedName("reinstalling")
-        REINSTALLING,
+        public static final CloudserverStatus REINSTALLING = new CloudserverStatus("reinstalling");
 
         /**
          * The Server is currently processing an up- or downgrade.
          */
-        @SerializedName("flavour_change")
-        FLAVOUR_CHANGE,
+        public static final CloudserverStatus FLAVOUR_CHANGE = new CloudserverStatus("flavour_change");
 
         /**
          * The Server is currently restoring a backup. This can take some minutes.
          */
-        @SerializedName("restoring")
-        RESTORING,
+        public static final CloudserverStatus RESTORING = new CloudserverStatus("restoring");
 
         /**
          * An error occurred while up- or downgrading. The support has been informed.
          */
-        @SerializedName("error_fc")
-        ERROR_FC,
+        public static final CloudserverStatus ERROR_FC = new CloudserverStatus("error_fc");
 
         /**
          * An error occurred while deleting the Server. The support has been informed.
          */
-        @SerializedName("error_delete")
-        ERROR_DELETE,
+        public static final CloudserverStatus ERROR_DELETE = new CloudserverStatus("error_delete");
 
         /**
          * An error occurred while installing the Server. The support has been informed.
          */
-        @SerializedName("error_install")
-        ERROR_INSTALL,
+        public static final CloudserverStatus ERROR_INSTALL = new CloudserverStatus("error_install");
 
         /**
          * An error occurred while reinstalling the Server. The support has been informed.
          */
-        @SerializedName("error_reinstall")
-        ERROR_REINSTALL;
+        public static final CloudserverStatus ERROR_REINSTALL = new CloudserverStatus("error_reinstall");
 
         @Override
         public String toString() {
@@ -817,7 +811,7 @@ public class CloudServer extends Service {
     @Override
     protected void init(Nitrapi api) throws NitrapiException {
         this.api = api;
-        if (getStatus() == Status.ACTIVE || getStatus() == Status.SUSPENDED) {
+        if (getStatus().equals(Status.ACTIVE) || getStatus().equals(Status.SUSPENDED)) {
             refresh(); // initially load the data
         }
 

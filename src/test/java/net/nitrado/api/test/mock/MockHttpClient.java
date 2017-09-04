@@ -8,8 +8,6 @@ import net.nitrado.api.common.http.HttpClient;
 import net.nitrado.api.common.http.Parameter;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 

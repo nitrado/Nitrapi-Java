@@ -3,6 +3,7 @@ package net.nitrado.api.services;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
+import net.nitrado.api.common.Value;
 import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 
@@ -15,47 +16,51 @@ import java.util.Locale;
 public abstract class Service {
     protected transient Nitrapi api;
 
-    public enum Status {
+    public static class Status extends Value {
+
+        public Status(String value) {
+            super(value);
+        }
+
         /**
          * The service is active and useable
          */
-        @SerializedName("active")
-        ACTIVE,
+        public static Status ACTIVE = new Status("active");
+
         /**
          * The service is currently installing
          */
-        @SerializedName("installing")
-        INSTALLING,
+        public static Status INSTALLING = new Status("installing");
+
         /**
          * The service is suspended and can be reactivated
          */
-        @SerializedName("suspended")
-        SUSPENDED,
+        public static Status SUSPENDED = new Status("suspended");
+
         /**
          * The service is admin locked, please contact support.
          */
-        @SerializedName("adminlocked")
-        ADMINLOCKED,
+        public static Status ADMINLOCKED = new Status("adminlocked");
+
         /**
          * The service is admin locked and suspended.
          */
-        @SerializedName("adminlocked_suspended")
-        ADMINLOCKED_SUSPENDED,
+        public static Status ADMINLOCKED_SUSPENDED = new Status("adminlocked_suspended");
+
         /**
          * The service is deleted.
          */
-        @SerializedName("deleted")
-        DELETED,
+        public static Status DELETED = new Status("deleted");
 
         // These statuses are set by fixServiceStatus() if suspendDate or deleteDate are in the past.
         /**
          * The service is currently being suspended.
          */
-        SUSPENDING,
+        public static Status SUSPENDING = new Status("suspending");
         /**
          * The service is currently being deleted.
          */
-        DELETING
+        public static Status DELETING = new Status("deleting");
     }
 
     private int id;
@@ -275,7 +280,7 @@ public abstract class Service {
      */
     protected void init(Nitrapi api) throws NitrapiException {
         this.api = api;
-        if (status == Status.ACTIVE) {
+        if (status.equals(Status.ACTIVE)) {
             refresh(); // initially load the data
         }
 
@@ -307,9 +312,9 @@ public abstract class Service {
      */
     protected void fixServiceStatus() {
         GregorianCalendar now = new GregorianCalendar();
-        if (deleteDate.before(now) && status != Service.Status.DELETED) {
+        if (deleteDate.before(now) && !status.equals(Service.Status.DELETED)) {
             status = Status.DELETING;
-        } else if (suspendDate.before(now) && status != Service.Status.SUSPENDED && status != Status.DELETED) {
+        } else if (suspendDate.before(now) && !status.equals(Service.Status.SUSPENDED) && !status.equals(Status.DELETED)) {
             status = Status.SUSPENDING;
         }
     }

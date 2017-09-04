@@ -2,16 +2,15 @@ package net.nitrado.api.test;
 
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.exceptions.NitrapiException;
-import net.nitrado.api.services.gameservers.Modpack;
 import net.nitrado.api.services.Service;
 import net.nitrado.api.services.ServiceDetails;
+import net.nitrado.api.services.fileserver.FileEntry;
+import net.nitrado.api.services.fileserver.FileServer;
 import net.nitrado.api.services.gameservers.*;
 import net.nitrado.api.services.gameservers.customersettings.CustomerSettings;
 import net.nitrado.api.services.gameservers.customersettings.CustomerSettingsNotFoundException;
 import net.nitrado.api.services.gameservers.ddoshistory.DDoSAttack;
 import net.nitrado.api.services.gameservers.ddoshistory.DDoSStat;
-import net.nitrado.api.services.fileserver.FileEntry;
-import net.nitrado.api.services.fileserver.FileServer;
 import net.nitrado.api.services.gameservers.taskmanager.Task;
 import net.nitrado.api.services.gameservers.taskmanager.TaskManager;
 import org.junit.Before;
@@ -185,14 +184,14 @@ public class GameserverTest extends ApiTestCase {
         Query.Player[] players = query.getPlayers();
         assertEquals(1, players.length);
         Query.Player player = players[0];
-        assertEquals(1, player.getId());
+        assertEquals(1, (int)player.getId());
         assertEquals("Tyrola", player.getName());
         assertFalse(player.isBot());
-        assertEquals(0, player.getScore());
-        assertEquals(0, player.getFrags());
-        assertEquals(0, player.getDeaths());
-        assertEquals(31, player.getTime());
-        assertEquals(8, player.getPing());
+        assertEquals(0, (int)player.getScore());
+        assertEquals(0, (int)player.getFrags());
+        assertEquals(0, (int)player.getDeaths());
+        assertEquals(31,(int)player.getTime());
+        assertEquals(8, (int)player.getPing());
     }
 
 
