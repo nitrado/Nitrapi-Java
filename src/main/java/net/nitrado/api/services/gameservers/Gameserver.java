@@ -146,8 +146,8 @@ public class Gameserver extends Service {
 
     private class GameSpecific {
         private String path;
-        @SerializedName("path_avaiable")
-        private boolean pathAvaiable; // TODO: ??
+        @SerializedName("path_available")
+        private boolean pathAvailable;
 
         private class Features {
             @SerializedName("has_backups")
@@ -301,11 +301,11 @@ public class Gameserver extends Service {
         return info.gameSpecific.path;
     }
 
-    public boolean isPathAvaiable() {
+    public boolean isPathAvailable() {
         if (info == null || info.gameSpecific == null) {
             return false;
         }
-        return info.gameSpecific.pathAvaiable;
+        return info.gameSpecific.pathAvailable;
     }
 
     public boolean hasBackups() {
