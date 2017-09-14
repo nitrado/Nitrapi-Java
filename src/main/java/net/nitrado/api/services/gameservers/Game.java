@@ -38,6 +38,9 @@ public class Game {
     private Modpack[] modpacks;
     private Icons icons;
     private int[] locations;
+    private String[] tags;
+    @SerializedName("preorder_locations")
+    private int[] preorderLocations;
     private boolean visible;
 
     public int getId() {
@@ -181,6 +184,14 @@ public class Game {
 
     public int[] getLocations() {
         return locations;
+    }
+
+    public String[] getTags() {
+        return tags;
+    }
+
+    public int[] getPreorderLocations() {
+        return preorderLocations;
     }
 
     public boolean isVisible() {
