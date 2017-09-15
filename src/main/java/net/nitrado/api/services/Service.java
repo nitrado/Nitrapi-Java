@@ -61,6 +61,10 @@ public abstract class Service {
          * The service is currently being deleted.
          */
         public static Status DELETING = new Status("deleting");
+        /**
+         * The service is preordered.
+         */
+        public static Status PREORDERED = new Status("preordered");
     }
 
     private int id;
@@ -312,9 +316,9 @@ public abstract class Service {
      */
     protected void fixServiceStatus() {
         GregorianCalendar now = new GregorianCalendar();
-        if (deleteDate.before(now) && !status.equals(Service.Status.DELETED)) {
+        if (deleteDate != null && deleteDate.before(now) && !status.equals(Service.Status.DELETED)) {
             status = Status.DELETING;
-        } else if (suspendDate.before(now) && !status.equals(Service.Status.SUSPENDED) && !status.equals(Status.DELETED)) {
+        } else if (suspendDate != null && suspendDate.before(now) && !status.equals(Service.Status.SUSPENDED) && !status.equals(Status.DELETED)) {
             status = Status.SUSPENDING;
         }
     }
