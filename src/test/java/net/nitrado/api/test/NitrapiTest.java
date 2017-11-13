@@ -28,7 +28,7 @@ public class NitrapiTest extends ApiTestCase {
         assertEquals(1955, customer.getCredit());
         assertEquals("marty.mcfly@biffco.com", customer.getEmail());
         assertEquals("https://server.nitrado.net/users.nitrado/1337.jpg", customer.getAvatar());
-        assertDate(1985, 10, 25, 01, 15, 00, customer.getRegisteredDate());
+        assertDate(1985, 10, 25, 01, 15, 00, customer.getRegistered());
     }
 
 
