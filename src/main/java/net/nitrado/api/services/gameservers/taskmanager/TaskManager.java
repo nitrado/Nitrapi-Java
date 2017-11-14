@@ -34,7 +34,7 @@ public class TaskManager {
      * @permission ROLE_WEBINTERFACE_SCHEDULED_RESTART_READ
      */
     public Task[] getScheduledTasks() throws NitrapiException {
-        JsonObject data = api.dataGet("services/" + service.getId() + "/gameservers/tasks", null);
+        JsonObject data = api.dataGet("services/" + service.getId() + "/tasks", null);
         return api.fromJson(data.get("tasks"), Task[].class);
     }
 
@@ -50,17 +50,17 @@ public class TaskManager {
      * @param message optional message for restart or stop
      * @permission ROLE_WEBINTERFACE_SCHEDULED_RESTART_WRITE
      */
-    public void createTask(String minute, String hour, String day, String month, String weekday, Task.ActionType method, String message) throws NitrapiException {
+    public void createTask(String minute, String hour, String day, String month, String weekday, String method, String message) throws NitrapiException {
         Parameter[] params = new Parameter[]{
                 new Parameter("minute", minute),
                 new Parameter("hour", hour),
                 new Parameter("day", day),
                 new Parameter("month", month),
                 new Parameter("weekday", weekday),
-                new Parameter("action_method", method.toString()),
+                new Parameter("action_method", method),
                 new Parameter("action_data", message)
         };
-        api.dataPost("services/" + service.getId() + "/gameservers/tasks", params);
+        api.dataPost("services/" + service.getId() + "/tasks", params);
     }
 
     /**
@@ -76,17 +76,17 @@ public class TaskManager {
      * @param message optional message for restart or stop
      * @permission ROLE_WEBINTERFACE_SCHEDULED_RESTART_READ
      */
-    public void updateTask(int id, String minute, String hour, String day, String month, String weekday, Task.ActionType method, String message) throws NitrapiException {
+    public void updateTask(int id, String minute, String hour, String day, String month, String weekday, String method, String message) throws NitrapiException {
         Parameter[] params = new Parameter[]{
                 new Parameter("minute", minute),
                 new Parameter("hour", hour),
                 new Parameter("day", day),
                 new Parameter("month", month),
                 new Parameter("weekday", weekday),
-                new Parameter("action_method", method.toString()),
+                new Parameter("action_method", method),
                 new Parameter("action_data", message)
         };
-        api.dataPost("services/" + service.getId() + "/gameservers/tasks/" + id, params);
+        api.dataPut("services/" + service.getId() + "/tasks/" + id, params);
     }
 
     /**
@@ -96,7 +96,7 @@ public class TaskManager {
      * @permission ROLE_WEBINTERFACE_SCHEDULED_RESTART_READ
      */
     public void deleteTask(int id) throws NitrapiException {
-        api.dataDelete("services/" + service.getId() + "/gameservers/tasks/" + id, null);
+        api.dataDelete("services/" + service.getId() + "/tasks/" + id, null);
     }
 
 
