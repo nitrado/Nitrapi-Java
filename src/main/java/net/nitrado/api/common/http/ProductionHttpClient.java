@@ -20,6 +20,18 @@ public class ProductionHttpClient implements HttpClient {
     private long rateLimitReset;
     private String locale = "en";
 
+    private Parameter[] additionalHeaders;
+
+    public ProductionHttpClient() {
+
+    }
+
+    public ProductionHttpClient(Parameter[] additionalHeaders) {
+        this.additionalHeaders = additionalHeaders;
+    }
+
+
+
     public JsonObject dataGet(String url, String accessToken, Parameter[] parameters) throws NitrapiException {
 
         // create the full url string with parameters
@@ -52,6 +64,11 @@ public class ProductionHttpClient implements HttpClient {
             connection.setRequestMethod("GET");
 
             connection.setRequestProperty("Authorization", "Bearer " + accessToken);
+            if (additionalHeaders != null) {
+                for (Parameter parameter : additionalHeaders) {
+                    connection.setRequestProperty(parameter.getKey(), parameter.getValue());
+                }
+            }
 
             BufferedReader reader;
             if (connection.getResponseCode() == 200) {
@@ -87,6 +104,11 @@ public class ProductionHttpClient implements HttpClient {
             connection.setDoOutput(true);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Authorization", "Bearer " + accessToken);
+            if (additionalHeaders != null) {
+                for (Parameter parameter : additionalHeaders) {
+                    connection.setRequestProperty(parameter.getKey(), parameter.getValue());
+                }
+            }
 
             // write post parameters
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
@@ -126,6 +148,11 @@ public class ProductionHttpClient implements HttpClient {
             connection.setDoOutput(true);
             connection.setRequestMethod("PUT");
             connection.setRequestProperty("Authorization", "Bearer " + accessToken);
+            if (additionalHeaders != null) {
+                for (Parameter parameter : additionalHeaders) {
+                    connection.setRequestProperty(parameter.getKey(), parameter.getValue());
+                }
+            }
 
             // write post parameters
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
@@ -166,6 +193,11 @@ public class ProductionHttpClient implements HttpClient {
             connection.setDoOutput(true);
             connection.setRequestMethod("DELETE");
             connection.setRequestProperty("Authorization", "Bearer " + accessToken);
+            if (additionalHeaders != null) {
+                for (Parameter parameter : additionalHeaders) {
+                    connection.setRequestProperty(parameter.getKey(), parameter.getValue());
+                }
+            }
 
             // write post parameters
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
