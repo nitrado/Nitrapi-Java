@@ -348,7 +348,7 @@ public class FileServer {
         api.dataPost("services/" + service.getId() + "/" + url + "/file_server/copy", new Parameter[]{
                 new Parameter("source_path", sourceFile),
                 new Parameter("target_path", targetDir),
-                new Parameter("target_filename", fileName),
+                new Parameter("target_name", fileName),
                 new Parameter("username", username)
         });
     }
