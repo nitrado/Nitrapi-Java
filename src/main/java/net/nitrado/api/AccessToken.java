@@ -1,8 +1,10 @@
 package net.nitrado.api;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import net.nitrado.api.common.Value;
+
 
 /**
  * This class represents an AccessToken.

@@ -2,38 +2,45 @@ package net.nitrado.api.services.bouncers;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import net.nitrado.api.common.exceptions.NitrapiException;
+import net.nitrado.api.common.http.Parameter;
+import net.nitrado.api.common.Value;
 import net.nitrado.api.services.Service;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 /**
- * This class represents an irc-bouncer.
+ * This class represents a Bouncer.
  */
 public class Bouncer extends Service {
-
-    private BouncerInfo info;
-
-    private class BouncerInfo {
+    private class BouncerData {
         @SerializedName("max_bouncer")
         private int maxBouncer;
-
         private BouncerInstance[] bouncers;
-
-
     }
 
-    @Override
-    public void refresh() throws NitrapiException {
-        JsonObject data = api.dataGet("services/" + getId() + "/bouncers", null);
-        BouncerInfo infos = api.fromJson(data.get("bouncer"), BouncerInfo.class);
-        this.info = infos;
-    }
+    private BouncerData data;
 
-
+    /**
+     * Returns maximum amount of bouncers.
+     *
+     * @return maximum amount of bouncers
+     */
     public int getMaxBouncer() {
-        return info != null ? info.maxBouncer : 0;
+        return data.maxBouncer;
     }
 
+    /**
+     * Returns bouncer instances.
+     *
+     * @return bouncer instances
+     */
     public BouncerInstance[] getBouncers() {
-        return info != null ? info.bouncers : new BouncerInstance[0];
+        return data.bouncers;
+    }
+    @Override
+    public void refresh() {
+        JsonObject data = api.dataGet("services/" + getId() + "/bouncers", null);
+        BouncerData datas = api.fromJson(data.get("bouncer"), BouncerData.class);
+        this.data = datas;
     }
 }

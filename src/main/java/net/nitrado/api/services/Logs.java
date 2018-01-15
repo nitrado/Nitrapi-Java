@@ -1,18 +1,26 @@
 package net.nitrado.api.services;
 
 import com.google.gson.annotations.SerializedName;
-import net.nitrado.api.services.gameservers.Gameserver;
-
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import net.nitrado.api.common.Value;
+
 
 /**
- * This class represents log entries for a gameserver that are split up in pages.
- * <p>
- * Use Gameserver.getLogs(page) to get a certain page
- *
- * @see Gameserver#getLogs(int)
+ * This class represents log entries for a gameserver that are split up in pages. <p> Use Gameserver.getLogs(page) to get a certain page
  */
 public class Logs {
+
+    @SerializedName("current_page")
+    private int currentPage;
+    @SerializedName("logs_per_page")
+    private int logsPerPage;
+    @SerializedName("page_count")
+    private int pageCount;
+    @SerializedName("log_count")
+    private int logCount;
+    private LogEntry[] logs;
+
     /**
      * This class represents an entry in the server log.
      */
@@ -22,9 +30,8 @@ public class Logs {
         private String message;
         @SerializedName("created_at")
         private GregorianCalendar createdAt;
+        private boolean admin;
         private String ip;
-        @SerializedName("admin")
-        private boolean isAdmin;
 
         /**
          * Returns the user.
@@ -56,12 +63,11 @@ public class Logs {
         /**
          * Returns the date this entry was created.
          *
-         * @return the creation date
+         * @return the date this entry was created
          */
         public GregorianCalendar getCreatedAt() {
             return createdAt;
         }
-
 
         /**
          * Returns admin.
@@ -69,7 +75,7 @@ public class Logs {
          * @return admin
          */
         public boolean isAdmin() {
-            return isAdmin;
+            return admin;
         }
 
         /**
@@ -81,16 +87,6 @@ public class Logs {
             return ip;
         }
     }
-
-    @SerializedName("current_page")
-    private int currentPage;
-    @SerializedName("logs_per_page")
-    private int logsPerPage;
-    @SerializedName("page_count")
-    private int pageCount;
-    @SerializedName("log_count")
-    private int logCount;
-    private LogEntry[] logs;
 
     /**
      * Returns the number of the current page.
@@ -104,7 +100,7 @@ public class Logs {
     /**
      * Returns the number of logs on a page.
      *
-     * @return the number of logs
+     * @return the number of logs on a page
      */
     public int getLogsPerPage() {
         return logsPerPage;
@@ -113,7 +109,7 @@ public class Logs {
     /**
      * Returns the number of pages in this logs.
      *
-     * @return the number of pages
+     * @return the number of pages in this logs
      */
     public int getPageCount() {
         return pageCount;
@@ -131,7 +127,7 @@ public class Logs {
     /**
      * Returns the log entries on the current page.
      *
-     * @return a list of log entries
+     * @return the log entries on the current page
      */
     public LogEntry[] getLogs() {
         return logs;

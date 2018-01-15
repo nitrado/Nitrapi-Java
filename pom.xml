@@ -6,7 +6,7 @@
 
     <groupId>net.nitrado</groupId>
     <artifactId>nitrapi</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.2.0-SNAPSHOT</version>
     <name>Nitrapi-Java</name>
     <description>Java based SDK for the Nitrapi</description>
     <url>https://github.com/nitrado/Nitrapi-Java</url>
@@ -51,6 +51,11 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations-java5</artifactId>
+            <version>15.0</version>
         </dependency>
     </dependencies>
 
