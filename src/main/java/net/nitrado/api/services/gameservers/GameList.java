@@ -1,61 +1,52 @@
 package net.nitrado.api.services.gameservers;
 
-import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import net.nitrado.api.Nitrapi;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import net.nitrado.api.common.Value;
 import net.nitrado.api.common.exceptions.NitrapiException;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class represents the list of games that can be installed on a server.
  */
 public class GameList {
+
     @SerializedName("installed_currently")
-    private int currentlyInstalled;
+    private Integer currentlyInstalled;
     @SerializedName("installed_maximum")
-    private int maximumInstalled;
-    private Game[] games;
+    private Integer maximumInstalled;
+    @SerializedName("games")
+    private Game[] allGames;
 
     /**
-     * Used internally.
-     * <p>
-     * Call Gameserver.getGames() instead.
-     *
-     * @param api reference to the api
-     * @param id  the id of the service
-     * @return a gamelist object
-     * @see Gameserver#getGames()
-     */
-    public static GameList newInstance(Nitrapi api, int id) throws NitrapiException {
-        JsonObject data = api.dataGet("services/" + id + "/gameservers/games", null);
-        GameList list = api.fromJson(data, GameList.class);
-        return list;
-    }
-
-
-    /**
-     * Returns the amount of games currently installed.
+     * Returns the number of currently installed games.
      *
      * @return the number of currently installed games
      */
-    public int getCurrentlyInstalled() {
+    @Nullable
+    public Integer getCurrentlyInstalled() {
         return currentlyInstalled;
     }
 
     /**
-     * Returns the maximum amount of games that can be installed on this server.
+     * Returns the maximum amount of games that can be installed.
      *
-     * @return the maximum amount of installed games
+     * @return the maximum amount of games that can be installed
      */
-    public int getMaximumInstalled() {
+    @Nullable
+    public Integer getMaximumInstalled() {
         return maximumInstalled;
     }
 
     /**
      * Returns the full list of games.
      *
-     * @return a list of games
+     * @return the full list of games
      */
+    @Nullable
     public Game[] getAllGames() {
-        return games;
+        return allGames;
     }
 }

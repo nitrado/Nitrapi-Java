@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import net.nitrado.api.common.Value;
-
+import net.nitrado.api.common.exceptions.NitrapiException;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class represents log entries for a gameserver that are split up in pages. <p> Use Gameserver.getLogs(page) to get a certain page
@@ -12,13 +14,13 @@ import net.nitrado.api.common.Value;
 public class Logs {
 
     @SerializedName("current_page")
-    private int currentPage;
+    private Integer currentPage;
     @SerializedName("logs_per_page")
-    private int logsPerPage;
+    private Integer logsPerPage;
     @SerializedName("page_count")
-    private int pageCount;
+    private Integer pageCount;
     @SerializedName("log_count")
-    private int logCount;
+    private Integer logCount;
     private LogEntry[] logs;
 
     /**
@@ -30,7 +32,7 @@ public class Logs {
         private String message;
         @SerializedName("created_at")
         private GregorianCalendar createdAt;
-        private boolean admin;
+        private Boolean admin;
         private String ip;
 
         /**
@@ -38,6 +40,7 @@ public class Logs {
          *
          * @return the user
          */
+        @Nullable
         public String getUser() {
             return user;
         }
@@ -47,6 +50,7 @@ public class Logs {
          *
          * @return the category
          */
+        @Nullable
         public String getCategory() {
             return category;
         }
@@ -56,6 +60,7 @@ public class Logs {
          *
          * @return the message
          */
+        @Nullable
         public String getMessage() {
             return message;
         }
@@ -65,6 +70,7 @@ public class Logs {
          *
          * @return the date this entry was created
          */
+        @Nullable
         public GregorianCalendar getCreatedAt() {
             return createdAt;
         }
@@ -74,7 +80,8 @@ public class Logs {
          *
          * @return admin
          */
-        public boolean isAdmin() {
+        @Nullable
+        public Boolean isAdmin() {
             return admin;
         }
 
@@ -83,6 +90,7 @@ public class Logs {
          *
          * @return ip
          */
+        @Nullable
         public String getIp() {
             return ip;
         }
@@ -93,7 +101,8 @@ public class Logs {
      *
      * @return the number of the current page
      */
-    public int getCurrentPage() {
+    @Nullable
+    public Integer getCurrentPage() {
         return currentPage;
     }
 
@@ -102,7 +111,8 @@ public class Logs {
      *
      * @return the number of logs on a page
      */
-    public int getLogsPerPage() {
+    @Nullable
+    public Integer getLogsPerPage() {
         return logsPerPage;
     }
 
@@ -111,7 +121,8 @@ public class Logs {
      *
      * @return the number of pages in this logs
      */
-    public int getPageCount() {
+    @Nullable
+    public Integer getPageCount() {
         return pageCount;
     }
 
@@ -120,7 +131,8 @@ public class Logs {
      *
      * @return the total number of log entries
      */
-    public int getLogCount() {
+    @Nullable
+    public Integer getLogCount() {
         return logCount;
     }
 
@@ -129,6 +141,7 @@ public class Logs {
      *
      * @return the log entries on the current page
      */
+    @Nullable
     public LogEntry[] getLogs() {
         return logs;
     }

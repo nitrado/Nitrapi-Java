@@ -1,60 +1,88 @@
 package net.nitrado.api.services.voiceservers;
 
 import com.google.gson.JsonObject;
-import net.nitrado.api.common.Value;
+import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.common.exceptions.NitrapiException;
+import net.nitrado.api.common.http.Parameter;
+import net.nitrado.api.common.Value;
 import net.nitrado.api.services.Service;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * This class represents a voice server.
+ * This class represents a Voiceserver.
  */
 public class Voiceserver extends Service {
-    private VoiceserverInfo info;
-
-    class VoiceserverInfo {
-        private Type type;
-        private String ip;
-        private int port;
-        private int slots;
-        private boolean started;
-        private JsonObject specific;
-    }
 
     public static class Type extends Value {
         public Type(String value) {
             super(value);
         }
-
-        public static final Type TEAMSPEAK3 = new Type("teamspeak3");
-        public static final Type MUMBLE = new Type("mumble");
-        public static final Type VENTRILO = new Type("ventrilo");
+        public static Type TEAMSPEAK3 = new Type("teamspeak3");
+        public static Type MUMBLE = new Type("mumble");
+        public static Type VENTRILO = new Type("ventrilo");
     }
 
+    private class VoiceserverData {
+        private Type type;
+        private String ip;
+        private Integer port;
+        private Integer slots;
+        private Boolean started;
+    }
+
+    private VoiceserverData data;
+
+    /**
+     * Returns type.
+     *
+     * @return type
+     */
+    @Nullable
     public Type getType() {
-        return info != null ? info.type : null;
+        return data.type;
     }
 
+    /**
+     * Returns ip.
+     *
+     * @return ip
+     */
+    @Nullable
     public String getIp() {
-        return info != null ? info.ip : "";
+        return data.ip;
     }
 
-    public int getPort() {
-        return info != null ? info.port : 0;
+    /**
+     * Returns port.
+     *
+     * @return port
+     */
+    @Nullable
+    public Integer getPort() {
+        return data.port;
     }
 
-    public int getSlots() {
-        return info != null ? info.slots : 0;
+    /**
+     * Returns slots.
+     *
+     * @return slots
+     */
+    @Nullable
+    public Integer getSlots() {
+        return data.slots;
     }
 
-    public boolean isStarted() {
-        return info != null && info.started;
-    }
-
-    @Override
-    public void refresh() throws NitrapiException {
-        JsonObject data = api.dataGet("services/" + getId() + "/voiceservers", null);
-        VoiceserverInfo infos = api.fromJson(data.get("voiceserver"), VoiceserverInfo.class);
-        this.info = infos;
+    /**
+     * Returns started.
+     *
+     * @return started
+     */
+    @Nullable
+    public Boolean isStarted() {
+        return data.started;
     }
 
     /**
@@ -80,7 +108,14 @@ public class Voiceserver extends Service {
      *
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      */
-    public void doReinstall() throws NitrapiException {
+    public void reinstall() throws NitrapiException {
         api.dataPost("services/" + getId() + "/voiceservers/reinstall", null);
+    }
+
+    @Override
+    public void refresh() throws NitrapiException {
+        JsonObject data = api.dataGet("services/" + getId() + "/voiceservers", null);
+        VoiceserverData datas = api.fromJson(data.get("voiceserver"), VoiceserverData.class);
+        this.data = datas;
     }
 }

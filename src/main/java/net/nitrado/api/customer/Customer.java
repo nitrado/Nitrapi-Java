@@ -6,8 +6,11 @@ import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
 import net.nitrado.api.services.Service;
+import net.nitrado.api.common.Value;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Details of the current customer.
@@ -17,16 +20,17 @@ public class Customer {
     private transient Nitrapi api;
 
     @SerializedName("user_id")
-    private int userId;
+    private Integer userId;
     private String username;
-    private boolean activated;
+    private Boolean activated;
     private String timezone;
     private String email;
-    private int credit;
+    private Integer credit;
     private String currency;
     private GregorianCalendar registered;
     private String language;
     private String avatar;
+    private Boolean donations;
     private Phone phone;
     @SerializedName("two_factor")
     private String[] twoFactor;
@@ -39,13 +43,14 @@ public class Customer {
         private String number;
         @SerializedName("country_code")
         private String countryCode;
-        private boolean verified;
+        private Boolean verified;
 
         /**
          * Returns phonenumber of the user.
          *
          * @return phonenumber of the user
          */
+        @Nullable
         public String getNumber() {
             return number;
         }
@@ -55,6 +60,7 @@ public class Customer {
          *
          * @return countryCode
          */
+        @Nullable
         public String getCountryCode() {
             return countryCode;
         }
@@ -64,24 +70,11 @@ public class Customer {
          *
          * @return true if this number is verified
          */
-        public boolean isVerified() {
+        @Nullable
+        public Boolean isVerified() {
             return verified;
         }
     }
-
-    /**
-     * Use Nitrapi.getCustomer() instead.
-     *
-     * @param api reference to the Nitrapi
-     * @return the customer object
-     */
-    public static Customer newInstance(Nitrapi api) throws NitrapiException {
-        JsonObject data = api.dataGet("user", null);
-        Customer customer = api.fromJson(data.get("user"), Customer.class);
-        customer.api = api;
-        return customer;
-    }
-
 
     /**
      * Used internally.
@@ -95,7 +88,8 @@ public class Customer {
      *
      * @return the id of this user
      */
-    public int getUserId() {
+    @NotNull
+    public Integer getUserId() {
         return userId;
     }
 
@@ -104,6 +98,7 @@ public class Customer {
      *
      * @return the username
      */
+    @NotNull
     public String getUsername() {
         return username;
     }
@@ -113,7 +108,8 @@ public class Customer {
      *
      * @return true if the user is activated
      */
-    public boolean isActivated() {
+    @Nullable
+    public Boolean isActivated() {
         return activated;
     }
 
@@ -122,6 +118,7 @@ public class Customer {
      *
      * @return the timezone of this user
      */
+    @Nullable
     public String getTimezone() {
         return timezone;
     }
@@ -131,6 +128,7 @@ public class Customer {
      *
      * @return the email address of this user
      */
+    @Nullable
     public String getEmail() {
         return email;
     }
@@ -140,7 +138,8 @@ public class Customer {
      *
      * @return the credit of this user
      */
-    public int getCredit() {
+    @Nullable
+    public Integer getCredit() {
         return credit;
     }
 
@@ -149,6 +148,7 @@ public class Customer {
      *
      * @return the currency the user paid
      */
+    @Nullable
     public String getCurrency() {
         return currency;
     }
@@ -158,6 +158,7 @@ public class Customer {
      *
      * @return the date the user registered
      */
+    @Nullable
     public GregorianCalendar getRegistered() {
         return registered;
     }
@@ -167,6 +168,7 @@ public class Customer {
      *
      * @return language
      */
+    @Nullable
     public String getLanguage() {
         return language;
     }
@@ -176,8 +178,19 @@ public class Customer {
      *
      * @return the url of the avatar
      */
+    @Nullable
     public String getAvatar() {
         return avatar;
+    }
+
+    /**
+     * Returns true if donations are enabled.
+     *
+     * @return true if donations are enabled
+     */
+    @Nullable
+    public Boolean isDonations() {
+        return donations;
     }
 
     /**
@@ -185,6 +198,7 @@ public class Customer {
      *
      * @return phone
      */
+    @Nullable
     public Phone getPhone() {
         return phone;
     }
@@ -194,6 +208,7 @@ public class Customer {
      *
      * @return activated two factor authentication methods
      */
+    @Nullable
     public String[] getTwoFactor() {
         return twoFactor;
     }
@@ -203,6 +218,7 @@ public class Customer {
      *
      * @return personal details of the user
      */
+    @Nullable
     public HashMap<String, String> getProfile() {
         return profile;
     }
@@ -223,10 +239,10 @@ public class Customer {
      * @param month month
      * @return AccountOverview
      */
-    public AccountOverview getAccountOverview(int year, int month) throws NitrapiException {
+    public AccountOverview getAccountOverview(Integer year, Integer month) throws NitrapiException {
         JsonObject data = api.dataGet("user/account_overview", new Parameter[] {
-                new Parameter("year", year),
-                new Parameter("month", month)
+            new Parameter("year", year),
+            new Parameter("month", month)
         });
 
         AccountOverview account_overview = api.fromJson(data.get("account_overview"), AccountOverview.class);
@@ -241,7 +257,7 @@ public class Customer {
      */
     public String requestUserUpdateToken(String password) throws NitrapiException {
         JsonObject data = api.dataPost("user/token", new Parameter[] {
-                new Parameter("password", password)
+            new Parameter("password", password)
         });
 
         String token = api.fromJson(data.get("token"), String.class);
@@ -252,23 +268,23 @@ public class Customer {
      * Add phone number.
      *
      * @param number phone number with country code
-     * @param token the current user update token
+     * @param token the update token of the current user
      */
     public void addPhoneNumber(String number, String token) throws NitrapiException {
         api.dataPost("user/phone", new Parameter[] {
-                new Parameter("number", number),
-                new Parameter("token", token)
+            new Parameter("number", number),
+            new Parameter("token", token)
         });
     }
 
     /**
      * Delete phone number.
      *
-     * @param token the current user update token
+     * @param token the update token of the current user
      */
     public void deletePhoneNumber(String token) throws NitrapiException {
         api.dataDelete("user/phone", new Parameter[] {
-                new Parameter("token", token)
+            new Parameter("token", token)
         });
     }
 
@@ -279,7 +295,44 @@ public class Customer {
      */
     public void verifyPhoneNumber(String code) throws NitrapiException {
         api.dataPost("user/phone/verify", new Parameter[] {
-                new Parameter("code", code)
+            new Parameter("code", code)
+        });
+    }
+
+    /**
+     * Updates the timezone of the user.
+     *
+     * @param timezone new timezone for the user
+     * @param token the update token of the current user
+     */
+    public void updateTimezone(String timezone, String token) throws NitrapiException {
+        api.dataPost("user/", new Parameter[] {
+            new Parameter("timezone", timezone),
+            new Parameter("token", token)
+        });
+    }
+
+    /**
+     * Updates the password.
+     *
+     * @param password the new password
+     * @param token The update token of the current user
+     */
+    public void updatePassword(String password, String token) throws NitrapiException {
+        api.dataPost("user/", new Parameter[] {
+            new Parameter("password", password),
+            new Parameter("token", token)
+        });
+    }
+
+    /**
+     * Updates the donation setting.
+     *
+     * @param donations true if donations can be received
+     */
+    public void updateDonations(Boolean donations) throws NitrapiException {
+        api.dataPost("user/", new Parameter[] {
+            new Parameter("donations", donations)
         });
     }
 }

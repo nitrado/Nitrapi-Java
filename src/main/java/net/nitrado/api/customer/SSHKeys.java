@@ -1,9 +1,16 @@
 package net.nitrado.api.customer;
 
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
+import net.nitrado.api.services.Service;
+import net.nitrado.api.common.Value;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class represents a SSHKeys.
@@ -12,6 +19,8 @@ public class SSHKeys {
 
     private transient Nitrapi api;
 
+    private SSHKey[] keys;
+
     /**
      * Used internally.
      */
@@ -19,112 +28,47 @@ public class SSHKeys {
         this.api = api;
     }
 
-
-    private SSHKey[] keys;
-
-    public class SSHKey {
-        private int id;
-        private String type;
-        @SerializedName("public_key")
-        private String publicKey;
-        private String comment;
-        private boolean enabled;
-
-        /**
-         * Returns id.
-         *
-         * @return id
-         */
-        public int getId() {
-            return id;
-        }
-
-        /**
-         * Returns type.
-         *
-         * @return type
-         */
-        public String getType() {
-            return type;
-        }
-
-        /**
-         * Returns publicKey.
-         *
-         * @return publicKey
-         */
-        public String getPublicKey() {
-            return publicKey;
-        }
-
-        public String getFullPublicKey() {
-            return type + " " + publicKey + " " + comment;
-        }
-
-        /**
-         * Returns comment.
-         *
-         * @return comment
-         */
-        public String getComment() {
-            return comment;
-        }
-
-        /**
-         * Returns enabled.
-         *
-         * @return enabled
-         */
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-    }
-
-
     /**
      * Returns keys.
      *
      * @return keys
      */
+    @Nullable
     public SSHKey[] getKeys() {
         return keys;
     }
 
-
     /**
      * Upload a SSH key.
      *
-     * @param key
+     * @param key key
      */
     public void uploadKey(String key) throws NitrapiException {
-        api.dataPost("user/ssh_keys/", new Parameter[]{
-                new Parameter("key", key)
+        api.dataPost("user/ssh_keys/", new Parameter[] {
+            new Parameter("key", key)
         });
     }
 
     /**
      * Updates a SSH public key.
      *
-     * @param id
-     * @param key
-     * @param enabled
+     * @param id id
+     * @param key key
+     * @param enabled enabled
      */
-    public void updateKey(int id, String key, boolean enabled) throws NitrapiException {
-        api.dataPost("user/ssh_keys/" + id + "", new Parameter[]{
-                new Parameter("key", key),
-                new Parameter("enabled", enabled)
+    public void updateKey(Integer id, String key, Boolean enabled) throws NitrapiException {
+        api.dataPost("user/ssh_keys/" + id + "", new Parameter[] {
+            new Parameter("key", key),
+            new Parameter("enabled", enabled)
         });
     }
 
     /**
      * Deletes a SSH public key.
      *
-     * @param id
+     * @param id id
      */
-    public void deleteKey(int id) throws NitrapiException {
+    public void deleteKey(Integer id) throws NitrapiException {
         api.dataDelete("user/ssh_keys/" + id + "", null);
     }
-
-
 }

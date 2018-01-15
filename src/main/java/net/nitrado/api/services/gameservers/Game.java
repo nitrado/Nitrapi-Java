@@ -1,205 +1,285 @@
 package net.nitrado.api.services.gameservers;
 
 import com.google.gson.annotations.SerializedName;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import net.nitrado.api.common.Value;
+import net.nitrado.api.common.exceptions.NitrapiException;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * This class represents a game.
+ * This class represents a Game.
  */
 public class Game {
-    private class Icons {
+
+    private Integer id;
+    @SerializedName("steam_id")
+    private Integer steamId;
+    @SerializedName("has_steam_game")
+    private String hasSteamGame;
+    private String name;
+    @SerializedName("minecraft_mode")
+    private Boolean minecraftMode;
+    @SerializedName("publicserver_only")
+    private Boolean publicserverOnly;
+    @SerializedName("portlist_short")
+    private String portlistShort;
+    @SerializedName("folder_short")
+    private String folderShort;
+    private Boolean installed;
+    private Boolean active;
+    @SerializedName("minimum_slots")
+    private Integer minimumSlots;
+    @SerializedName("enough_slots")
+    private Boolean enoughSlots;
+    private Modpack[] modpacks;
+    private Icons icons;
+    private Integer[] locations;
+    private String[] tags;
+    @SerializedName("preorder_locations")
+    private Integer[] preorderLocations;
+    private Boolean visible;
+
+    /**
+     * This class represents an icons.
+     */
+    public class Icons {
         private String x16;
         private String x32;
         private String x64;
         @SerializedName("x120")
         private String x128;
         private String x256;
+
+        /**
+         * Returns x16.
+         *
+         * @return x16
+         */
+        @Nullable
+        public String getX16() {
+            return x16;
+        }
+
+        /**
+         * Returns x32.
+         *
+         * @return x32
+         */
+        @Nullable
+        public String getX32() {
+            return x32;
+        }
+
+        /**
+         * Returns x64.
+         *
+         * @return x64
+         */
+        @Nullable
+        public String getX64() {
+            return x64;
+        }
+
+        /**
+         * Returns x128.
+         *
+         * @return x128
+         */
+        @Nullable
+        public String getX128() {
+            return x128;
+        }
+
+        /**
+         * Returns x256.
+         *
+         * @return x256
+         */
+        @Nullable
+        public String getX256() {
+            return x256;
+        }
     }
 
-    private int id;
-    @SerializedName("steam_id")
-    private int steamId;
-    @SerializedName("has_steam_game")
-    private String hasSteamGame;
-    private String name;
-    @SerializedName("minecraft_mode")
-    boolean minecraftMode;
-    @SerializedName("publicserver_only")
-    boolean publicserverOnly;
-    @SerializedName("portlist_short")
-    private String portlistShort;
-    @SerializedName("folder_short")
-    private String folderShort;
-    private boolean installed;
-    private boolean active;
-    @SerializedName("minimum_slots")
-    private int minimumSlots;
-    @SerializedName("enough_slots")
-    private boolean enoughSlots;
-    private Modpack[] modpacks;
-    private Icons icons;
-    private int[] locations;
-    private String[] tags;
-    @SerializedName("preorder_locations")
-    private int[] preorderLocations;
-    private boolean visible;
-
-    public int getId() {
+    /**
+     * Returns id.
+     *
+     * @return id
+     */
+    @NotNull
+    public Integer getId() {
         return id;
     }
 
-    public int getSteamId() {
+    /**
+     * Returns steamId.
+     *
+     * @return steamId
+     */
+    @Nullable
+    public Integer getSteamId() {
         return steamId;
     }
 
-    // ??
-    public String hasSteamGame() {
+    /**
+     * Returns ??.
+     *
+     * @return ??
+     */
+    @Nullable
+    public String getHasSteamGame() {
         return hasSteamGame;
     }
 
-
     /**
-     * Returns the name of this game.
+     * Returns name.
      *
-     * @return the name
+     * @return name
      */
+    @NotNull
     public String getName() {
         return name;
     }
 
-    public boolean isMinecraftMode() {
+    /**
+     * Returns minecraftMode.
+     *
+     * @return minecraftMode
+     */
+    @Nullable
+    public Boolean isMinecraftMode() {
         return minecraftMode;
     }
 
-    public boolean isPublicserverOnly() {
+    /**
+     * Returns publicserverOnly.
+     *
+     * @return publicserverOnly
+     */
+    @Nullable
+    public Boolean isPublicserverOnly() {
         return publicserverOnly;
     }
 
     /**
-     * Returns the portlist short of this game.
+     * Returns portlistShort.
      *
-     * @return the portlist short
+     * @return portlistShort
      */
+    @Nullable
     public String getPortlistShort() {
         return portlistShort;
     }
 
     /**
-     * Returns the folder short of this game.
+     * Returns folderShort.
      *
-     * @return the folder short
+     * @return folderShort
      */
+    @Nullable
     public String getFolderShort() {
         return folderShort;
     }
 
     /**
-     * Returns true if this game is installed.
+     * Returns installed.
      *
-     * @return whether this game is installed
+     * @return installed
      */
-    public boolean isInstalled() {
+    @Nullable
+    public Boolean isInstalled() {
         return installed;
     }
 
     /**
-     * Returns true if this game is active.
+     * Returns active.
      *
-     * @return whether this game is active
+     * @return active
      */
-    public boolean isActive() {
+    @Nullable
+    public Boolean isActive() {
         return active;
     }
 
     /**
-     * Returns the number of slots this game needs to work.
+     * Returns minimumSlots.
      *
-     * @return the minimum number of slots
+     * @return minimumSlots
      */
-    public int getMinimumSlots() {
+    @Nullable
+    public Integer getMinimumSlots() {
         return minimumSlots;
     }
 
     /**
-     * Returns true if the server has enough slots for this game.
+     * Returns enoughSlots.
      *
-     * @return whether the server has enough slots for this game
+     * @return enoughSlots
      */
-    public boolean hasEnoughSlots() {
+    @Nullable
+    public Boolean isEnoughSlots() {
         return enoughSlots;
     }
 
     /**
-     * Returns the modpacks that can be installed with this game
+     * Returns modpacks.
      *
-     * @return a list of modpacks that can be installed
+     * @return modpacks
      */
+    @Nullable
     public Modpack[] getModpacks() {
         return modpacks;
     }
 
     /**
-     * Returns the 16x16 icon.
+     * Returns icons.
      *
-     * @return a url to the icon
+     * @return icons
      */
-    public String getIconx16() {
-        return icons.x16;
+    @Nullable
+    public Icons getIcons() {
+        return icons;
     }
 
     /**
-     * Returns the 32x32 icon.
+     * Returns locations.
      *
-     * @return a url to the icon
+     * @return locations
      */
-    public String getIconx32() {
-        return icons.x32;
-    }
-
-    /**
-     * Returns the 64x64 icon.
-     *
-     * @return a url to the icon
-     */
-    public String getIconx64() {
-        return icons.x64;
-    }
-
-    /**
-     * Returns the 128x128 icon.
-     *
-     * @return a url to the icon
-     */
-    public String getIconx128() {
-        return icons.x128;
-    }
-
-    /**
-     * Returns the 256x256 icon.
-     *
-     * @return a url to the icon
-     */
-    public String getIconx256() {
-        return icons.x256;
-    }
-
-    public int[] getLocations() {
+    @Nullable
+    public Integer[] getLocations() {
         return locations;
     }
 
+    /**
+     * Returns tags.
+     *
+     * @return tags
+     */
+    @Nullable
     public String[] getTags() {
         return tags;
     }
 
-    public int[] getPreorderLocations() {
+    /**
+     * Returns preorderLocations.
+     *
+     * @return preorderLocations
+     */
+    @Nullable
+    public Integer[] getPreorderLocations() {
         return preorderLocations;
     }
 
-    public boolean isVisible() {
+    /**
+     * Returns visible.
+     *
+     * @return visible
+     */
+    @Nullable
+    public Boolean isVisible() {
         return visible;
-    }
-
-    @Override
-    public String toString() {
-        return name;
     }
 }

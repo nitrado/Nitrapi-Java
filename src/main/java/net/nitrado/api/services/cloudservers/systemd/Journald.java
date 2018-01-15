@@ -5,7 +5,12 @@ import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
+import net.nitrado.api.common.Value;
 import net.nitrado.api.services.Service;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class represents a Journald.
@@ -22,15 +27,17 @@ public class Journald {
         @SerializedName("__CURSOR")
         private String cursor;
         @SerializedName("__REALTIME_TIMESTAMP")
-        private int realtimeTimestamp;
+        private Integer realtimeTimestamp;
+        @SerializedName("__MONOTONIC_TIMESTAMP")
+        private Integer monotonicTimestamp;
         @SerializedName("_BOOT_ID")
         private String bootId;
         @SerializedName("PRIORITY")
-        private int priority;
+        private Integer priority;
         @SerializedName("_UID")
-        private int uid;
+        private Integer uid;
         @SerializedName("_GID")
-        private int gid;
+        private Integer gid;
         @SerializedName("_SYSTEMD_SLICE")
         private String systemdSlice;
         @SerializedName("_MACHINE_ID")
@@ -40,7 +47,7 @@ public class Journald {
         @SerializedName("_TRANSPORT")
         private String transport;
         @SerializedName("SYSLOG_FACILITY")
-        private int syslogFacility;
+        private Integer syslogFacility;
         @SerializedName("SYSLOG_IDENTIFIER")
         private String syslogIdentifier;
         @SerializedName("_COMM")
@@ -56,13 +63,14 @@ public class Journald {
         @SerializedName("MESSAGE")
         private String message;
         @SerializedName("_PID")
-        private int pid;
+        private Integer pid;
 
         /**
          * Returns cursor.
          *
          * @return cursor
          */
+        @Nullable
         public String getCursor() {
             return cursor;
         }
@@ -72,8 +80,19 @@ public class Journald {
          *
          * @return realtimeTimestamp
          */
-        public int getRealtimeTimestamp() {
+        @Nullable
+        public Integer getRealtimeTimestamp() {
             return realtimeTimestamp;
+        }
+
+        /**
+         * Returns monotonicTimestamp.
+         *
+         * @return monotonicTimestamp
+         */
+        @Nullable
+        public Integer getMonotonicTimestamp() {
+            return monotonicTimestamp;
         }
 
         /**
@@ -81,6 +100,7 @@ public class Journald {
          *
          * @return bootId
          */
+        @Nullable
         public String getBootId() {
             return bootId;
         }
@@ -90,7 +110,8 @@ public class Journald {
          *
          * @return priority
          */
-        public int getPriority() {
+        @Nullable
+        public Integer getPriority() {
             return priority;
         }
 
@@ -99,7 +120,8 @@ public class Journald {
          *
          * @return uid
          */
-        public int getUid() {
+        @Nullable
+        public Integer getUid() {
             return uid;
         }
 
@@ -108,7 +130,8 @@ public class Journald {
          *
          * @return gid
          */
-        public int getGid() {
+        @Nullable
+        public Integer getGid() {
             return gid;
         }
 
@@ -117,6 +140,7 @@ public class Journald {
          *
          * @return systemdSlice
          */
+        @Nullable
         public String getSystemdSlice() {
             return systemdSlice;
         }
@@ -126,6 +150,7 @@ public class Journald {
          *
          * @return machineId
          */
+        @Nullable
         public String getMachineId() {
             return machineId;
         }
@@ -135,6 +160,7 @@ public class Journald {
          *
          * @return hostname
          */
+        @Nullable
         public String getHostname() {
             return hostname;
         }
@@ -144,6 +170,7 @@ public class Journald {
          *
          * @return transport
          */
+        @Nullable
         public String getTransport() {
             return transport;
         }
@@ -153,7 +180,8 @@ public class Journald {
          *
          * @return syslogFacility
          */
-        public int getSyslogFacility() {
+        @Nullable
+        public Integer getSyslogFacility() {
             return syslogFacility;
         }
 
@@ -162,6 +190,7 @@ public class Journald {
          *
          * @return syslogIdentifier
          */
+        @Nullable
         public String getSyslogIdentifier() {
             return syslogIdentifier;
         }
@@ -171,6 +200,7 @@ public class Journald {
          *
          * @return comm
          */
+        @Nullable
         public String getComm() {
             return comm;
         }
@@ -180,6 +210,7 @@ public class Journald {
          *
          * @return exe
          */
+        @Nullable
         public String getExe() {
             return exe;
         }
@@ -189,6 +220,7 @@ public class Journald {
          *
          * @return cmdline
          */
+        @Nullable
         public String getCmdline() {
             return cmdline;
         }
@@ -198,6 +230,7 @@ public class Journald {
          *
          * @return systemdCGroup
          */
+        @Nullable
         public String getSystemdCGroup() {
             return systemdCGroup;
         }
@@ -207,6 +240,7 @@ public class Journald {
          *
          * @return systemdUnit
          */
+        @Nullable
         public String getSystemdUnit() {
             return systemdUnit;
         }
@@ -216,6 +250,7 @@ public class Journald {
          *
          * @return message
          */
+        @Nullable
         public String getMessage() {
             return message;
         }
@@ -225,7 +260,8 @@ public class Journald {
          *
          * @return pid
          */
-        public int getPid() {
+        @Nullable
+        public Integer getPid() {
             return pid;
         }
     }
@@ -242,18 +278,29 @@ public class Journald {
      *
      * @param unit Filter by unit name. All journal messages are returned if unset.
      * @param cursor Initial cursor reference obtained from a log event. Seeks to tail if unspecified.
-     * @param backlog Offset from the current log tail, must be greater or equals 0
+     * @param backlog Offset from the current log tail, must be >= 0
      * @param count Number of messages to return, starting at the cursor position specified by backlog. -1 returns all messages and continuously streams any new ones.
      * @return String
      */
-    public String getUrl(String unit, String cursor, int backlog, int count) throws NitrapiException {
+    public String getUrl(String unit, String cursor, Integer backlog, Integer count) throws NitrapiException {
         JsonObject data = api.dataGet("services/" + service.getId() + "/cloud_servers/system/journal/", new Parameter[] {
-                new Parameter("unit", unit),
-                new Parameter("cursor", cursor),
-                new Parameter("backlog", backlog),
-                new Parameter("count", count)
+            new Parameter("unit", unit),
+            new Parameter("cursor", cursor),
+            new Parameter("backlog", backlog),
+            new Parameter("count", count)
         });
 
-        return api.fromJson(data.get("token").getAsJsonObject().get("url"), String.class);
+        String tokenurl = api.fromJson(data.get("token").getAsJsonObject().get("url"), String.class);
+        return tokenurl;
+    }
+
+    /**
+     * @return JournalEntry[]
+     */
+    public JournalEntry[] getJournal() throws NitrapiException {
+        JsonObject data = api.dataGet("services/" + service.getId() + "/cloud_servers/system/journal/", null);
+
+        JournalEntry[] journal = api.fromJson(data.get("journal"), JournalEntry[].class);
+        return journal;
     }
 }

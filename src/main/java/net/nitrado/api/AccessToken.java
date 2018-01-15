@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import net.nitrado.api.common.Value;
-
+import net.nitrado.api.common.exceptions.NitrapiException;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class represents an AccessToken.
@@ -13,17 +15,17 @@ public class AccessToken {
 
     private User user;
     @SerializedName("expires_at")
-    private int expiresAt;
+    private Integer expiresAt;
     @SerializedName("valid_until")
     private GregorianCalendar validUntil;
     private String[] scopes;
-    private boolean employee;
+    private Boolean employee;
 
     /**
      * This class represents an user.
      */
     public class User {
-        private int id;
+        private Integer id;
         private String username;
 
         /**
@@ -31,7 +33,8 @@ public class AccessToken {
          *
          * @return id
          */
-        public int getId() {
+        @Nullable
+        public Integer getId() {
             return id;
         }
 
@@ -40,6 +43,7 @@ public class AccessToken {
          *
          * @return username
          */
+        @Nullable
         public String getUsername() {
             return username;
         }
@@ -50,6 +54,7 @@ public class AccessToken {
      *
      * @return user
      */
+    @Nullable
     public User getUser() {
         return user;
     }
@@ -59,7 +64,8 @@ public class AccessToken {
      *
      * @return expiresAt
      */
-    public int getExpiresAt() {
+    @Nullable
+    public Integer getExpiresAt() {
         return expiresAt;
     }
 
@@ -68,6 +74,7 @@ public class AccessToken {
      *
      * @return validUntil
      */
+    @Nullable
     public GregorianCalendar getValidUntil() {
         return validUntil;
     }
@@ -77,6 +84,7 @@ public class AccessToken {
      *
      * @return scopes
      */
+    @Nullable
     public String[] getScopes() {
         return scopes;
     }
@@ -86,7 +94,8 @@ public class AccessToken {
      *
      * @return employee
      */
-    public boolean isEmployee() {
+    @Nullable
+    public Boolean isEmployee() {
         return employee;
     }
 }

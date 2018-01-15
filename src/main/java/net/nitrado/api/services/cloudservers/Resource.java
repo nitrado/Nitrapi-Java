@@ -1,8 +1,12 @@
 package net.nitrado.api.services.cloudservers;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Map;
+import net.nitrado.api.common.Value;
+import net.nitrado.api.common.exceptions.NitrapiException;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class represents a Resource.
@@ -17,6 +21,7 @@ public class Resource {
      *
      * @return type
      */
+    @Nullable
     public String getType() {
         return type;
     }
@@ -26,7 +31,8 @@ public class Resource {
      *
      * @return datapoints
      */
-    public Map<GregorianCalendar, Float> getDatapoints() {
+    @Nullable
+    public HashMap<GregorianCalendar, Float> getDatapoints() {
         return datapoints;
     }
 }

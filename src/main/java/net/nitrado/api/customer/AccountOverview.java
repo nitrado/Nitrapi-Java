@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import net.nitrado.api.common.Value;
-
+import net.nitrado.api.common.exceptions.NitrapiException;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class represents an AccountOverview.
@@ -28,9 +30,9 @@ public class AccountOverview {
      */
     public class Donation {
         @SerializedName("sender_user_id")
-        private int senderUserId;
+        private Integer senderUserId;
         @SerializedName("receiver_user_id")
-        private int receiverUserId;
+        private Integer receiverUserId;
         private String subject;
 
         /**
@@ -38,7 +40,8 @@ public class AccountOverview {
          *
          * @return senderUserId
          */
-        public int getSenderUserId() {
+        @Nullable
+        public Integer getSenderUserId() {
             return senderUserId;
         }
 
@@ -47,7 +50,8 @@ public class AccountOverview {
          *
          * @return receiverUserId
          */
-        public int getReceiverUserId() {
+        @Nullable
+        public Integer getReceiverUserId() {
             return receiverUserId;
         }
 
@@ -56,6 +60,7 @@ public class AccountOverview {
          *
          * @return subject
          */
+        @Nullable
         public String getSubject() {
             return subject;
         }
@@ -65,24 +70,24 @@ public class AccountOverview {
      * This class represents a Payment.
      */
     public class Payment {
-        private int id;
+        private Integer id;
         @SerializedName("invoice_id")
         private String invoiceId;
         @SerializedName("service_id")
-        private int serviceId;
+        private Integer serviceId;
         @SerializedName("switched_service_id")
-        private int switchedServiceId;
+        private Integer switchedServiceId;
         private Donation donation;
         private GregorianCalendar date;
         private String method;
-        private int duration;
-        private int amount;
+        private Integer duration;
+        private Integer amount;
         private Type type;
         private String currency;
         private String ip;
-        private boolean refundable;
+        private Boolean refundable;
         @SerializedName("provider_fee")
-        private int providerFee;
+        private Integer providerFee;
         @SerializedName("last_status")
         private String lastStatus;
 
@@ -91,7 +96,8 @@ public class AccountOverview {
          *
          * @return id
          */
-        public int getId() {
+        @Nullable
+        public Integer getId() {
             return id;
         }
 
@@ -100,6 +106,7 @@ public class AccountOverview {
          *
          * @return invoiceId
          */
+        @Nullable
         public String getInvoiceId() {
             return invoiceId;
         }
@@ -109,7 +116,8 @@ public class AccountOverview {
          *
          * @return serviceId
          */
-        public int getServiceId() {
+        @Nullable
+        public Integer getServiceId() {
             return serviceId;
         }
 
@@ -118,7 +126,8 @@ public class AccountOverview {
          *
          * @return switchedServiceId
          */
-        public int getSwitchedServiceId() {
+        @Nullable
+        public Integer getSwitchedServiceId() {
             return switchedServiceId;
         }
 
@@ -127,6 +136,7 @@ public class AccountOverview {
          *
          * @return donation
          */
+        @Nullable
         public Donation getDonation() {
             return donation;
         }
@@ -136,6 +146,7 @@ public class AccountOverview {
          *
          * @return date
          */
+        @Nullable
         public GregorianCalendar getDate() {
             return date;
         }
@@ -145,6 +156,7 @@ public class AccountOverview {
          *
          * @return method
          */
+        @Nullable
         public String getMethod() {
             return method;
         }
@@ -154,7 +166,8 @@ public class AccountOverview {
          *
          * @return duration
          */
-        public int getDuration() {
+        @Nullable
+        public Integer getDuration() {
             return duration;
         }
 
@@ -163,7 +176,8 @@ public class AccountOverview {
          *
          * @return amount
          */
-        public int getAmount() {
+        @Nullable
+        public Integer getAmount() {
             return amount;
         }
 
@@ -172,6 +186,7 @@ public class AccountOverview {
          *
          * @return type
          */
+        @Nullable
         public Type getType() {
             return type;
         }
@@ -181,6 +196,7 @@ public class AccountOverview {
          *
          * @return currency
          */
+        @Nullable
         public String getCurrency() {
             return currency;
         }
@@ -190,6 +206,7 @@ public class AccountOverview {
          *
          * @return ip
          */
+        @Nullable
         public String getIp() {
             return ip;
         }
@@ -199,7 +216,8 @@ public class AccountOverview {
          *
          * @return refundable
          */
-        public boolean isRefundable() {
+        @Nullable
+        public Boolean isRefundable() {
             return refundable;
         }
 
@@ -208,7 +226,8 @@ public class AccountOverview {
          *
          * @return providerFee
          */
-        public int getProviderFee() {
+        @Nullable
+        public Integer getProviderFee() {
             return providerFee;
         }
 
@@ -217,6 +236,7 @@ public class AccountOverview {
          *
          * @return lastStatus
          */
+        @Nullable
         public String getLastStatus() {
             return lastStatus;
         }
@@ -227,6 +247,7 @@ public class AccountOverview {
      *
      * @return from
      */
+    @Nullable
     public GregorianCalendar getFrom() {
         return from;
     }
@@ -236,6 +257,7 @@ public class AccountOverview {
      *
      * @return end
      */
+    @Nullable
     public GregorianCalendar getEnd() {
         return end;
     }
@@ -245,6 +267,7 @@ public class AccountOverview {
      *
      * @return payments
      */
+    @Nullable
     public Payment[] getPayments() {
         return payments;
     }

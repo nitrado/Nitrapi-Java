@@ -11,6 +11,7 @@ import net.nitrado.api.services.gameservers.customersettings.CustomerSettings;
 import net.nitrado.api.services.gameservers.ddoshistory.DDoSAttack;
 import net.nitrado.api.services.gameservers.minecraft.Minecraft;
 import net.nitrado.api.services.gameservers.taskmanager.TaskManager;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -174,6 +175,7 @@ public class Gameserver extends Service {
         private String[] configFiles;
     }
 
+    @Nullable
     private transient GameserverInfo info;
 
     @Override
@@ -522,7 +524,8 @@ public class Gameserver extends Service {
      * @permission ROLE_GAMESERVER_CHANGE_GAME
      */
     public GameList getGames() throws NitrapiException {
-        return GameList.newInstance(api, getId());
+        JsonObject data = api.dataGet("services/" + getId() + "/gameservers/games", null);
+        return api.fromJson(data, GameList.class);
     }
 
     /**

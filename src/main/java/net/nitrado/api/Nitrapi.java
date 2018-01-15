@@ -19,6 +19,7 @@ import net.nitrado.api.services.Service;
 import net.nitrado.api.services.ServiceFactory;
 import net.nitrado.api.services.cloudservers.CloudServer;
 import net.nitrado.api.services.gameservers.GlobalGameList;
+import net.nitrado.api.services.gameservers.minecraft.Minecraft;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -166,7 +167,11 @@ public class Nitrapi {
      * @return the current customer
      */
     public Customer getCustomer() throws NitrapiException {
-        return Customer.newInstance(this);
+        JsonObject data = dataGet("user", null);
+
+        Customer customer = fromJson(data.get("user"), Customer.class);
+        customer.init(this);
+        return customer;
     }
 
 
