@@ -10,7 +10,6 @@ import net.nitrado.api.services.fileserver.FileServer;
 import net.nitrado.api.services.gameservers.customersettings.CustomerSettings;
 import net.nitrado.api.services.gameservers.ddoshistory.DDoSAttack;
 import net.nitrado.api.services.gameservers.minecraft.Minecraft;
-import net.nitrado.api.services.gameservers.pluginsystem.PluginSystem;
 import net.nitrado.api.services.gameservers.taskmanager.TaskManager;
 
 import java.util.HashMap;
@@ -578,17 +577,6 @@ public class Gameserver extends Service {
      */
     public FileServer getFileServer() {
         return new FileServer(this, api);
-    }
-
-    /**
-     * Returns a PluginSystem object.
-     *
-     * @return a PluginSystem object
-     * @permission ROLE_WEBINTERFACE_SETTINGS_READ
-     * @permission ROLE_WEBINTERFACE_SETTINGS_WRITE
-     */
-    public PluginSystem getPluginSystem() {
-        return new PluginSystem(this, api);
     }
 
     /**
