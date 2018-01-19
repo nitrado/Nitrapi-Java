@@ -353,7 +353,15 @@ public class ProductionHttpClient implements HttpClient {
 
         switch (connection.getResponseCode()) {
             case 401:
-                throw new NitrapiAccessTokenInvalidException(message);
+                if (result.has("data")) {
+                    JsonObject data = result.get("data").getAsJsonObject();
+                    if (data.has("error_code")) {
+                        if (data.get("error_code").getAsString().startsWith("access_token_")) {
+                            throw new NitrapiAccessTokenInvalidException(message);
+                        }
+                    }
+                }
+                throw new NitrapiErrorException(message, errorId);
             case 428:
                 throw new NitrapiConcurrencyException(message);
             case 503:
