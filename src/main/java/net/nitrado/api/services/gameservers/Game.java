@@ -33,6 +33,10 @@ public class Game {
     private Integer minimumSlots;
     @SerializedName("enough_slots")
     private Boolean enoughSlots;
+    @SerializedName("slot_multiplier")
+    private Integer slotMultiplier;
+    @SerializedName("maximum_recommended_slots")
+    private Integer maximumRecommendedSlots;
     private Modpack[] modpacks;
     private Icons icons;
     private Integer[] locations;
@@ -124,9 +128,9 @@ public class Game {
     }
 
     /**
-     * Returns ??.
+     * Returns hasSteamGame.
      *
-     * @return ??
+     * @return hasSteamGame
      */
     @Nullable
     public String getHasSteamGame() {
@@ -221,6 +225,26 @@ public class Game {
     @Nullable
     public Boolean isEnoughSlots() {
         return enoughSlots;
+    }
+
+    /**
+     * Returns slotMultiplier.
+     *
+     * @return slotMultiplier
+     */
+    @Nullable
+    public Integer getSlotMultiplier() {
+        return slotMultiplier;
+    }
+
+    /**
+     * Returns maximumRecommendedSlots.
+     *
+     * @return maximumRecommendedSlots
+     */
+    @Nullable
+    public Integer getMaximumRecommendedSlots() {
+        return maximumRecommendedSlots;
     }
 
     /**

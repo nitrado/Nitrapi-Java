@@ -313,6 +313,29 @@ public class Customer {
     }
 
     /**
+     * Updates the profile information.
+     *
+     * @param token the update token of the current user
+     * @param name name
+     * @param street street
+     * @param postcode postcode
+     * @param city city
+     * @param country country
+     * @param state state
+     */
+    public void updateProfile(String token, String name, String street, String postcode, String city, String country, String state) throws NitrapiException {
+        api.dataPost("user/", new Parameter[] {
+            new Parameter("token", token),
+            new Parameter("profile[name]", name),
+            new Parameter("profile[street]", street),
+            new Parameter("profile[postcode]", postcode),
+            new Parameter("profile[city]", city),
+            new Parameter("profile[country]", country),
+            new Parameter("profile[state]", state)
+        });
+    }
+
+    /**
      * Updates the password.
      *
      * @param password the new password

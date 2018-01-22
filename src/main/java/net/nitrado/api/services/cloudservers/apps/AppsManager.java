@@ -53,6 +53,8 @@ public class AppsManager {
         @SerializedName("systemd_modified")
         private Boolean systemdModified;
         private String cmd;
+        @SerializedName("default_cmd")
+        private String defaultCmd;
         @SerializedName("parsed_cmd")
         private String parsedCmd;
         private HashMap<String, String> parameters;
@@ -139,6 +141,16 @@ public class AppsManager {
         }
 
         /**
+         * Returns defaultCmd.
+         *
+         * @return defaultCmd
+         */
+        @Nullable
+        public String getDefaultCmd() {
+            return defaultCmd;
+        }
+
+        /**
          * Returns parsedCmd.
          *
          * @return parsedCmd
@@ -209,7 +221,7 @@ public class AppsManager {
     }
 
     /**
-     * the minimum requirements
+     * the minimum requirements the app needs to fulfill
      */
     public class MinimumRequirements {
         private Integer cpu;
@@ -312,9 +324,9 @@ public class AppsManager {
         }
 
         /**
-         * Returns the minimum requirements.
+         * Returns the minimum requirements the app needs to fulfill.
          *
-         * @return the minimum requirements
+         * @return the minimum requirements the app needs to fulfill
          */
         @Nullable
         public MinimumRequirements getMinimumRequirements() {
