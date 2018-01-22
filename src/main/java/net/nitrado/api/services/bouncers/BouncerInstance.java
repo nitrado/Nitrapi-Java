@@ -18,6 +18,8 @@ public class BouncerInstance {
     private String comment;
     @SerializedName("server")
     private BouncerServer bouncerServer;
+    @SerializedName("running_tasks")
+    private Boolean runningTasks;
 
     /**
      * This class represents the server this bouncers is on.
@@ -85,5 +87,15 @@ public class BouncerInstance {
     @Nullable
     public BouncerServer getBouncerServer() {
         return bouncerServer;
+    }
+
+    /**
+     * Returns runningTasks.
+     *
+     * @return runningTasks
+     */
+    @Nullable
+    public Boolean isRunningTasks() {
+        return runningTasks;
     }
 }
