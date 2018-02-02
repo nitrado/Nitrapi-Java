@@ -282,6 +282,11 @@ public class Nitrapi {
         return gson.fromJson(data.get("states"), new TypeToken<Map<String, String>>(){}.getType());
     }
 
+    public HashMap<String, String[]> getTimezones() throws NitrapiException {
+        JsonObject data = this.dataGet("timezones", null);
+        return gson.fromJson(data.get("timezones"), new TypeToken<Map<String, String[]>>(){}.getType());
+    }
+
 
     /**
      * Returns the current limit of requests per hour for each user.
