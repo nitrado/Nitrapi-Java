@@ -323,7 +323,7 @@ public class Customer {
      * @param country country
      * @param state state
      */
-    public void updateProfile(@NotNull String token, @NotNull String name, @NotNull String street, @NotNull String postcode, @NotNull String city, @NotNull String country, @NotNull String state) throws NitrapiException {
+    public void updateProfile(@NotNull String token, @Nullable String name, @Nullable String street, @Nullable String postcode, @Nullable String city, @Nullable String country, @Nullable String state) throws NitrapiException {
         api.dataPost("user/", new Parameter[] {
             new Parameter("token", token),
             new Parameter("profile[name]", name),

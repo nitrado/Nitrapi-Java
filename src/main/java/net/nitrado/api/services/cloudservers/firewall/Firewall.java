@@ -171,7 +171,7 @@ public class Firewall {
      * @param firewallProtocol firewallProtocol
      * @param comment comment
      */
-    public void addRule(@Nullable String sourceIp, @Nullable String targetIp, @Nullable Integer targetPort, @NotNull FirewallProtocol firewallProtocol, @NotNull String comment) throws NitrapiException {
+    public void addRule(@Nullable String sourceIp, @Nullable String targetIp, @Nullable Integer targetPort, @NotNull FirewallProtocol firewallProtocol, @Nullable String comment) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/firewall/add", new Parameter[] {
             new Parameter("source_ip", sourceIp),
             new Parameter("target_ip", targetIp),
