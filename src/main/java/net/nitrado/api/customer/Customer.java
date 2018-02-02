@@ -352,10 +352,12 @@ public class Customer {
      * Updates the donation setting.
      *
      * @param donations true if donations can be received
+     * @param token The update token of the current user
      */
-    public void updateDonations(@NotNull Boolean donations) throws NitrapiException {
+    public void updateDonations(@NotNull Boolean donations, @NotNull String token) throws NitrapiException {
         api.dataPost("user/", new Parameter[] {
-            new Parameter("donations", donations)
+            new Parameter("donations", donations),
+            new Parameter("token", token)
         });
     }
 }
