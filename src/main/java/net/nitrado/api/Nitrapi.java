@@ -272,17 +272,17 @@ public class Nitrapi {
         return gson.fromJson(data.get("token"), AccessToken.class);
     }
 
-    public HashMap<String, String> getCountries() throws NitrapiException {
+    public Map<String, String> getCountries() throws NitrapiException {
         JsonObject data = this.dataGet("countries", null);
         return gson.fromJson(data.get("countries"), new TypeToken<Map<String, String>>(){}.getType());
     }
 
-    public HashMap<String, String> getStates() throws NitrapiException {
+    public Map<String, String> getStates() throws NitrapiException {
         JsonObject data = this.dataGet("countries/states", null);
         return gson.fromJson(data.get("states"), new TypeToken<Map<String, String>>(){}.getType());
     }
 
-    public HashMap<String, String[]> getTimezones() throws NitrapiException {
+    public Map<String, String[]> getTimezones() throws NitrapiException {
         JsonObject data = this.dataGet("timezones", null);
         return gson.fromJson(data.get("timezones"), new TypeToken<Map<String, String[]>>(){}.getType());
     }
