@@ -16,17 +16,18 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Voiceserver extends Service {
 
-    public static class Type extends Value {
-        public Type(String value) {
+    public static class VoiceserverType extends Value {
+        public VoiceserverType(String value) {
             super(value);
         }
-        public static Type TEAMSPEAK3 = new Type("teamspeak3");
-        public static Type MUMBLE = new Type("mumble");
-        public static Type VENTRILO = new Type("ventrilo");
+        public static VoiceserverType TEAMSPEAK3 = new VoiceserverType("teamspeak3");
+        public static VoiceserverType MUMBLE = new VoiceserverType("mumble");
+        public static VoiceserverType VENTRILO = new VoiceserverType("ventrilo");
     }
 
     private class VoiceserverData {
-        private Type type;
+        @SerializedName("type")
+        private VoiceserverType voiceserverType;
         private String ip;
         private Integer port;
         private Integer slots;
@@ -36,13 +37,13 @@ public class Voiceserver extends Service {
     private VoiceserverData data;
 
     /**
-     * Returns type.
+     * Returns voiceserverType.
      *
-     * @return type
+     * @return voiceserverType
      */
     @Nullable
-    public Type getType() {
-        return data.type;
+    public VoiceserverType getVoiceserverType() {
+        return data.voiceserverType;
     }
 
     /**

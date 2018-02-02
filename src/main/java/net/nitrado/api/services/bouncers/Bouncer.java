@@ -18,7 +18,8 @@ public class Bouncer extends Service {
     private class BouncerData {
         @SerializedName("max_bouncer")
         private Integer maxBouncer;
-        private String type;
+        @SerializedName("type")
+        private String bouncerType;
         private BouncerInstance[] bouncers;
     }
 
@@ -35,13 +36,13 @@ public class Bouncer extends Service {
     }
 
     /**
-     * Returns type.
+     * Returns bouncerType.
      *
-     * @return type
+     * @return bouncerType
      */
     @Nullable
-    public String getType() {
-        return data.type;
+    public String getBouncerType() {
+        return data.bouncerType;
     }
 
     /**
@@ -60,7 +61,7 @@ public class Bouncer extends Service {
      * @param ident Set the ident. Allowed /^[A-Za-z0-9]+$/.
      * @param password A password for the ident
      */
-    public void addIdent(String ident, String password) throws NitrapiException {
+    public void addIdent(@NotNull String ident, @NotNull String password) throws NitrapiException {
         api.dataPost("services/" + getId() + "/bouncers/", new Parameter[] {
             new Parameter("ident", ident),
             new Parameter("password", password)
@@ -72,7 +73,7 @@ public class Bouncer extends Service {
      *
      * @param ident Name of the ident which will be deleted
      */
-    public void deleteIdent(String ident) throws NitrapiException {
+    public void deleteIdent(@NotNull String ident) throws NitrapiException {
         api.dataDelete("services/" + getId() + "/bouncers/", new Parameter[] {
             new Parameter("ident", ident)
         });
@@ -84,7 +85,7 @@ public class Bouncer extends Service {
      * @param ident ident
      * @param password a new password
      */
-    public void editPassword(String ident, String password) throws NitrapiException {
+    public void editPassword(@NotNull String ident, @NotNull String password) throws NitrapiException {
         api.dataPut("services/" + getId() + "/bouncers/", new Parameter[] {
             new Parameter("ident", ident),
             new Parameter("password", password)

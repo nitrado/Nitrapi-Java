@@ -239,7 +239,7 @@ public class Customer {
      * @param month month
      * @return AccountOverview
      */
-    public AccountOverview getAccountOverview(Integer year, Integer month) throws NitrapiException {
+    public AccountOverview getAccountOverview(@NotNull Integer year, @NotNull Integer month) throws NitrapiException {
         JsonObject data = api.dataGet("user/account_overview", new Parameter[] {
             new Parameter("year", year),
             new Parameter("month", month)
@@ -255,7 +255,7 @@ public class Customer {
      * @param password The current user password.
      * @return String
      */
-    public String requestUserUpdateToken(String password) throws NitrapiException {
+    public String requestUserUpdateToken(@NotNull String password) throws NitrapiException {
         JsonObject data = api.dataPost("user/token", new Parameter[] {
             new Parameter("password", password)
         });
@@ -270,7 +270,7 @@ public class Customer {
      * @param number phone number with country code
      * @param token the update token of the current user
      */
-    public void addPhoneNumber(String number, String token) throws NitrapiException {
+    public void addPhoneNumber(@NotNull String number, @NotNull String token) throws NitrapiException {
         api.dataPost("user/phone", new Parameter[] {
             new Parameter("number", number),
             new Parameter("token", token)
@@ -282,7 +282,7 @@ public class Customer {
      *
      * @param token the update token of the current user
      */
-    public void deletePhoneNumber(String token) throws NitrapiException {
+    public void deletePhoneNumber(@NotNull String token) throws NitrapiException {
         api.dataDelete("user/phone", new Parameter[] {
             new Parameter("token", token)
         });
@@ -293,7 +293,7 @@ public class Customer {
      *
      * @param code Verification code from SMS
      */
-    public void verifyPhoneNumber(String code) throws NitrapiException {
+    public void verifyPhoneNumber(@NotNull String code) throws NitrapiException {
         api.dataPost("user/phone/verify", new Parameter[] {
             new Parameter("code", code)
         });
@@ -305,7 +305,7 @@ public class Customer {
      * @param timezone new timezone for the user
      * @param token the update token of the current user
      */
-    public void updateTimezone(String timezone, String token) throws NitrapiException {
+    public void updateTimezone(@NotNull String timezone, @NotNull String token) throws NitrapiException {
         api.dataPost("user/", new Parameter[] {
             new Parameter("timezone", timezone),
             new Parameter("token", token)
@@ -323,7 +323,7 @@ public class Customer {
      * @param country country
      * @param state state
      */
-    public void updateProfile(String token, String name, String street, String postcode, String city, String country, String state) throws NitrapiException {
+    public void updateProfile(@NotNull String token, @NotNull String name, @NotNull String street, @NotNull String postcode, @NotNull String city, @NotNull String country, @NotNull String state) throws NitrapiException {
         api.dataPost("user/", new Parameter[] {
             new Parameter("token", token),
             new Parameter("profile[name]", name),
@@ -341,7 +341,7 @@ public class Customer {
      * @param password the new password
      * @param token The update token of the current user
      */
-    public void updatePassword(String password, String token) throws NitrapiException {
+    public void updatePassword(@NotNull String password, @NotNull String token) throws NitrapiException {
         api.dataPost("user/", new Parameter[] {
             new Parameter("password", password),
             new Parameter("token", token)
@@ -353,7 +353,7 @@ public class Customer {
      *
      * @param donations true if donations can be received
      */
-    public void updateDonations(Boolean donations) throws NitrapiException {
+    public void updateDonations(@NotNull Boolean donations) throws NitrapiException {
         api.dataPost("user/", new Parameter[] {
             new Parameter("donations", donations)
         });

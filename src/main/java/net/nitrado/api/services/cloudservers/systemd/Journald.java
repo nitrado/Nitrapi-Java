@@ -282,7 +282,7 @@ public class Journald {
      * @param count Number of messages to return, starting at the cursor position specified by backlog. -1 returns all messages and continuously streams any new ones.
      * @return String
      */
-    public String getUrl(String unit, String cursor, Integer backlog, Integer count) throws NitrapiException {
+    public String getUrl(@Nullable String unit, @Nullable String cursor, @Nullable Integer backlog, @Nullable Integer count) throws NitrapiException {
         JsonObject data = api.dataGet("services/" + service.getId() + "/cloud_servers/system/journal/", new Parameter[] {
             new Parameter("unit", unit),
             new Parameter("cursor", cursor),

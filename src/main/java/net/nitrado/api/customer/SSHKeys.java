@@ -43,7 +43,7 @@ public class SSHKeys {
      *
      * @param key key
      */
-    public void uploadKey(String key) throws NitrapiException {
+    public void uploadKey(@NotNull String key) throws NitrapiException {
         api.dataPost("user/ssh_keys/", new Parameter[] {
             new Parameter("key", key)
         });
@@ -56,7 +56,7 @@ public class SSHKeys {
      * @param key key
      * @param enabled enabled
      */
-    public void updateKey(Integer id, String key, Boolean enabled) throws NitrapiException {
+    public void updateKey(@NotNull Integer id, @NotNull String key, @NotNull Boolean enabled) throws NitrapiException {
         api.dataPost("user/ssh_keys/" + id + "", new Parameter[] {
             new Parameter("key", key),
             new Parameter("enabled", enabled)
@@ -68,7 +68,7 @@ public class SSHKeys {
      *
      * @param id id
      */
-    public void deleteKey(Integer id) throws NitrapiException {
+    public void deleteKey(@NotNull Integer id) throws NitrapiException {
         api.dataDelete("user/ssh_keys/" + id + "", null);
     }
 }

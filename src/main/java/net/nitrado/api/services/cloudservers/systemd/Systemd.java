@@ -216,7 +216,7 @@ public class Systemd {
      * @param unitName unitName
      * @return Unit
      */
-    public Unit getUnit(String unitName) throws NitrapiException {
+    public Unit getUnit(@NotNull String unitName) throws NitrapiException {
         JsonObject data = api.dataGet("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "", null);
 
         Unit unit = api.fromJson(data.get("unit"), Unit.class);
@@ -228,7 +228,7 @@ public class Systemd {
      *
      * @param unitName unitName
      */
-    public void enableUnit(String unitName) throws NitrapiException {
+    public void enableUnit(@NotNull String unitName) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/enable", null);
     }
 
@@ -237,7 +237,7 @@ public class Systemd {
      *
      * @param unitName unitName
      */
-    public void disableUnit(String unitName) throws NitrapiException {
+    public void disableUnit(@NotNull String unitName) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/disable", null);
     }
 
@@ -248,7 +248,7 @@ public class Systemd {
      * @param who who
      * @param signal signal
      */
-    public void killUnit(String unitName, String who, Integer signal) throws NitrapiException {
+    public void killUnit(@NotNull String unitName, @Nullable String who, @Nullable Integer signal) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/kill", new Parameter[] {
             new Parameter("who", who),
             new Parameter("signal", signal)
@@ -260,7 +260,7 @@ public class Systemd {
      *
      * @param unitName unitName
      */
-    public void maskUnit(String unitName) throws NitrapiException {
+    public void maskUnit(@NotNull String unitName) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/mask", null);
     }
 
@@ -269,7 +269,7 @@ public class Systemd {
      *
      * @param unitName unitName
      */
-    public void unmaskUnit(String unitName) throws NitrapiException {
+    public void unmaskUnit(@NotNull String unitName) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/unmask", null);
     }
 
@@ -279,7 +279,7 @@ public class Systemd {
      * @param unitName unitName
      * @param replace Replace a job that is already running
      */
-    public void reloadUnit(String unitName, Boolean replace) throws NitrapiException {
+    public void reloadUnit(@NotNull String unitName, @NotNull Boolean replace) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/reload", new Parameter[] {
             new Parameter("replace", replace)
         });
@@ -290,7 +290,7 @@ public class Systemd {
      *
      * @param unitName unitName
      */
-    public void resetUnitFailedState(String unitName) throws NitrapiException {
+    public void resetUnitFailedState(@NotNull String unitName) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/reset_failed", null);
     }
 
@@ -300,7 +300,7 @@ public class Systemd {
      * @param unitName unitName
      * @param replace Replace a job that is already running
      */
-    public void restartUnit(String unitName, Boolean replace) throws NitrapiException {
+    public void restartUnit(@NotNull String unitName, @NotNull Boolean replace) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/restart", new Parameter[] {
             new Parameter("replace", replace)
         });
@@ -312,7 +312,7 @@ public class Systemd {
      * @param unitName unitName
      * @param replace Replace a job that is already running
      */
-    public void startUnit(String unitName, Boolean replace) throws NitrapiException {
+    public void startUnit(@NotNull String unitName, @NotNull Boolean replace) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/start", new Parameter[] {
             new Parameter("replace", replace)
         });
@@ -324,7 +324,7 @@ public class Systemd {
      * @param unitName unitName
      * @param replace Replace a job that is already running
      */
-    public void stopUnit(String unitName, Boolean replace) throws NitrapiException {
+    public void stopUnit(@NotNull String unitName, @NotNull Boolean replace) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/system/units/" + unitName + "/stop", new Parameter[] {
             new Parameter("replace", replace)
         });

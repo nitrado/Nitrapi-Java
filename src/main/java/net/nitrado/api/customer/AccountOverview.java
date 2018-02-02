@@ -13,12 +13,12 @@ import org.jetbrains.annotations.NotNull;
  */
 public class AccountOverview {
 
-    public static class Type extends Value {
-        public Type(String value) {
+    public static class IncOrDec extends Value {
+        public IncOrDec(String value) {
             super(value);
         }
-        public static Type INCREASE = new Type("increase");
-        public static Type DECREASE = new Type("decrease");
+        public static IncOrDec INCREASE = new IncOrDec("increase");
+        public static IncOrDec DECREASE = new IncOrDec("decrease");
     }
 
     private GregorianCalendar from;
@@ -82,7 +82,8 @@ public class AccountOverview {
         private String method;
         private Integer duration;
         private Integer amount;
-        private Type type;
+        @SerializedName("type")
+        private IncOrDec incOrDec;
         private String currency;
         private String ip;
         private Boolean refundable;
@@ -182,13 +183,13 @@ public class AccountOverview {
         }
 
         /**
-         * Returns type.
+         * Returns incOrDec.
          *
-         * @return type
+         * @return incOrDec
          */
         @Nullable
-        public Type getType() {
-            return type;
+        public IncOrDec getIncOrDec() {
+            return incOrDec;
         }
 
         /**

@@ -377,7 +377,7 @@ public class AppsManager {
      * @param ip ip
      * @param ports ports
      */
-    public void install(String appType, String appName, String ip, HashMap<String, String> ports) throws NitrapiException {
+    public void install(@NotNull String appType, @NotNull String appName, @Nullable String ip, @NotNull HashMap<String, String> ports) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/apps/", new Parameter[] {
             new Parameter("app_type", appType),
             new Parameter("app_name", appName),
@@ -392,7 +392,7 @@ public class AppsManager {
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @param appName appName
      */
-    public void uninstall(String appName) throws NitrapiException {
+    public void uninstall(@NotNull String appName) throws NitrapiException {
         api.dataDelete("services/" + service.getId() + "/cloud_servers/apps/" + appName + "", null);
     }
 
@@ -404,7 +404,7 @@ public class AppsManager {
      * @param cmd the application start command line
      * @param parameters parameters
      */
-    public void configure(String appName, String cmd, HashMap<String, String> parameters) throws NitrapiException {
+    public void configure(@NotNull String appName, @NotNull String cmd, @NotNull HashMap<String, String> parameters) throws NitrapiException {
         api.dataPut("services/" + service.getId() + "/cloud_servers/apps/" + appName + "", new Parameter[] {
             new Parameter("cmd", cmd),
             new Parameter("parameters", parameters)
@@ -417,7 +417,7 @@ public class AppsManager {
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @param appName appName
      */
-    public void update(String appName) throws NitrapiException {
+    public void update(@NotNull String appName) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/apps/" + appName + "/update", null);
     }
 
@@ -427,7 +427,7 @@ public class AppsManager {
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @param appName appName
      */
-    public void restart(String appName) throws NitrapiException {
+    public void restart(@NotNull String appName) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/apps/" + appName + "/restart", null);
     }
 
@@ -437,7 +437,7 @@ public class AppsManager {
      * @permission ROLE_WEBINTERFACE_GENERAL_CONTROL
      * @param appName appName
      */
-    public void stop(String appName) throws NitrapiException {
+    public void stop(@NotNull String appName) throws NitrapiException {
         api.dataPost("services/" + service.getId() + "/cloud_servers/apps/" + appName + "/stop", null);
     }
 }
