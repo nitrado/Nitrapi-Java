@@ -1,6 +1,7 @@
 package net.nitrado.api;
 
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
@@ -28,10 +29,7 @@ import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -273,6 +271,17 @@ public class Nitrapi {
         JsonObject data = this.dataGet("token", null);
         return gson.fromJson(data.get("token"), AccessToken.class);
     }
+
+    public HashMap<String, String> getCountries() throws NitrapiException {
+        JsonObject data = this.dataGet("countries", null);
+        return gson.fromJson(data.get("countries"), new TypeToken<Map<String, String>>(){}.getType());
+    }
+
+    public HashMap<String, String> getStates() throws NitrapiException {
+        JsonObject data = this.dataGet("countries/states", null);
+        return gson.fromJson(data.get("states"), new TypeToken<Map<String, String>>(){}.getType());
+    }
+
 
     /**
      * Returns the current limit of requests per hour for each user.
