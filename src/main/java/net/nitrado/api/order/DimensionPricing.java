@@ -65,7 +65,7 @@ public class DimensionPricing extends Pricing {
     }
 
     @Override
-    public void orderService(int rentalTime) throws NitrapiException {
+    public int orderService(int rentalTime) throws NitrapiException {
         int ADD_PARAMS = 3;
         Parameter[] parameters = new Parameter[dimensions.size() + additionals.size() + ADD_PARAMS];
         parameters[0] = new Parameter("price", getPrice(rentalTime));
@@ -81,11 +81,11 @@ public class DimensionPricing extends Pricing {
             j++;
         }
 
-        nitrapi.dataPost("order/order/" + product, parameters);
+        return nitrapi.dataPost("order/order/" + product, parameters).get("order").getAsJsonObject().get("service_id").getAsInt();
     }
 
     @Override
-    public void switchService(Service service, int rentalTime) throws NitrapiException {
+    public int switchService(Service service, int rentalTime) throws NitrapiException {
         int ADD_PARAMS = 5;
         Parameter[] parameters = new Parameter[dimensions.size() + additionals.size() + ADD_PARAMS];
         parameters[0] = new Parameter("price", getSwitchPrice(service, rentalTime));
@@ -103,6 +103,6 @@ public class DimensionPricing extends Pricing {
             j++;
         }
 
-        nitrapi.dataPost("order/order/" + product, parameters);
+        return nitrapi.dataPost("order/order/" + product, parameters).get("order").getAsJsonObject().get("service_id").getAsInt();
     }
 }
