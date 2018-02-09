@@ -13,6 +13,7 @@ import net.nitrado.api.services.gameservers.minecraft.Minecraft;
 import net.nitrado.api.services.gameservers.taskmanager.TaskManager;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -125,11 +126,15 @@ public class Gameserver extends Service {
         private boolean minecraftMode;
         private String ip;
         private int port;
+        @SerializedName("query_port")
+        private int queryPort;
+        @SerializedName("rcon_port")
+        private int rconPort;
         private String label;
         private Type type;
         private MemoryType memory;
-        @SerializedName("memory_total")
-        private int memoryTotal;
+        @SerializedName("memory_mb")
+        private int memoryMB;
         private String game;
         @SerializedName("game_human")
         private String gameReadable;
@@ -144,10 +149,23 @@ public class Gameserver extends Service {
         private Query query;
     }
 
+    public static class UpdateStatus extends Value {
+        public UpdateStatus(String value) {
+            super(value);
+        }
+
+        public static final UpdateStatus UP_TO_DATE = new UpdateStatus("up_to_date");
+        public static final UpdateStatus IN_PROGRESS = new UpdateStatus("update_in_progress");
+    }
+
     private class GameSpecific {
         private String path;
         @SerializedName("path_available")
         private boolean pathAvailable;
+        @SerializedName("update_status")
+        private UpdateStatus updateStatus;
+        @SerializedName("last_update")
+        private GregorianCalendar lastUpdate;
 
         private class Features {
             @SerializedName("has_backups")
@@ -240,6 +258,14 @@ public class Gameserver extends Service {
         return info != null ? info.port : 0;
     }
 
+    public int getQueryPort() {
+        return info != null ? info.queryPort : 0;
+    }
+
+    public int getRconPort() {
+        return info != null ? info.rconPort : 0;
+    }
+
     /**
      * Returns the label of this gameserver.
      * You need the label to connect to the websocket
@@ -273,8 +299,8 @@ public class Gameserver extends Service {
      *
      * @return the total amount of memory
      */
-    public int getMemoryTotal() {
-        return info != null ? info.memoryTotal : 0;
+    public int getMemoryMB() {
+        return info != null ? info.memoryMB : 0;
     }
 
     /**
@@ -307,6 +333,20 @@ public class Gameserver extends Service {
             return false;
         }
         return info.gameSpecific.pathAvailable;
+    }
+
+    public @Nullable UpdateStatus getUpdateStatus() {
+        if (info == null || info.gameSpecific == null) {
+            return null;
+        }
+        return info.gameSpecific.updateStatus;
+    }
+
+    public @Nullable GregorianCalendar getLastUpdate() {
+        if (info == null || info.gameSpecific == null) {
+            return null;
+        }
+        return info.gameSpecific.lastUpdate;
     }
 
     public boolean hasBackups() {

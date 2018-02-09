@@ -47,7 +47,7 @@ public class GameserverTest extends ApiTestCase {
         assertEquals(25565, (int)server.getPort());
         assertEquals(Gameserver.Type.GAMESERVER, server.getType());
         assertEquals(Gameserver.MemoryType.STANDARD, server.getMemoryType());
-        assertEquals(1024, server.getMemoryTotal());
+        assertEquals(1024, server.getMemoryMB());
         assertEquals("mc", server.getGame());
         assertEquals(1, server.getModpacks().size());
         Modpack modpack = server.getModpacks().get("mcrdns");
