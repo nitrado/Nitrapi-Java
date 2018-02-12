@@ -6,6 +6,7 @@ import net.nitrado.api.Nitrapi;
 import net.nitrado.api.common.Value;
 import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -80,6 +81,8 @@ public abstract class Service {
     private String comment;
     @SerializedName("auto_extension")
     private boolean autoExtension;
+    @SerializedName("auto_extension_duration")
+    private Integer autoExtensionDuration;
     @SerializedName("type_human")
     private String typeHuman;
     private ServiceDetails details;
@@ -187,6 +190,13 @@ public abstract class Service {
      */
     public boolean hasAutoExtension() {
         return autoExtension;
+    }
+
+    /**
+     * @return the duration of auto extension if activated
+     */
+    public @Nullable Integer getAutoExtensionDuration() {
+        return autoExtensionDuration;
     }
 
     /**
