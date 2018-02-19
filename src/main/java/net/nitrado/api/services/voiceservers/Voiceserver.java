@@ -43,6 +43,7 @@ public class Voiceserver extends Service {
      */
     @Nullable
     public VoiceserverType getVoiceserverType() {
+        if(data == null) { return null; }
         return data.voiceserverType;
     }
 
@@ -53,6 +54,7 @@ public class Voiceserver extends Service {
      */
     @Nullable
     public String getIp() {
+        if(data == null) { return null; }
         return data.ip;
     }
 
@@ -63,6 +65,7 @@ public class Voiceserver extends Service {
      */
     @Nullable
     public Integer getPort() {
+        if(data == null) { return null; }
         return data.port;
     }
 
@@ -73,6 +76,7 @@ public class Voiceserver extends Service {
      */
     @Nullable
     public Integer getSlots() {
+        if(data == null) { return null; }
         return data.slots;
     }
 
@@ -83,6 +87,7 @@ public class Voiceserver extends Service {
      */
     @Nullable
     public Boolean isStarted() {
+        if(data == null) { return null; }
         return data.started;
     }
 

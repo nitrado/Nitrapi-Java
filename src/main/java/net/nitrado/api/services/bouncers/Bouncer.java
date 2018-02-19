@@ -32,6 +32,7 @@ public class Bouncer extends Service {
      */
     @Nullable
     public Integer getMaxBouncer() {
+        if(data == null) { return null; }
         return data.maxBouncer;
     }
 
@@ -42,6 +43,7 @@ public class Bouncer extends Service {
      */
     @Nullable
     public String getBouncerType() {
+        if(data == null) { return null; }
         return data.bouncerType;
     }
 
@@ -52,6 +54,7 @@ public class Bouncer extends Service {
      */
     @Nullable
     public BouncerInstance[] getBouncers() {
+        if(data == null) { return null; }
         return data.bouncers;
     }
 

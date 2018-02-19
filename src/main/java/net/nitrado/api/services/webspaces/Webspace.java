@@ -145,8 +145,9 @@ public class Webspace extends Service {
      *
      * @return name
      */
-    @NotNull
+    @Nullable
     public String getName() {
+        if(data == null) { return null; }
         return data.name;
     }
 
@@ -157,6 +158,7 @@ public class Webspace extends Service {
      */
     @Nullable
     public Quota getQuota() {
+        if(data == null) { return null; }
         return data.quota;
     }
 
@@ -167,6 +169,7 @@ public class Webspace extends Service {
      */
     @Nullable
     public Domain[] getDomains() {
+        if(data == null) { return null; }
         return data.domains;
     }
     @Override
