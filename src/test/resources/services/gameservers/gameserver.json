@@ -19,7 +19,7 @@
       "label": "ni",
       "type": "Gameserver",
       "memory": "Standard",
-      "memory_total": 1024,
+      "memory_mb": 1024,
       "game":"mc",
       "modpacks":{
         "mcrdns":{

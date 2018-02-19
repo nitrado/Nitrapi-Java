@@ -47,14 +47,14 @@ public class GameserverTest extends ApiTestCase {
         assertEquals(25565, (int)server.getPort());
         assertEquals(Gameserver.Type.GAMESERVER, server.getType());
         assertEquals(Gameserver.MemoryType.STANDARD, server.getMemoryType());
-        assertEquals(1024, server.getMemoryMB());
+        assertEquals(1024, (int)server.getMemoryMB());
         assertEquals("mc", server.getGame());
         assertEquals(1, server.getModpacks().size());
         Modpack modpack = server.getModpacks().get("mcrdns");
         assertEquals("Pixelmon Craft", modpack.getName());
         assertEquals("4.0.6", modpack.getModpackVersion());
         assertEquals("1.8.4", modpack.getGameVersion());
-        assertEquals(4, server.getSlots());
+        assertEquals(4, (int)server.getSlots());
         assertEquals("DE", server.getLocation());
 
         ServiceDetails details = server.getDetails();

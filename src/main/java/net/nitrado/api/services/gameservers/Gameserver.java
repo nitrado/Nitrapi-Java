@@ -210,6 +210,7 @@ public class Gameserver extends Service {
      *
      * @return the status
      */
+    @Nullable
     public Status getGameserverStatus() {
         return info != null ? info.status : null;
     }
@@ -219,8 +220,9 @@ public class Gameserver extends Service {
      *
      * @return the websocket token
      */
+    @Nullable
     public String getWebsocketToken() {
-        return info != null ? info.websocketToken : "";
+        return info != null ? info.websocketToken : null;
     }
 
     /**
@@ -229,8 +231,9 @@ public class Gameserver extends Service {
      *
      * @return whether this server is in minecraft mode
      */
-    public boolean isMinecraftMode() {
-        return info != null ? info.minecraftMode : false;
+    @Nullable
+    public Boolean isMinecraftMode() {
+        return info != null ? info.minecraftMode : null;
     }
 
     /**
@@ -245,8 +248,9 @@ public class Gameserver extends Service {
      *
      * @return the ip
      */
+    @Nullable
     public String getIp() {
-        return info != null ? info.ip : "";
+        return info != null ? info.ip : null;
     }
 
     /**
@@ -254,16 +258,19 @@ public class Gameserver extends Service {
      *
      * @return the port
      */
-    public int getPort() {
-        return info != null ? info.port : 0;
+    @Nullable
+    public Integer getPort() {
+        return info != null ? info.port : null;
     }
 
-    public int getQueryPort() {
-        return info != null ? info.queryPort : 0;
+    @Nullable
+    public Integer getQueryPort() {
+        return info != null ? info.queryPort : null;
     }
 
-    public int getRconPort() {
-        return info != null ? info.rconPort : 0;
+    @Nullable
+    public Integer getRconPort() {
+        return info != null ? info.rconPort : null;
     }
 
     /**
@@ -272,8 +279,9 @@ public class Gameserver extends Service {
      *
      * @return the label
      */
+    @Nullable
     public String getLabel() {
-        return info != null ? info.label : "";
+        return info != null ? info.label : null;
     }
 
     /**
@@ -281,6 +289,7 @@ public class Gameserver extends Service {
      *
      * @return the type
      */
+    @Nullable
     public Type getType() {
         return info != null ? info.type : null;
     }
@@ -290,6 +299,7 @@ public class Gameserver extends Service {
      *
      * @return the memory type
      */
+    @Nullable
     public MemoryType getMemoryType() {
         return info != null ? info.memory : null;
     }
@@ -299,8 +309,9 @@ public class Gameserver extends Service {
      *
      * @return the total amount of memory
      */
-    public int getMemoryMB() {
-        return info != null ? info.memoryMB : 0;
+    @Nullable
+    public Integer getMemoryMB() {
+        return info != null ? info.memoryMB : null;
     }
 
     /**
@@ -308,8 +319,9 @@ public class Gameserver extends Service {
      *
      * @return the game
      */
+    @Nullable
     public String getGame() {
-        return info != null ? info.game : "";
+        return info != null ? info.game : null;
     }
 
     /**
@@ -317,104 +329,119 @@ public class Gameserver extends Service {
      *
      * @return
      */
+    @Nullable
     public String getGameReadable() {
-        return info != null ? info.gameReadable : "";
+        return info != null ? info.gameReadable : null;
     }
 
+    @Nullable
     public String getPath() {
         if (info == null || info.gameSpecific == null) {
-            return "";
+            return null;
         }
         return info.gameSpecific.path;
     }
 
-    public boolean isPathAvailable() {
+    @Nullable
+    public Boolean isPathAvailable() {
         if (info == null || info.gameSpecific == null) {
-            return false;
+            return null;
         }
         return info.gameSpecific.pathAvailable;
     }
 
-    public @Nullable UpdateStatus getUpdateStatus() {
+    @Nullable
+    public UpdateStatus getUpdateStatus() {
         if (info == null || info.gameSpecific == null) {
             return null;
         }
         return info.gameSpecific.updateStatus;
     }
 
-    public @Nullable GregorianCalendar getLastUpdate() {
+    @Nullable
+    public GregorianCalendar getLastUpdate() {
         if (info == null || info.gameSpecific == null) {
             return null;
         }
         return info.gameSpecific.lastUpdate;
     }
 
-    public boolean hasBackups() {
+    @Nullable
+    public Boolean hasBackups() {
         if (info == null || info.gameSpecific == null || info.gameSpecific.features == null) {
-            return false;
+            return null;
         }
         return info.gameSpecific.features.hasBackups;
     }
 
-    public boolean hasApplicationServer() {
+    @Nullable
+    public Boolean hasApplicationServer() {
         if (info == null || info.gameSpecific == null || info.gameSpecific.features == null) {
-            return false;
+            return null;
         }
         return info.gameSpecific.features.hasApplicationServer;
     }
 
-    public boolean hasFileBrowser() {
+    @Nullable
+    public Boolean hasFileBrowser() {
         if (info == null || info.gameSpecific == null || info.gameSpecific.features == null) {
-            return false;
+            return null;
         }
         return info.gameSpecific.features.hasFileBrowser;
     }
 
-    public boolean hasFtp() {
+    @Nullable
+    public Boolean hasFtp() {
         if (info == null || info.gameSpecific == null || info.gameSpecific.features == null) {
-            return false;
+            return null;
         }
         return info.gameSpecific.features.hasFtp;
     }
 
-    public boolean hasExpertMode() {
+    @Nullable
+    public Boolean hasExpertMode() {
         if (info == null || info.gameSpecific == null || info.gameSpecific.features == null) {
-            return false;
+            return null;
         }
         return info.gameSpecific.features.hasExpertMode;
     }
 
-    public boolean hasPluginSystem() {
+    @Nullable
+    public Boolean hasPluginSystem() {
         if (info == null || info.gameSpecific == null || info.gameSpecific.features == null) {
-            return false;
+            return null;
         }
         return info.gameSpecific.features.hasPluginSystem;
     }
 
-    public boolean hasRestartMessageSupport() {
+    @Nullable
+    public Boolean hasRestartMessageSupport() {
         if (info == null || info.gameSpecific == null || info.gameSpecific.features == null) {
-            return false;
+            return null;
         }
         return info.gameSpecific.features.hasRestartMessageSupport;
     }
 
-    public boolean hasDatabase() {
+    @Nullable
+    public Boolean hasDatabase() {
         if (info == null || info.gameSpecific == null || info.gameSpecific.features == null) {
-            return false;
+            return null;
         }
         return info.gameSpecific.features.hasRestartMessageSupport;
     }
 
+    @Nullable
     public String[] getLogFiles() {
         if (info == null || info.gameSpecific == null) {
-            return new String[0];
+            return null;
         }
         return info.gameSpecific.logFiles;
     }
 
+    @Nullable
     public String[] getConfigFiles() {
         if (info == null || info.gameSpecific == null) {
-            return new String[0];
+            return null;
         }
         return info.gameSpecific.configFiles;
     }
@@ -425,6 +452,7 @@ public class Gameserver extends Service {
      *
      * @return a list of modpacks
      */
+    @Nullable
     public Map<String, Modpack> getModpacks() {
         return info != null ? info.modpacks : null;
     }
@@ -434,8 +462,9 @@ public class Gameserver extends Service {
      *
      * @return the number of slots
      */
-    public int getSlots() {
-        return info != null ? info.slots : 0;
+    @Nullable
+    public Integer getSlots() {
+        return info != null ? info.slots : null;
     }
 
     /**
@@ -443,8 +472,9 @@ public class Gameserver extends Service {
      *
      * @return the ISO short of the country the gameserver is in
      */
+    @Nullable
     public String getLocation() {
-        return info != null ? info.location : "";
+        return info != null ? info.location : null;
     }
 
     /**
@@ -453,6 +483,7 @@ public class Gameserver extends Service {
      * @param type the service you want the credentials of (mysql, ftp)
      * @return the credentials
      */
+    @Nullable
     public Credentials getCredentials(String type) {
         if (info == null || info.credentials == null) {
             return null;
@@ -465,6 +496,7 @@ public class Gameserver extends Service {
      *
      * @return the customer settings
      */
+    @Nullable
     public CustomerSettings getCustomerSettings() {
         return info != null ? info.settings : null;
     }
@@ -474,6 +506,7 @@ public class Gameserver extends Service {
      *
      * @return the quota
      */
+    @Nullable
     public Quota getQuota() {
         return info != null ? info.quota : null;
     }
@@ -483,6 +516,7 @@ public class Gameserver extends Service {
      *
      * @return the query
      */
+    @Nullable
     public Query getQuery() {
         return info != null ? info.query : null;
     }
