@@ -303,7 +303,7 @@ public class ProductionHttpClient implements HttpClient {
         }
     }
 
-    private JsonObject parseResult(StringBuffer response, HttpURLConnection connection) throws IOException, NitrapiException {
+    protected JsonObject parseResult(StringBuffer response, HttpURLConnection connection) throws IOException, NitrapiException {
 
         if (connection.getHeaderField("X-Rate-Limit") != null) {
             rateLimit = Integer.parseInt(connection.getHeaderField("X-RateLimit-Limit"));
