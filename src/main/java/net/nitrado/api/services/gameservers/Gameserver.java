@@ -240,7 +240,8 @@ public class Gameserver extends Service {
      * @return true when the
      */
     public boolean isMinecraftGame() {
-        return getGame().startsWith("mcr") && !getGame().equals("mcrpocket");
+        String game = getGame();
+        return game != null && game.startsWith("mcr") && !game.equals("mcrpocket");
     }
 
     /**
