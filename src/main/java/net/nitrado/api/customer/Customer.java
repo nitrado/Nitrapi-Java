@@ -34,7 +34,7 @@ public class Customer {
     private Phone phone;
     @SerializedName("two_factor")
     private String[] twoFactor;
-    private HashMap<String, String> profile;
+    private Profile profile;
 
     /**
      * This class represents a phone.
@@ -73,6 +73,90 @@ public class Customer {
         @Nullable
         public Boolean isVerified() {
             return verified;
+        }
+    }
+
+    /**
+     * personal details of the user
+     */
+    public class Profile {
+        private String name;
+        private String street;
+        private String postcode;
+        private String city;
+        private String country;
+        private String state;
+        @SerializedName("country_and_state_verified")
+        private Boolean countryAndStateVerified;
+
+        /**
+         * Returns name.
+         *
+         * @return name
+         */
+        @Nullable
+        public String getName() {
+            return name;
+        }
+
+        /**
+         * Returns street.
+         *
+         * @return street
+         */
+        @Nullable
+        public String getStreet() {
+            return street;
+        }
+
+        /**
+         * Returns postcode.
+         *
+         * @return postcode
+         */
+        @Nullable
+        public String getPostcode() {
+            return postcode;
+        }
+
+        /**
+         * Returns city.
+         *
+         * @return city
+         */
+        @Nullable
+        public String getCity() {
+            return city;
+        }
+
+        /**
+         * Returns country.
+         *
+         * @return country
+         */
+        @Nullable
+        public String getCountry() {
+            return country;
+        }
+
+        /**
+         * Returns state.
+         *
+         * @return state
+         */
+        @Nullable
+        public String getState() {
+            return state;
+        }
+
+        /**
+         * Returns true if the user verified that this country is correct.
+         *
+         * @return true if the user verified that this country is correct
+         */
+        @Nullable
+        public Boolean isCountryAndStateVerified() {
+            return countryAndStateVerified;
         }
     }
 
@@ -219,7 +303,7 @@ public class Customer {
      * @return personal details of the user
      */
     @Nullable
-    public HashMap<String, String> getProfile() {
+    public Profile getProfile() {
         return profile;
     }
 
