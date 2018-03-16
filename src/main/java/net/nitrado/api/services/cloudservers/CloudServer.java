@@ -78,6 +78,11 @@ public class CloudServer extends Service {
          */
         public static final CloudserverStatus ERROR_REINSTALL = new CloudserverStatus("error_reinstall");
 
+        /**
+         * The server is currently in rescue mode.
+         */
+        public static final CloudserverStatus RESCUE = new CloudserverStatus("rescue");
+
         @Override
         public String toString() {
             try {
@@ -810,6 +815,22 @@ public class CloudServer extends Service {
 
         TrafficStatistics traffic = api.fromJson(data.get("traffic"), TrafficStatistics.class);
         return traffic;
+    }
+
+    /**
+     * Reboot the server into rescue mode.
+     * This action might result in data loss.
+     */
+    public void doRescue() throws NitrapiException {
+        api.dataPost("services/" + getId() + "/cloud_servers/rescue", null);
+    }
+
+    /**
+     * Leave the rescue mode and reboot the server.
+     * This action might result in data loss.
+     */
+    public void doUnrescue() throws NitrapiException {
+        api.dataPost("services/" + getId() + "/cloud_servers/unrescue", null);
     }
 
     @Override

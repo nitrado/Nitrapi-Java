@@ -110,6 +110,7 @@ public class Nitrapi {
         };
 
         this.gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
                 .registerTypeAdapter(GregorianCalendar.class, new JsonDeserializer<GregorianCalendar>() {
                     public GregorianCalendar deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
 
