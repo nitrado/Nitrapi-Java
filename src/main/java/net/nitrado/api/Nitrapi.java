@@ -1,6 +1,7 @@
 package net.nitrado.api;
 
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
@@ -19,6 +20,7 @@ import net.nitrado.api.services.Service;
 import net.nitrado.api.services.ServiceFactory;
 import net.nitrado.api.services.cloudservers.CloudServer;
 import net.nitrado.api.services.gameservers.GlobalGameList;
+import net.nitrado.api.services.gameservers.minecraft.Minecraft;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,10 +29,7 @@ import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -111,6 +110,7 @@ public class Nitrapi {
         };
 
         this.gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
                 .registerTypeAdapter(GregorianCalendar.class, new JsonDeserializer<GregorianCalendar>() {
                     public GregorianCalendar deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
 
@@ -166,7 +166,11 @@ public class Nitrapi {
      * @return the current customer
      */
     public Customer getCustomer() throws NitrapiException {
-        return Customer.newInstance(this);
+        JsonObject data = dataGet("user", null);
+
+        Customer customer = fromJson(data.get("user"), Customer.class);
+        customer.init(this);
+        return customer;
     }
 
 
@@ -268,6 +272,22 @@ public class Nitrapi {
         JsonObject data = this.dataGet("token", null);
         return gson.fromJson(data.get("token"), AccessToken.class);
     }
+
+    public Map<String, String> getCountries() throws NitrapiException {
+        JsonObject data = this.dataGet("countries", null);
+        return gson.fromJson(data.get("countries"), new TypeToken<Map<String, String>>(){}.getType());
+    }
+
+    public Map<String, String> getStates() throws NitrapiException {
+        JsonObject data = this.dataGet("countries/states", null);
+        return gson.fromJson(data.get("states"), new TypeToken<Map<String, String>>(){}.getType());
+    }
+
+    public Map<String, String[]> getTimezones() throws NitrapiException {
+        JsonObject data = this.dataGet("timezones", null);
+        return gson.fromJson(data.get("timezones"), new TypeToken<Map<String, String[]>>(){}.getType());
+    }
+
 
     /**
      * Returns the current limit of requests per hour for each user.

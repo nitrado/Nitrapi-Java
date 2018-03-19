@@ -158,15 +158,15 @@ public abstract class Pricing {
      * @param service    id of the service
      * @param rentalTime time to rent
      * @param price      price calculated from getExtendPricesForService
+     * @return service id
      */
-    public void doExtendService(Service service, int rentalTime, int price) throws NitrapiException {
-        // int price = getExtendPriceForService(service, rentalTime);
-        nitrapi.dataPost("order/order/" + product, new Parameter[]{
+    public int doExtendService(Service service, int rentalTime, int price) throws NitrapiException {
+        return nitrapi.dataPost("order/order/" + product, new Parameter[]{
                 new Parameter("price", price),
                 new Parameter("rental_time", rentalTime),
                 new Parameter("service_id", service.getId()),
                 new Parameter("method", "extend")
-        });
+        }).get("order").getAsJsonObject().get("service_id").getAsInt();
     }
 
     public int calcAdvicePrice(int price, int advice, Service service) {
@@ -187,13 +187,13 @@ public abstract class Pricing {
 
     public abstract int getPrice(Service service, int rentalTime) throws NitrapiException;
 
-    public abstract void orderService(int rentalTime) throws NitrapiException;
+    public abstract int orderService(int rentalTime) throws NitrapiException;
 
     public int getSwitchPrice(Service service, int rentalTime) throws NitrapiException {
         return getPrice(service, rentalTime);
     }
 
-    public abstract void switchService(Service service, int rentalTime) throws NitrapiException;
+    public abstract int switchService(Service service, int rentalTime) throws NitrapiException;
 
 
 }

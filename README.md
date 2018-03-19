@@ -13,7 +13,7 @@ Add the following to the `<dependencies>` section of your `pom.xml`:
 <dependency>
     <groupId>net.nitrado</groupId>
     <artifactId>nitrapi</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 
@@ -22,7 +22,7 @@ Add the following to the `<dependencies>` section of your `pom.xml`:
 Add this to your app `build.gradle`:
 ```gradle
 dependencies {
-    compile 'net.nitrado:nitrapi:1.1.0'
+    implementation 'net.nitrado:nitrapi:1.2.0'
 }
 ```
 

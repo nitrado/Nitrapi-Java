@@ -1,20 +1,28 @@
 package net.nitrado.api.services.gameservers.ddoshistory;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import net.nitrado.api.common.Value;
+import net.nitrado.api.common.exceptions.NitrapiException;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * Datapoint of a DDoS-attack statistic.
+ * This class represents a datapoint of a DDoS-attack statistic.
  */
 public class DDoSStat {
+
     private GregorianCalendar datetime;
-    private int pps;
-    private int bandwidth;
+    private Integer pps;
+    private Integer bandwidth;
 
     /**
      * Returns the date of this datapoint.
      *
-     * @return the date
+     * @return the date of this datapoint
      */
+    @Nullable
     public GregorianCalendar getDatetime() {
         return datetime;
     }
@@ -22,18 +30,20 @@ public class DDoSStat {
     /**
      * Returns the packets-per-second at this datapoint.
      *
-     * @return the number of packets-per-second
+     * @return the packets-per-second at this datapoint
      */
-    public int getPps() {
+    @Nullable
+    public Integer getPps() {
         return pps;
     }
 
     /**
      * Returns the bandwidth at this datapoint.
      *
-     * @return the bandwidth
+     * @return the bandwidth at this datapoint
      */
-    public int getBandwidth() {
+    @Nullable
+    public Integer getBandwidth() {
         return bandwidth;
     }
 }

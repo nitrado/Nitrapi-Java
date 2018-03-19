@@ -1,8 +1,12 @@
 package net.nitrado.api.services.cloudservers;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import net.nitrado.api.common.Value;
+import net.nitrado.api.common.exceptions.NitrapiException;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class represents a Backup.
@@ -23,6 +27,7 @@ public class Backup {
      *
      * @return id
      */
+    @NotNull
     public String getId() {
         return id;
     }
@@ -32,6 +37,7 @@ public class Backup {
      *
      * @return name
      */
+    @Nullable
     public String getName() {
         return name;
     }
@@ -41,15 +47,17 @@ public class Backup {
      *
      * @return createdAt
      */
+    @Nullable
     public GregorianCalendar getCreatedAt() {
         return createdAt;
     }
 
     /**
-     * TODO enum
+     * Returns tODO enum.
      *
-     * @return type
+     * @return tODO enum
      */
+    @Nullable
     public String getType() {
         return type;
     }
@@ -59,15 +67,17 @@ public class Backup {
      *
      * @return setId
      */
+    @Nullable
     public String getSetId() {
         return setId;
     }
 
     /**
-     * TODO enum
+     * Returns tODO enum.
      *
-     * @return status
+     * @return tODO enum
      */
+    @Nullable
     public String getStatus() {
         return status;
     }

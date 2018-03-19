@@ -11,6 +11,7 @@ import net.nitrado.api.services.cloudservers.apps.AppsManager;
 import net.nitrado.api.services.cloudservers.systemd.Journald;
 import net.nitrado.api.services.cloudservers.systemd.Systemd;
 import net.nitrado.api.services.fileserver.FileServer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -76,6 +77,11 @@ public class CloudServer extends Service {
          * An error occurred while reinstalling the Server. The support has been informed.
          */
         public static final CloudserverStatus ERROR_REINSTALL = new CloudserverStatus("error_reinstall");
+
+        /**
+         * The server is currently in rescue mode.
+         */
+        public static final CloudserverStatus RESCUE = new CloudserverStatus("rescue");
 
         @Override
         public String toString() {
@@ -494,6 +500,7 @@ public class CloudServer extends Service {
      *
      * @return cloudserverStatus
      */
+    @Nullable
     public CloudserverStatus getCloudserverStatus() {
         return data != null ? data.cloudserverStatus : null;
     }
@@ -503,6 +510,7 @@ public class CloudServer extends Service {
      *
      * @return hostname
      */
+    @Nullable
     public String getHostname() {
         return data != null ? data.hostname : null;
     }
@@ -512,8 +520,9 @@ public class CloudServer extends Service {
      *
      * @return dynamic
      */
-    public boolean isDynamic() {
-        return data != null && data.dynamic;
+    @Nullable
+    public Boolean isDynamic() {
+        return data != null ? data.dynamic : null;
     }
 
     /**
@@ -521,6 +530,7 @@ public class CloudServer extends Service {
      *
      * @return hardware
      */
+    @Nullable
     public Hardware getHardware() {
         return data != null ? data.hardware : null;
     }
@@ -530,6 +540,7 @@ public class CloudServer extends Service {
      *
      * @return ips
      */
+    @Nullable
     public Ip[] getIps() {
         return data != null ? data.ips : null;
     }
@@ -539,6 +550,7 @@ public class CloudServer extends Service {
      *
      * @return image
      */
+    @Nullable
     public Image getImage() {
         return data != null ? data.image : null;
     }
@@ -548,8 +560,10 @@ public class CloudServer extends Service {
      *
      * @return daemonAvailable
      */
-    public boolean isDaemonAvailable() {
-        return data != null && data.daemonAvailable;
+
+    @Nullable
+    public Boolean isDaemonAvailable() {
+        return data != null ? data.daemonAvailable : null;
     }
 
     /**
@@ -557,8 +571,9 @@ public class CloudServer extends Service {
      *
      * @return passwordAvailable
      */
-    public boolean isPasswordAvailable() {
-        return data != null && data.passwordAvailable;
+    @Nullable
+    public Boolean isPasswordAvailable() {
+        return data != null ? data.passwordAvailable : null;
     }
 
     /**
@@ -566,8 +581,9 @@ public class CloudServer extends Service {
      *
      * @return bandwidthLimited
      */
-    public boolean isBandwidthLimited() {
-        return data != null && data.bandwidthLimited;
+    @Nullable
+    public Boolean isBandwidthLimited() {
+        return data != null ? data.bandwidthLimited : null;
     }
 
 
@@ -799,6 +815,22 @@ public class CloudServer extends Service {
 
         TrafficStatistics traffic = api.fromJson(data.get("traffic"), TrafficStatistics.class);
         return traffic;
+    }
+
+    /**
+     * Reboot the server into rescue mode.
+     * This action might result in data loss.
+     */
+    public void doRescue() throws NitrapiException {
+        api.dataPost("services/" + getId() + "/cloud_servers/rescue", null);
+    }
+
+    /**
+     * Leave the rescue mode and reboot the server.
+     * This action might result in data loss.
+     */
+    public void doUnrescue() throws NitrapiException {
+        api.dataPost("services/" + getId() + "/cloud_servers/unrescue", null);
     }
 
     @Override

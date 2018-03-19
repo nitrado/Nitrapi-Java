@@ -1,11 +1,16 @@
 package net.nitrado.api.services.cloudservers.firewall;
 
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import net.nitrado.api.Nitrapi;
-import net.nitrado.api.common.Value;
 import net.nitrado.api.common.exceptions.NitrapiException;
 import net.nitrado.api.common.http.Parameter;
+import net.nitrado.api.common.Value;
 import net.nitrado.api.services.Service;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class represents a Firewall.
@@ -15,36 +20,30 @@ public class Firewall {
     private transient Service service;
     private transient Nitrapi api;
 
-    /**
-     * Used internally.
-     */
-    public void init(Service service, Nitrapi api) {
-        this.service = service;
-        this.api = api;
-    }
-
-    public static class Protocol extends Value {
-        public Protocol(String value) {
+    public static class FirewallProtocol extends Value {
+        public FirewallProtocol(String value) {
             super(value);
         }
-
-        public static final Protocol TCP = new Protocol("tcp");
-        public static final Protocol UDP = new Protocol("udp");
-        public static final Protocol ICMP = new Protocol("icmp");
-        public static final Protocol ANY = new Protocol("any");
-
+        public static FirewallProtocol TCP = new FirewallProtocol("tcp");
+        public static FirewallProtocol UDP = new FirewallProtocol("udp");
+        public static FirewallProtocol ICMP = new FirewallProtocol("icmp");
+        public static FirewallProtocol ANY = new FirewallProtocol("any");
     }
 
-    private boolean enabled;
+    private Boolean enabled;
     private FirewallRule[] rules;
 
+    /**
+     * This class represents a FirewallRule.
+     */
     public class FirewallRule {
         @SerializedName("target_port")
-        private int targetPort;
+        private Integer targetPort;
         @SerializedName("target_ip")
         private String targetIp;
-        private Protocol protocol;
-        private int number;
+        @SerializedName("protocol")
+        private FirewallProtocol firewallProtocol;
+        private Integer number;
         private String comment;
         @SerializedName("source_ip")
         private String sourceIp;
@@ -54,7 +53,8 @@ public class Firewall {
          *
          * @return targetPort
          */
-        public int getTargetPort() {
+        @Nullable
+        public Integer getTargetPort() {
             return targetPort;
         }
 
@@ -63,17 +63,19 @@ public class Firewall {
          *
          * @return targetIp
          */
+        @Nullable
         public String getTargetIp() {
             return targetIp;
         }
 
         /**
-         * Returns protocol.
+         * Returns firewallProtocol.
          *
-         * @return protocol
+         * @return firewallProtocol
          */
-        public Protocol getProtocol() {
-            return protocol;
+        @Nullable
+        public FirewallProtocol getFirewallProtocol() {
+            return firewallProtocol;
         }
 
         /**
@@ -81,7 +83,8 @@ public class Firewall {
          *
          * @return number
          */
-        public int getNumber() {
+        @Nullable
+        public Integer getNumber() {
             return number;
         }
 
@@ -90,6 +93,7 @@ public class Firewall {
          *
          * @return comment
          */
+        @Nullable
         public String getComment() {
             return comment;
         }
@@ -99,19 +103,27 @@ public class Firewall {
          *
          * @return sourceIp
          */
+        @Nullable
         public String getSourceIp() {
             return sourceIp;
         }
-
     }
 
+    /**
+     * Used internally.
+     */
+    public void init(Service service, Nitrapi api) {
+        this.service = service;
+        this.api = api;
+    }
 
     /**
      * Returns enabled.
      *
      * @return enabled
      */
-    public boolean isEnabled() {
+    @Nullable
+    public Boolean isEnabled() {
         return enabled;
     }
 
@@ -120,19 +132,19 @@ public class Firewall {
      *
      * @return rules
      */
+    @Nullable
     public FirewallRule[] getRules() {
         return rules;
     }
 
-
     /**
      * Deletes a specific rule by number
      *
-     * @param number
+     * @param number number
      */
-    public void deleteRule(int number) throws NitrapiException {
-        api.dataDelete("services/" + service.getId() + "/cloud_servers/firewall/remove", new Parameter[]{
-                new Parameter("number", number)
+    public void deleteRule(@NotNull Integer number) throws NitrapiException {
+        api.dataDelete("services/" + service.getId() + "/cloud_servers/firewall/remove", new Parameter[] {
+            new Parameter("number", number)
         });
     }
 
@@ -153,21 +165,19 @@ public class Firewall {
     /**
      * Creates a new firewall rule
      *
-     * @param sourceIp
-     * @param targetIp
-     * @param targetPort
-     * @param protocol
-     * @param comment
+     * @param sourceIp sourceIp
+     * @param targetIp targetIp
+     * @param targetPort targetPort
+     * @param firewallProtocol firewallProtocol
+     * @param comment comment
      */
-    public void addRule(String sourceIp, String targetIp, Integer targetPort, Protocol protocol, String comment) throws NitrapiException {
-        api.dataPost("services/" + service.getId() + "/cloud_servers/firewall/add", new Parameter[]{
-                new Parameter("source_ip", sourceIp),
-                new Parameter("target_ip", targetIp),
-                new Parameter("target_port", targetPort),
-                new Parameter("protocol", protocol),
-                new Parameter("comment", comment)
+    public void addRule(@Nullable String sourceIp, @Nullable String targetIp, @Nullable Integer targetPort, @NotNull FirewallProtocol firewallProtocol, @Nullable String comment) throws NitrapiException {
+        api.dataPost("services/" + service.getId() + "/cloud_servers/firewall/add", new Parameter[] {
+            new Parameter("source_ip", sourceIp),
+            new Parameter("target_ip", targetIp),
+            new Parameter("target_port", targetPort),
+            new Parameter("protocol", firewallProtocol),
+            new Parameter("comment", comment)
         });
     }
-
-
 }

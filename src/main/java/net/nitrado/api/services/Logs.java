@@ -1,18 +1,28 @@
 package net.nitrado.api.services;
 
 import com.google.gson.annotations.SerializedName;
-import net.nitrado.api.services.gameservers.Gameserver;
-
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import net.nitrado.api.common.Value;
+import net.nitrado.api.common.exceptions.NitrapiException;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * This class represents log entries for a gameserver that are split up in pages.
- * <p>
- * Use Gameserver.getLogs(page) to get a certain page
- *
- * @see Gameserver#getLogs(int)
+ * This class represents log entries for a gameserver that are split up in pages. <p> Use Gameserver.getLogs(page) to get a certain page
  */
 public class Logs {
+
+    @SerializedName("current_page")
+    private Integer currentPage;
+    @SerializedName("logs_per_page")
+    private Integer logsPerPage;
+    @SerializedName("page_count")
+    private Integer pageCount;
+    @SerializedName("log_count")
+    private Integer logCount;
+    private LogEntry[] logs;
+
     /**
      * This class represents an entry in the server log.
      */
@@ -22,15 +32,15 @@ public class Logs {
         private String message;
         @SerializedName("created_at")
         private GregorianCalendar createdAt;
+        private Boolean admin;
         private String ip;
-        @SerializedName("admin")
-        private boolean isAdmin;
 
         /**
          * Returns the user.
          *
          * @return the user
          */
+        @Nullable
         public String getUser() {
             return user;
         }
@@ -40,6 +50,7 @@ public class Logs {
          *
          * @return the category
          */
+        @Nullable
         public String getCategory() {
             return category;
         }
@@ -49,6 +60,7 @@ public class Logs {
          *
          * @return the message
          */
+        @Nullable
         public String getMessage() {
             return message;
         }
@@ -56,20 +68,21 @@ public class Logs {
         /**
          * Returns the date this entry was created.
          *
-         * @return the creation date
+         * @return the date this entry was created
          */
+        @Nullable
         public GregorianCalendar getCreatedAt() {
             return createdAt;
         }
-
 
         /**
          * Returns admin.
          *
          * @return admin
          */
-        public boolean isAdmin() {
-            return isAdmin;
+        @Nullable
+        public Boolean isAdmin() {
+            return admin;
         }
 
         /**
@@ -77,45 +90,39 @@ public class Logs {
          *
          * @return ip
          */
+        @Nullable
         public String getIp() {
             return ip;
         }
     }
-
-    @SerializedName("current_page")
-    private int currentPage;
-    @SerializedName("logs_per_page")
-    private int logsPerPage;
-    @SerializedName("page_count")
-    private int pageCount;
-    @SerializedName("log_count")
-    private int logCount;
-    private LogEntry[] logs;
 
     /**
      * Returns the number of the current page.
      *
      * @return the number of the current page
      */
-    public int getCurrentPage() {
+    @Nullable
+    public Integer getCurrentPage() {
         return currentPage;
     }
 
     /**
      * Returns the number of logs on a page.
      *
-     * @return the number of logs
+     * @return the number of logs on a page
      */
-    public int getLogsPerPage() {
+    @Nullable
+    public Integer getLogsPerPage() {
         return logsPerPage;
     }
 
     /**
      * Returns the number of pages in this logs.
      *
-     * @return the number of pages
+     * @return the number of pages in this logs
      */
-    public int getPageCount() {
+    @Nullable
+    public Integer getPageCount() {
         return pageCount;
     }
 
@@ -124,15 +131,17 @@ public class Logs {
      *
      * @return the total number of log entries
      */
-    public int getLogCount() {
+    @Nullable
+    public Integer getLogCount() {
         return logCount;
     }
 
     /**
      * Returns the log entries on the current page.
      *
-     * @return a list of log entries
+     * @return the log entries on the current page
      */
+    @Nullable
     public LogEntry[] getLogs() {
         return logs;
     }

@@ -44,17 +44,17 @@ public class GameserverTest extends ApiTestCase {
         assertEquals(1, server.getUserId());
         assertEquals(false, server.isMinecraftMode());
         assertEquals("127.0.0.1", server.getIp());
-        assertEquals(25565, server.getPort());
+        assertEquals(25565, (int)server.getPort());
         assertEquals(Gameserver.Type.GAMESERVER, server.getType());
         assertEquals(Gameserver.MemoryType.STANDARD, server.getMemoryType());
-        assertEquals(1024, server.getMemoryTotal());
+        assertEquals(1024, (int)server.getMemoryMB());
         assertEquals("mc", server.getGame());
         assertEquals(1, server.getModpacks().size());
         Modpack modpack = server.getModpacks().get("mcrdns");
         assertEquals("Pixelmon Craft", modpack.getName());
         assertEquals("4.0.6", modpack.getModpackVersion());
         assertEquals("1.8.4", modpack.getGameVersion());
-        assertEquals(4, server.getSlots());
+        assertEquals(4, (int)server.getSlots());
         assertEquals("DE", server.getLocation());
 
         ServiceDetails details = server.getDetails();
@@ -139,15 +139,15 @@ public class GameserverTest extends ApiTestCase {
         DDoSAttack[] history = server.getDDoSHistory();
         assertEquals(2, history.length);
         DDoSAttack attack = history[1];
-        assertEquals(2, attack.getId());
+        assertEquals(2, attack.getId().intValue());
         assertDate(2015, 06, 30, 13, 05, 30, attack.getStartedAt());
         assertDate(2015, 06, 30, 13, 18, 14, attack.getEndedAt());
         assertEquals("Syn Flood", attack.getAttackType());
         assertEquals("31.214.227.14", attack.getIp());
         assertEquals("ms937", attack.getServer());
-        assertEquals(220715, attack.getPps());
-        assertEquals(112885484, attack.getBandwidth());
-        assertEquals(764, attack.getDuration());
+        assertEquals(220715, attack.getPps().intValue());
+        assertEquals(112885484, attack.getBandwidth().intValue());
+        assertEquals(764, attack.getDuration().intValue());
         DDoSStat[] stats = attack.getData();
         assertEquals(34, stats.length);
     }

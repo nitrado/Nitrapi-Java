@@ -22,10 +22,10 @@ public class NitrapiTest extends ApiTestCase {
     public void testCustomer() throws NitrapiException {
         client.addNextResponseFromFile("customer/customer.json");
         Customer customer = api.getCustomer();
-        assertEquals(1337, customer.getUserId());
+        assertEquals(1337, (int)customer.getUserId());
         assertEquals("Marty", customer.getUsername());
         assertEquals("America/Los_Angeles", customer.getTimezone());
-        assertEquals(1955, customer.getCredit());
+        assertEquals(1955, (int)customer.getCredit());
         assertEquals("marty.mcfly@biffco.com", customer.getEmail());
         assertEquals("https://server.nitrado.net/users.nitrado/1337.jpg", customer.getAvatar());
         assertDate(1985, 10, 25, 01, 15, 00, customer.getRegistered());

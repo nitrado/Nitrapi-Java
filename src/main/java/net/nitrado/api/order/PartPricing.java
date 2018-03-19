@@ -78,7 +78,7 @@ public class PartPricing extends Pricing {
     }
 
     @Override
-    public void orderService(int rentalTime) throws NitrapiException {
+    public int orderService(int rentalTime) throws NitrapiException {
         int ADD_PARAMS = 3;
         Part[] priceParts = getParts();
         Parameter[] parameters = new Parameter[priceParts.length + additionals.size() + ADD_PARAMS];
@@ -96,11 +96,11 @@ public class PartPricing extends Pricing {
             j++;
         }
 
-        nitrapi.dataPost("order/order/" + product, parameters);
+        return nitrapi.dataPost("order/order/" + product, parameters).get("order").getAsJsonObject().get("service_id").getAsInt();
     }
 
     @Override
-    public void switchService(Service service, int rentalTime) throws NitrapiException {
+    public int switchService(Service service, int rentalTime) throws NitrapiException {
         int ADD_PARAMS = 5;
         Part[] priceParts = getParts();
         Parameter[] parameters = new Parameter[priceParts.length + additionals.size() + ADD_PARAMS];
@@ -120,6 +120,6 @@ public class PartPricing extends Pricing {
             j++;
         }
 
-        nitrapi.dataPost("order/order/" + product, parameters);
+        return nitrapi.dataPost("order/order/" + product, parameters).get("order").getAsJsonObject().get("service_id").getAsInt();
     }
 }
