@@ -664,7 +664,7 @@ public class Gameserver extends Service {
      * @see DDoSAttack
      */
     public DDoSAttack[] getDDoSHistory() throws NitrapiException {
-        JsonObject data = api.dataGet("services/" + getId() + "/gameservers/ddos", null);
+        JsonObject data = api.dataGet("services/" + getId() + "/ddos", null);
         return api.fromJson(data.get("history"), DDoSAttack[].class);
     }
 
