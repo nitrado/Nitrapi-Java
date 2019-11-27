@@ -24,7 +24,7 @@ public class FileServer {
         private String token;
 
         /**
-         * Returns the url.
+         * Returns the url.g
          *
          * @return the url
          */
@@ -219,11 +219,21 @@ public class FileServer {
         Token token = getDownloadToken(file);
 
         InputStream stream = api.rawGet(token.getUrl());
-        byte[] buffer = new byte[stream.available()];
-        stream.read(buffer);
-
+        //stream.available() 无法获取全部数据
         OutputStream outStream = new FileOutputStream(outputFile);
-        outStream.write(buffer);
+        byte[] bytes = new byte[1024];
+        int len;
+        while ((len = stream.read(bytes)) != -1) {
+            outStream.write(bytes, 0, len);
+        }
+        stream.close();
+        outStream.flush();
+        outStream.close();
+//        byte[] buffer = new byte[stream.available()];
+//        stream.read(buffer);
+//
+//        OutputStream outStream = new FileOutputStream(outputFile);
+//        outStream.write(buffer);
     }
 
     /**
