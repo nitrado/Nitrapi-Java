@@ -52,7 +52,7 @@ public class CustomerSettings extends HashMap<String, HashMap<String, String>> {
             throw new CustomerSettingsNotFoundException("Category \"" + category + "\" not found.");
         }
 
-        api.dataPost("services/" + serviceId + "/gameserver/settings", new Parameter[]{new Parameter("category", category), new Parameter("key", key), new Parameter("value", value)});
+        api.dataPost("services/" + serviceId + "/gameservers/settings", new Parameter[]{new Parameter("category", category), new Parameter("key", key), new Parameter("value", value)});
     }
 
     /**
